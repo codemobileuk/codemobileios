@@ -5,7 +5,7 @@
 //  Created by Louis Woods on 19/01/2017.
 //  Copyright © 2017 Footsqueek. All rights reserved.
 //
-
+//
 import UIKit
 import CoreData
 
@@ -23,8 +23,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         checkScheduleDataIsEmpty()
         checkSpeakerDataIsEmpty()
-        
-      
     }
  
     @IBAction func testAction(_ sender: Any) {
