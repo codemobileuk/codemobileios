@@ -26,10 +26,9 @@ class CoreDataHandler {
             let searchResults = try managedContext.fetch(fetchRequest)
             
             print("Count of tables in \(entityNamed) is \(searchResults.count)")
-            print("The titles of each table are: ")
+            
             for item in searchResults as [NSManagedObject] {
                 
-                //print("\(item.value(forKey: "sessionTitle"))")
                 sessions.append(item)
                 
             }
@@ -84,7 +83,7 @@ class CoreDataHandler {
 }
 
 class Entities{
-    // List of all entity names ()
+    // List of all entity names
     static let SCHEDULE = "Schedule"
     static let SPEAKERS = "Speaker"
     static let LOCATIONS = "SessionLocation"

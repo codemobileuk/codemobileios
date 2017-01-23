@@ -24,10 +24,13 @@ class ApiHandler {
             if((responseData.result.value) != nil) {
                 
                 let swiftyJsonVar = JSON(responseData.result.value!)
+                print(swiftyJsonVar)
                 let entity = NSEntityDescription.entity(forEntityName: "Schedule", in: managedContext)!
-                let session = NSManagedObject(entity: entity, insertInto: managedContext)
+               
                 
                 for item in swiftyJsonVar {
+                    
+                    let session = NSManagedObject(entity: entity, insertInto: managedContext)
                     
                     session.setValue(item.1["SessionId"].int, forKeyPath: "sessionId")
                     session.setValue(item.1["SessionTitle"].string, forKeyPath: "sessionTitle")
@@ -37,19 +40,18 @@ class ApiHandler {
                     session.setValue(item.1["Speaker"]["speakerId"].int, forKeyPath: "speakerId")
                     session.setValue(item.1["SessionLocation"]["LocationName"].string, forKeyPath: "sessionLocationName")
                     
-                    
                 }
                 
                 do {
                     print("Saved schedule data!")
+                    //self.sessions.append(session)
+                    print(self.sessions)
                     try managedContext.save()
-
-                   
+                    
                     updateData()
                 } catch let error as NSError {
                     print("Failed: Could not save. \(error), \(error.userInfo)")
                 }
-                
             }
         }
     }
@@ -65,10 +67,10 @@ class ApiHandler {
                 
                 let swiftyJsonVar = JSON(responseData.result.value!)
                 let entity = NSEntityDescription.entity(forEntityName: "Speaker", in: managedContext)!
-                let speaker = NSManagedObject(entity: entity, insertInto: managedContext)
-                
+               
                 for item in swiftyJsonVar {
                     
+                    let speaker = NSManagedObject(entity: entity, insertInto: managedContext)
                     speaker.setValue(item.1["speakerId"].int, forKeyPath: "speakerId")
                     speaker.setValue(item.1["Firstname"].string, forKeyPath: "firstname")
                     speaker.setValue(item.1["Surname"].string, forKeyPath: "surname")

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF0491371E361D42007D9367 /* NothingOnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0491361E361D42007D9367 /* NothingOnView.swift */; };
 		BFB706FF1E324DA800D3CDF2 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB706FE1E324DA700D3CDF2 /* HomeViewController.swift */; };
 		BFC694561E30B44D006C24C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC694551E30B44D006C24C5 /* AppDelegate.swift */; };
 		BFC6945B1E30B44D006C24C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFC694591E30B44D006C24C5 /* Main.storyboard */; };
@@ -23,6 +24,7 @@
 		1C1DB9F7928E11419EBB426D /* Pods-CodeMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CodeMobile.release.xcconfig"; path = "Pods/Target Support Files/Pods-CodeMobile/Pods-CodeMobile.release.xcconfig"; sourceTree = "<group>"; };
 		39586D35D8A21E61594C59BE /* Pods_CodeMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CodeMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		833D53977BFEDD50DFC0CDC3 /* Pods-CodeMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CodeMobile.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CodeMobile/Pods-CodeMobile.debug.xcconfig"; sourceTree = "<group>"; };
+		BF0491361E361D42007D9367 /* NothingOnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NothingOnView.swift; sourceTree = "<group>"; };
 		BFB706FE1E324DA700D3CDF2 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		BFC694521E30B44D006C24C5 /* CodeMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC694551E30B44D006C24C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +67,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BF0491381E361D49007D9367 /* UI Extenders */ = {
+			isa = PBXGroup;
+			children = (
+				BF0491361E361D42007D9367 /* NothingOnView.swift */,
+			);
+			name = "UI Extenders";
+			sourceTree = "<group>";
+		};
 		BFC694491E30B44D006C24C5 = {
 			isa = PBXGroup;
 			children = (
@@ -91,6 +101,7 @@
 				BFC6946D1E30BE8A006C24C5 /* Api */,
 				BFC694731E30BF23006C24C5 /* Core Data */,
 				BFC6946A1E30B509006C24C5 /* Supporting FIles */,
+				BF0491381E361D49007D9367 /* UI Extenders */,
 			);
 			path = CodeMobile;
 			sourceTree = "<group>";
@@ -117,8 +128,8 @@
 		BFC694721E30BF04006C24C5 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				BFB706FE1E324DA700D3CDF2 /* HomeViewController.swift */,
 				BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */,
+				BFB706FE1E324DA700D3CDF2 /* HomeViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -261,6 +272,7 @@
 				BFC694561E30B44D006C24C5 /* AppDelegate.swift in Sources */,
 				BFC6946C1E30BCDC006C24C5 /* ApiHandler.swift in Sources */,
 				BFC694711E30BEFF006C24C5 /* ScheduleViewController.swift in Sources */,
+				BF0491371E361D42007D9367 /* NothingOnView.swift in Sources */,
 				BFB706FF1E324DA800D3CDF2 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

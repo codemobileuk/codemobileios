@@ -21,8 +21,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewWillAppear(_ animated: Bool) {
         
-        checkScheduleDataIsEmpty()
-        checkSpeakerDataIsEmpty()
+        tabBarController?.navigationItem.title = "Schedule"
+        checkCoreDataIsEmpty()
+       
     }
  
     @IBAction func testAction(_ sender: Any) {
@@ -39,36 +40,33 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
     }
     
-    func checkSpeakerDataIsEmpty() {
+    func checkCoreDataIsEmpty() {
         
-        //Store current core data in sessions
+        // Check Speaker Core Data
         speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-        //If empty update api data and reload from core data
+        
         if speakers.isEmpty{
-            print("Core data is empty, storing speakers data...")
+            print("Speakers core data is empty, storing speakers data...")
             api.storeSpeakers(updateData: { () -> Void in
                  self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
                 self.scheduleTableView.reloadData()
             })
-        } else {print("Speakers Core data is not empty")}
-
+        } else {print("Speakers core data is not empty")}
         
-    }
-    func checkScheduleDataIsEmpty() {
-        
-        //Store current core data in sessions
+        // Check Schedule Core Data
         sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
-        //If empty update api data and reload from core data
+       
         if sessions.isEmpty{
-            print("Core data is empty, storing schedule data...")
+            print("Schedule core data is empty, storing schedule data...")
             api.storeSchedule(updateData: { () -> Void in
                 self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
                 self.scheduleTableView.reloadData()
             })
-        } else {print("Schedule Core data is not empty")}
+        } else {print("Schedule core data is not empty")}
+
+
+        
     }
-    
-    
     // Table View Functions
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
