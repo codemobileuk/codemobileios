@@ -21,6 +21,11 @@ class CoreDataHandler {
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityNamed)
         
+        var sortorder = NSSortDescriptor(key: "speakerId", ascending: true)
+        
+        fetchRequest.sortDescriptors=[sortorder]
+        
+        
         do {
             
             let searchResults = try managedContext.fetch(fetchRequest)

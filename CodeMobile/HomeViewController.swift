@@ -43,13 +43,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     // Collection View Functions
    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         return 2
     }
     
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = scheduleCollectionView.dequeueReusableCell(withReuseIdentifier: "CurrentlyOn", for: indexPath)
-    
         return cell
     }
     
@@ -59,5 +60,4 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     
-
 }

@@ -36,6 +36,8 @@ class ApiHandler {
                     session.setValue(item.1["SessionTitle"].string, forKeyPath: "sessionTitle")
                     session.setValue(item.1["SessionDescription"].string, forKeyPath: "sessionDescription")
                     session.setValue(item.1["SessionStartDateTime"].string, forKeyPath: "sessionStartDateTime")
+                    
+                    
                     session.setValue(item.1["SessionEndDateTime"].string, forKeyPath: "sessionEndDateTime")
                     session.setValue(item.1["Speaker"]["speakerId"].int, forKeyPath: "speakerId")
                     session.setValue(item.1["SessionLocation"]["LocationName"].string, forKeyPath: "sessionLocationName")
@@ -44,7 +46,7 @@ class ApiHandler {
                 
                 do {
                     print("Saved schedule data!")
-                    //self.sessions.append(session)
+                    
                     print(self.sessions)
                     try managedContext.save()
                     
@@ -55,6 +57,7 @@ class ApiHandler {
             }
         }
     }
+    
     
 
     

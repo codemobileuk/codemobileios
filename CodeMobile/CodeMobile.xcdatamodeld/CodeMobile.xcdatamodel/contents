@@ -26,8 +26,8 @@
         <attribute name="twitter" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Schedule" positionX="-155" positionY="-252" width="128" height="148"/>
-        <element name="SessionLocation" positionX="160" positionY="-207" width="128" height="103"/>
-        <element name="Speaker" positionX="-443" positionY="-252" width="128" height="163"/>
+        <element name="Schedule" positionX="-155" positionY="-252" width="128" height="150"/>
+        <element name="Speaker" positionX="-443" positionY="-252" width="128" height="165"/>
+        <element name="SessionLocation" positionX="-297" positionY="-225" width="128" height="105"/>
     </elements>
 </model>

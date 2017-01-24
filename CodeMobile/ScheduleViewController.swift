@@ -23,13 +23,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         tabBarController?.navigationItem.title = "Schedule"
         checkCoreDataIsEmpty()
-       
-    }
- 
-    @IBAction func testAction(_ sender: Any) {
         
     }
-    
+ 
     @IBAction func deleteTest(_ sender: Any) {
         
         coreData.deleteAllData(entityNamed: Entities.SCHEDULE)
@@ -60,26 +56,67 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             print("Schedule core data is empty, storing schedule data...")
             api.storeSchedule(updateData: { () -> Void in
                 self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+                print(self.sessions )
                 self.scheduleTableView.reloadData()
             })
         } else {print("Schedule core data is not empty")}
-
-
+    }
+    
+    var sectionsArray = [Section]()
+    
+    func SectionsData() {
         
+        for item in sessions {
+            
+            
+        }
+        
+        
+        //let section = Section(title: item.value(forKey: "SessionStartDateTime") as! String, objects: [item.value(forKey: "SessionTitle") as! String])
     }
     // Table View Functions
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        
+        let count = 0;
+        for item in sessions
+        {
+            let val = 0
+            if timesArray.contains(item.value(forKey: "SessionStartDateTime") as! String) == false {
+                timesArray.append(item.value(forKey: "SessionStartDateTime") as! String)
+            }
+           
+        }
+        
+        
+        return timesArray.count
+    }
+  
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return 80
     }
+    var timesArray = [String]()
+    var dict = [String:[Any]]()
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return sessions.count
+       
+        
+        
+        return 1
     }
+ 
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let item = sessions[section]
+
+        return item.value(forKey: "SessionStartDateTime") as! String?
+    }
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let item = sessions[indexPath.row]
+        
         let cell = self.scheduleTableView.dequeueReusableCell(withIdentifier: "FullCell", for: indexPath) as! FullWidthCell
         cell.sessionTitleLbl.text = item.value(forKey: "SessionTitle") as! String?
         for speaker in speakers {
@@ -102,8 +139,18 @@ class FullWidthCell: UITableViewCell {
     @IBOutlet weak var sessionTitleLbl: UILabel!
     @IBOutlet weak var sessionFullNameLbl: UILabel!
     @IBOutlet weak var buildingIconImgView: UIImageView!
+}
+
+struct Section {
     
-   
+    var heading: String
+    var items : [NSManagedObject]
+    
+    init(title: String, objects: [NSManagedObject]){
+        
+        heading = title
+        items = objects
+    }
 }
 
 
