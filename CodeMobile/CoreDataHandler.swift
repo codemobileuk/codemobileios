@@ -21,7 +21,8 @@ class CoreDataHandler {
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityNamed)
         
-        var sortorder = NSSortDescriptor(key: "speakerId", ascending: true)
+        // Change to sort by time rather than id
+        let sortorder = NSSortDescriptor(key: "speakerId", ascending: true)
         
         fetchRequest.sortDescriptors=[sortorder]
         

@@ -24,16 +24,21 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         tabBarController?.navigationItem.title = "Schedule"
         checkCoreDataIsEmpty()
         
+        if sections.isEmpty {
+        retriever()
+        }
+        
     }
  
     @IBAction func deleteTest(_ sender: Any) {
+        
         
         coreData.deleteAllData(entityNamed: Entities.SCHEDULE)
         coreData.deleteAllData(entityNamed: Entities.SPEAKERS)
         sessions.removeAll()
         speakers.removeAll()
         scheduleTableView.reloadData()
-        
+ 
     }
     
     func checkCoreDataIsEmpty() {
@@ -45,6 +50,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             print("Speakers core data is empty, storing speakers data...")
             api.storeSpeakers(updateData: { () -> Void in
                  self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
+                
                 self.scheduleTableView.reloadData()
             })
         } else {print("Speakers core data is not empty")}
@@ -56,72 +62,101 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             print("Schedule core data is empty, storing schedule data...")
             api.storeSchedule(updateData: { () -> Void in
                 self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+                self.retriever()
                 print(self.sessions )
                 self.scheduleTableView.reloadData()
             })
         } else {print("Schedule core data is not empty")}
     }
     
-    var sectionsArray = [Section]()
-    
-    func SectionsData() {
+    func retriever() {
+        
+        
+        print(sessions)
         
         for item in sessions {
             
+            var title = String()
+            var date = String()
+            var speaker = Int()
             
+            date = (item.value(forKey: "SessionStartDateTime") as! String?)!
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'hh:mm:ss"
+            let dated = dateFormatter.date(from: date)
+            
+            
+            title = (item.value(forKey: "SessionTitle") as! String?)!
+            
+            speaker = (item.value(forKey: "speakerId") as! Int )
+            if self.sections.index(forKey: date) == nil {
+                self.sections[date] = [TableItem(title: title, date: dated!, speakerId: speaker)]
+            } else {
+                self.sections[date]!.append(TableItem(title: title, date: dated!, speakerId: speaker))
+            }
+
         }
+        for item in sections {
+            
+            sortedSections.append(item.key)
+        }
+      
+        sortedSections = sortedSections.sorted {$0 < $1}
+        scheduleTableView.reloadData()
         
-        
-        //let section = Section(title: item.value(forKey: "SessionStartDateTime") as! String, objects: [item.value(forKey: "SessionTitle") as! String])
     }
     // Table View Functions
     
+
+    var sections = [String: [TableItem]]()
+    var sortedSections = [String]()
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        let count = 0;
-        for item in sessions
-        {
-            let val = 0
-            if timesArray.contains(item.value(forKey: "SessionStartDateTime") as! String) == false {
-                timesArray.append(item.value(forKey: "SessionStartDateTime") as! String)
-            }
-           
+        if sortedSections.isEmpty{
+            return 0
         }
-        
-        
-        return timesArray.count
+        return sections.count
     }
   
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return 80
     }
+    
     var timesArray = [String]()
-    var dict = [String:[Any]]()
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-       
-        
-        
-        return 1
+        if sortedSections.isEmpty{
+            return 0
+        }
+        return sections[sortedSections[section]]!.count
     }
  
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let item = sessions[section]
+        
+        if sortedSections.isEmpty{
+            return ""
+        }
 
-        return item.value(forKey: "SessionStartDateTime") as! String?
+        return sortedSections[section]//item.value(forKey: "SessionStartDateTime") as! String?
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let item = sessions[indexPath.row]
-        
         let cell = self.scheduleTableView.dequeueReusableCell(withIdentifier: "FullCell", for: indexPath) as! FullWidthCell
-        cell.sessionTitleLbl.text = item.value(forKey: "SessionTitle") as! String?
+        
+        let tableSection = sections[sortedSections[indexPath.section]]
+        let tableItem = tableSection![indexPath.row]
+        
+        cell.sessionTitleLbl.text = tableItem.title
         for speaker in speakers {
          
-            if speaker.value(forKey: "speakerId") as! Int == item.value(forKey: "speakerId") as! Int {
+            if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
+                
                 let firstName = speaker.value(forKey: "firstname") as! String
                 let lastName = speaker.value(forKey: "surname") as! String
                 cell.sessionFullNameLbl.text = firstName + " " + lastName
@@ -132,6 +167,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         return cell
     }
     
+    
+    
+
 }
 
 class FullWidthCell: UITableViewCell {
@@ -141,16 +179,13 @@ class FullWidthCell: UITableViewCell {
     @IBOutlet weak var buildingIconImgView: UIImageView!
 }
 
-struct Section {
-    
-    var heading: String
-    var items : [NSManagedObject]
-    
-    init(title: String, objects: [NSManagedObject]){
-        
-        heading = title
-        items = objects
-    }
+struct TableItem {
+    let title: String
+    let date : Date
+    let speakerId : Int
 }
+
+
+
 
 
