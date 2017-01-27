@@ -53,6 +53,4 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         return CGSize(width: scheduleCollectionView.frame.size.width/2 - 2.5, height: scheduleView.frame.size.height)
     }
-    
-    
 }

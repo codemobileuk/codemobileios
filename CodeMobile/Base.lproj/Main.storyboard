@@ -456,11 +456,13 @@
                                         <color key="backgroundColor" red="0.19997376203536987" green="0.20001503825187683" blue="0.19997116923332214" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="VJ0-fc-e4d" secondAttribute="bottom" id="2sr-YS-Ucr"/>
+                                            <constraint firstItem="YkT-4J-Lne" firstAttribute="top" secondItem="7MA-1d-A69" secondAttribute="top" constant="43.329999999999998" id="4ka-Mc-vTf"/>
                                             <constraint firstItem="YkT-4J-Lne" firstAttribute="centerX" secondItem="7MA-1d-A69" secondAttribute="centerX" id="Q2M-PS-MLG"/>
                                             <constraint firstItem="YkT-4J-Lne" firstAttribute="centerY" secondItem="7MA-1d-A69" secondAttribute="centerY" id="Rgj-eB-dBY"/>
                                             <constraint firstItem="VJ0-fc-e4d" firstAttribute="leading" secondItem="7MA-1d-A69" secondAttribute="leading" id="RqO-oI-WQs"/>
                                             <constraint firstAttribute="trailing" secondItem="VJ0-fc-e4d" secondAttribute="trailing" id="gdT-cj-d3J"/>
                                             <constraint firstItem="VJ0-fc-e4d" firstAttribute="top" secondItem="7MA-1d-A69" secondAttribute="top" id="juq-OW-gce"/>
+                                            <constraint firstAttribute="bottom" secondItem="YkT-4J-Lne" secondAttribute="bottom" constant="43.329999999999998" id="ovO-W0-gIW"/>
                                         </constraints>
                                     </view>
                                 </subviews>

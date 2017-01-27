@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 import CoreData
-
+// TODO: Comment class
 class ApiHandler {
     
     let API_URL : String = "http://api.app.codemobile.co.uk/api"

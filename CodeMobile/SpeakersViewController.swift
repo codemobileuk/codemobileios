@@ -10,12 +10,9 @@ import UIKit
 
 class SpeakersViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    override func viewWillAppear(_ animated: Bool) {
+        
         tabBarController?.navigationItem.title = "Speakers"
         tabBarController?.navigationItem.rightBarButtonItem = nil
     }
-
-  
 }

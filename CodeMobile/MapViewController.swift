@@ -10,12 +10,10 @@ import UIKit
 
 class MapViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    override func viewWillAppear(_ animated: Bool) {
+        
         tabBarController?.navigationItem.title = "Map"
         tabBarController?.navigationItem.rightBarButtonItem = nil
-    }
 
-    
+    }
 }

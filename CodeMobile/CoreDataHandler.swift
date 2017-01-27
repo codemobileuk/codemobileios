@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 import SwiftyJSON
-
+// TODO: Comment class
 class CoreDataHandler {
     
     var sessions: [NSManagedObject] = []

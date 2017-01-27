@@ -17,21 +17,18 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     let api = ApiHandler()
     let coreData = CoreDataHandler()
     
-    var sessions: [NSManagedObject] = []
-    var speakers: [NSManagedObject] = []
-    
     override func viewWillAppear(_ animated: Bool) {
         
+        // Navigation bar setup
         tabBarController?.navigationItem.title = "Schedule"
-        checkCoreDataIsEmpty()
-        
         let rightBtn = UIBarButtonItem(title: "Sort", style: UIBarButtonItemStyle.plain, target: self, action: #selector(sortByDate(sender:)))
         tabBarController?.navigationItem.rightBarButtonItem = rightBtn
         
-        
+        setupScheduleData()
     }
     
     var chosenDate = "2017-04-18"
+    
     func sortByDate(sender: UIBarButtonItem) {
         
         let optionMenu = UIAlertController(title: nil, message: "Sort by date", preferredStyle: .actionSheet)
@@ -73,25 +70,29 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         optionMenu.view.tintColor = UIColor.red
         
         self.present(optionMenu, animated: true, completion: nil)
-        
     }
+    
+    // Test function - This function will be deleted/ Used to delete all data instead of having to re-run the app
     @IBAction func deleteTest(_ sender: Any) {
         
         coreData.deleteAllData(entityNamed: Entities.SCHEDULE)
         coreData.deleteAllData(entityNamed: Entities.SPEAKERS)
         sessions.removeAll()
         speakers.removeAll()
-        daysSections.removeAll()
         sortedSections.removeAll()
-        scheduleTableView.reloadData()
-        
+        timeSections.removeAll()
+        setupScheduleData()
     }
     
-    func checkCoreDataIsEmpty() {
+    var sessions: [NSManagedObject] = []
+    var speakers: [NSManagedObject] = []
+    
+    func setupScheduleData() {
         
-        // Check Speaker Core Data
+        // Speaker Core Data
+        // Recieve speaker data from core data
         speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-        
+        // Check if data contains data, if not retrieve data from the API then store the data into speaker array.
         if speakers.isEmpty{
             print("Speakers core data is empty, storing speakers data...")
             api.storeSpeakers(updateData: { () -> Void in
@@ -101,7 +102,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             })
         } else {print("Speakers core data is not empty")}
         
-        // Check Schedule Core Data
+        // Sessions Core Data - Repeated for session information
         sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
         
         if sessions.isEmpty{
@@ -115,6 +116,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         } else {
             print("Schedule core data is not empty")
             if sortedSections.isEmpty{
+                // Split data into correct sections for table view
                 self.sortOutSections()
             }
         }
@@ -122,7 +124,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     var timeSections = [String: [TableItem]]()
     var sortedSections = [String]()
-    var daysSections = [String: [String:[TableItem]]]()
     
     func sortOutSections() {
         
@@ -133,38 +134,31 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             var speaker = Int()
             
             date = (item.value(forKey: "SessionStartDateTime") as! String?)!
-            
+            // Format date to remove useless data in string
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             let dated = dateFormatter.date(from: date)
             
-            
             title = (item.value(forKey: "SessionTitle") as! String?)!
-            
             speaker = (item.value(forKey: "speakerId") as! Int )
             
+            // Get day of item without time
             let day = date.components(separatedBy: "T").first
             
+            // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
             if self.timeSections.index(forKey: date) == nil {
                 self.timeSections[date] = [TableItem(title: title, date: dated!, speakerId: speaker, day: day!)]
             } else {
                 self.timeSections[date]!.append(TableItem(title: title, date: dated!, speakerId: speaker, day: day!))
             }
-            
         }
-        for item in timeSections {
-            
-            sortedSections.append(item.key)
-        }
-        
+        for item in timeSections { sortedSections.append(item.key) }
+        // Sort array in time order
         sortedSections = sortedSections.sorted {$0 < $1}
-        //print(sortedSections)
-        print(daysSections.keys)
+        // Update table
         scheduleTableView.reloadData()
-        
     }
-    
-    
+
     // MARK: Table View Functions
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -180,77 +174,51 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         return 80
     }
     
-    var timesArray = [String]()
-    
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if sortedSections.isEmpty{
-            return 0
-        }
-        var day = ""
-        for item in timeSections[sortedSections[section]]! {
-            
-            day = item.day
-        }
         
-        if day != chosenDate {
-            
-            return 0
-        }
+        if sortedSections.isEmpty{ return 0 }
+        var day = ""
+        for item in timeSections[sortedSections[section]]! { day = item.day }
+        // If date of section is not current date selected for sorting, return 0 number of rows
+        if day != chosenDate { return 0 }
         
         return timeSections[sortedSections[section]]!.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        if sortedSections.isEmpty{
-            return ""
-        }
-        
+        if sortedSections.isEmpty{ return "" }
         var day = ""
-        for item in timeSections[sortedSections[section]]! {
-            
-            day = item.day
-        }
-        
-        if day != chosenDate {
-            
-            return nil
-        }
-        
+        for item in timeSections[sortedSections[section]]! { day = item.day }
+        // If date of section is not current date selected for sorting, return nil so no header appears
+        if day != chosenDate { return nil }
+        // Seperate only the time from the day/time string & remove the seconds from the time
         let returnvalue = sortedSections[section].components(separatedBy: "T").last
         let endIndex = returnvalue?.index((returnvalue?.endIndex)!, offsetBy:  -3)
         
         return returnvalue?.substring(to: endIndex!)
     }
     
-    
-    
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = self.scheduleTableView.dequeueReusableCell(withIdentifier: "FullCell", for: indexPath) as! FullWidthCell
-        
         let tableSection = timeSections[sortedSections[indexPath.section]]
         let tableItem = tableSection![indexPath.row]
-        
         cell.sessionTitleLbl.text = tableItem.title
         for speaker in speakers {
-            
+            // Find speakerId in speaker array and collect relevent information to match session
             if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
-                
+        
                 let firstName = speaker.value(forKey: "firstname") as! String
                 let lastName = speaker.value(forKey: "surname") as! String
                 cell.sessionFullNameLbl.text = firstName + " " + lastName
-                
             }
         }
-        
         return cell
     }
-    
 }
 
+// Class to represent UI of each cell
 class FullWidthCell: UITableViewCell {
     
     @IBOutlet weak var sessionTitleLbl: UILabel!
@@ -258,6 +226,7 @@ class FullWidthCell: UITableViewCell {
     @IBOutlet weak var buildingIconImgView: UIImageView!
 }
 
+// Struct to represent data in each table cell
 struct TableItem {
     let title: String
     let date : Date
