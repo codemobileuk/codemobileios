@@ -1,0 +1,6 @@
+framework module Pods_CodeMobile {
+  umbrella header "Pods-CodeMobile-umbrella.h"
+
+  export *
+  module * { export * }
+}

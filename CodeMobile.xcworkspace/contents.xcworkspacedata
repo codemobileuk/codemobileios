@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:"
+      name = "NSManagedObjectClasses">
+      <FileRef
+         location = "group:SessionLocation+CoreDataClass.swift">
+      </FileRef>
+      <FileRef
+         location = "group:SessionLocation+CoreDataProperties.swift">
+      </FileRef>
+      <FileRef
+         location = "group:Speaker+CoreDataClass.swift">
+      </FileRef>
+      <FileRef
+         location = "group:Speaker+CoreDataProperties.swift">
+      </FileRef>
+      <FileRef
+         location = "group:Schedule+CoreDataClass.swift">
+      </FileRef>
+      <FileRef
+         location = "group:Schedule+CoreDataProperties.swift">
+      </FileRef>
+   </Group>
+   <FileRef
+      location = "group:CodeMobile.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+</Workspace>

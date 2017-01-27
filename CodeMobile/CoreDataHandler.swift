@@ -18,15 +18,16 @@ class CoreDataHandler {
         
         sessions.removeAll()
         let managedContext = getContext()
-        
+    
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityNamed)
         
-        // Change to sort by time rather than id
-        let sortorder = NSSortDescriptor(key: "speakerId", ascending: true)
-        
-        fetchRequest.sortDescriptors=[sortorder]
-        
-        
+        // Sort items
+        if entityNamed == Entities.SCHEDULE{
+            let sortorder = NSSortDescriptor(key: "sessionStartDateTime", ascending: true)
+            fetchRequest.sortDescriptors=[sortorder]
+           
+        }
+    
         do {
             
             let searchResults = try managedContext.fetch(fetchRequest)

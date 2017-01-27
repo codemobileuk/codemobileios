@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16A313a" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Schedule" representedClassName="Schedule" syncable="YES" codeGenerationType="class">
+    <entity name="Schedule" representedClassName="Schedule" syncable="YES">
         <attribute name="sessionDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sessionEndDateTime" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sessionId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -9,13 +9,13 @@
         <attribute name="sessionTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="speakerId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <entity name="SessionLocation" representedClassName="SessionLocation" syncable="YES" codeGenerationType="class">
+    <entity name="SessionLocation" representedClassName="SessionLocation" syncable="YES">
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="locationDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locationName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <entity name="Speaker" representedClassName="Speaker" syncable="YES" codeGenerationType="class">
+    <entity name="Speaker" representedClassName="Speaker" syncable="YES">
         <attribute name="firstname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fullName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="organisation" optional="YES" attributeType="String" syncable="YES"/>
@@ -26,8 +26,8 @@
         <attribute name="twitter" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Schedule" positionX="-155" positionY="-252" width="128" height="150"/>
-        <element name="Speaker" positionX="-443" positionY="-252" width="128" height="165"/>
-        <element name="SessionLocation" positionX="-297" positionY="-225" width="128" height="105"/>
+        <element name="Schedule" positionX="-297" positionY="-189" width="128" height="150"/>
+        <element name="SessionLocation" positionX="-297" positionY="-117" width="128" height="105"/>
+        <element name="Speaker" positionX="-288" positionY="-135" width="128" height="165"/>
     </elements>
 </model>

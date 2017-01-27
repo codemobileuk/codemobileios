@@ -16,6 +16,8 @@
 		BFC6946C1E30BCDC006C24C5 /* ApiHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6946B1E30BCDC006C24C5 /* ApiHandler.swift */; };
 		BFC694711E30BEFF006C24C5 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */; };
 		BFC6949C1E30EFE1006C24C5 /* CoreDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6949B1E30EFE1006C24C5 /* CoreDataHandler.swift */; };
+		BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */; };
+		BFDEFBDB1E3B7DC0008C99BA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */; };
 		E6533D55B76E37ADCB29FAEE /* Pods_CodeMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39586D35D8A21E61594C59BE /* Pods_CodeMobile.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +36,8 @@
 		BFC6946B1E30BCDC006C24C5 /* ApiHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApiHandler.swift; path = ../ApiHandler.swift; sourceTree = "<group>"; };
 		BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		BFC6949B1E30EFE1006C24C5 /* CoreDataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHandler.swift; sourceTree = "<group>"; };
+		BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeakersViewController.swift; sourceTree = "<group>"; };
+		BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +123,8 @@
 			children = (
 				BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */,
 				BFB706FE1E324DA700D3CDF2 /* HomeViewController.swift */,
+				BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */,
+				BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -261,7 +267,9 @@
 				BFC694561E30B44D006C24C5 /* AppDelegate.swift in Sources */,
 				BFC6946C1E30BCDC006C24C5 /* ApiHandler.swift in Sources */,
 				BFC694711E30BEFF006C24C5 /* ScheduleViewController.swift in Sources */,
+				BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */,
 				BFB706FF1E324DA800D3CDF2 /* HomeViewController.swift in Sources */,
+				BFDEFBDB1E3B7DC0008C99BA /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
