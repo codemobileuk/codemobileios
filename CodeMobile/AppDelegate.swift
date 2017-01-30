@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabController = UITabBar.appearance()
         
         navigationController.isTranslucent = false
-        navigationController.setBackgroundImage(UIImage(named: "navigationBarBackground"), for: .default)
+        navigationController.setBackgroundImage(UIImage(named: "NavigationBarBackground"), for: .default)
         navigationController.shadowImage = UIImage()
         navigationController.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         
@@ -81,6 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                  * The store could not be migrated to the current model version.
                  Check the error message to determine what the actual problem was.
                  */
+              
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })

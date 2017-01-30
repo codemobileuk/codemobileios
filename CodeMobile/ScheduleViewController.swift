@@ -78,7 +78,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         speakers.removeAll()
         sortedSections.removeAll()
         timeSections.removeAll()
-        setupScheduleData()
+        scheduleTableView.reloadData()
     }
     
     private var sessions: [NSManagedObject] = []
@@ -106,7 +106,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             api.storeSchedule(updateData: { () -> Void in
                 self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
                 self.sortOutSections()
-                print(self.sessions )
                 self.scheduleTableView.reloadData()
             })
         } else {
@@ -120,6 +119,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     private var timeSections = [String: [TableItem]]()
     private var sortedSections = [String]()
+    private var endDateSections = [String]()
     
     private func sortOutSections() {
         
@@ -127,9 +127,13 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             
             var title = String()
             var date = String()
+            var endDate = String()
             var speaker = Int()
+            var building = String()
             
             date = (item.value(forKey: "SessionStartDateTime") as! String?)!
+            endDate = (item.value(forKey: "SessionEndDateTime") as! String?)!
+
             // Format date to remove useless data in string
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
@@ -137,16 +141,23 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             
             title = (item.value(forKey: "SessionTitle") as! String?)!
             speaker = (item.value(forKey: "speakerId") as! Int )
+            building = (item.value(forKey: "sessionLocationName") as! String)
             
             // Get day of item without time
             let day = date.components(separatedBy: "T").first
             
             // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
             if self.timeSections.index(forKey: date) == nil {
-                self.timeSections[date] = [TableItem(title: title, date: dated!, speakerId: speaker, day: day!)]
+                self.timeSections[date] = [TableItem(title: title, date: dated!, speakerId: speaker, day: day!, locationName: building)]
             } else {
-                self.timeSections[date]!.append(TableItem(title: title, date: dated!, speakerId: speaker, day: day!))
+                self.timeSections[date]!.append(TableItem(title: title, date: dated!, speakerId: speaker, day: day!, locationName: building))
             }
+            
+            if self.endDateSections.contains(endDate) == false {
+                endDateSections.append(endDate)
+            }
+            
+           
         }
         for item in timeSections { sortedSections.append(item.key) }
         // Sort array in time order
@@ -192,7 +203,10 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let returnvalue = sortedSections[section].components(separatedBy: "T").last
         let endIndex = returnvalue?.index((returnvalue?.endIndex)!, offsetBy:  -3)
         
-        return returnvalue?.substring(to: endIndex!)
+        let returnvalue2 = endDateSections[section].components(separatedBy: "T").last
+        
+        
+        return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -201,7 +215,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let tableSection = timeSections[sortedSections[indexPath.section]]
         let tableItem = tableSection![indexPath.row]
         cell.sessionTitleLbl.text = tableItem.title
-        cell.buildingIconImgView.image = UIImage(named: "beswick")
+        cell.buildingIconImgView.image = UIImage(named: tableItem.locationName)
         for speaker in speakers {
             // Find speakerId in speaker array and collect relevent information to match session
             if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
@@ -230,6 +244,7 @@ struct TableItem {
     let date : Date
     let speakerId : Int
     let day : String
+    let locationName : String
 }
 
 

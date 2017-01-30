@@ -24,7 +24,7 @@ class ApiHandler {
             if((responseData.result.value) != nil) {
                 
                 let swiftyJsonVar = JSON(responseData.result.value!)
-                print(swiftyJsonVar)
+                // print(swiftyJsonVar)
                 let entity = NSEntityDescription.entity(forEntityName: "Schedule", in: managedContext)!
                
                 for item in swiftyJsonVar {
@@ -41,7 +41,6 @@ class ApiHandler {
                 
                 do {
                     print("Saved schedule data!")
-                    print(self.sessions)
                     try managedContext.save()
                     updateData()
                 } catch let error as NSError {

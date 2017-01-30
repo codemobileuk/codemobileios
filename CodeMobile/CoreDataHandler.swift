@@ -62,14 +62,12 @@ class CoreDataHandler {
                 let managedObjectData:NSManagedObject = managedObject
                 managedContext.delete(managedObjectData)
                 sessions.removeAll()
-                print("Data deleted \(sessions)")
-                
-
+                print("Data deleted \(sessions) for \(entityNamed)")
             }
             
             do {
                 try managedContext.save()
-                print("Saved data!")
+                print("Saved \(entityNamed) data!")
             } catch let error as NSError {
                 print("Failed: Could not save. \(error), \(error.userInfo)")
             }
