@@ -27,29 +27,22 @@ class ApiHandler {
                 print(swiftyJsonVar)
                 let entity = NSEntityDescription.entity(forEntityName: "Schedule", in: managedContext)!
                
-                
                 for item in swiftyJsonVar {
                     
                     let session = NSManagedObject(entity: entity, insertInto: managedContext)
-                    
                     session.setValue(item.1["SessionId"].int, forKeyPath: "sessionId")
                     session.setValue(item.1["SessionTitle"].string, forKeyPath: "sessionTitle")
                     session.setValue(item.1["SessionDescription"].string, forKeyPath: "sessionDescription")
                     session.setValue(item.1["SessionStartDateTime"].string, forKeyPath: "sessionStartDateTime")
-                    
-                    
                     session.setValue(item.1["SessionEndDateTime"].string, forKeyPath: "sessionEndDateTime")
                     session.setValue(item.1["Speaker"]["speakerId"].int, forKeyPath: "speakerId")
                     session.setValue(item.1["SessionLocation"]["LocationName"].string, forKeyPath: "sessionLocationName")
-                    
                 }
                 
                 do {
                     print("Saved schedule data!")
-                    
                     print(self.sessions)
                     try managedContext.save()
-                    
                     updateData()
                 } catch let error as NSError {
                     print("Failed: Could not save. \(error), \(error.userInfo)")
@@ -57,9 +50,6 @@ class ApiHandler {
             }
         }
     }
-    
-    
-
     
     func storeSpeakers(updateData: @escaping () -> Void) {
         
@@ -89,16 +79,14 @@ class ApiHandler {
                     try managedContext.save()
                     print("Saved speakers data!")
                     updateData()
-                   
                 } catch let error as NSError {
                     print("Failed: Could not save. \(error), \(error.userInfo)")
                 }
-                
             }
         }
-        
     }
     
+    // To be editted
     func storeLocations() {
         
         let managedContext = getContext()
@@ -125,17 +113,14 @@ class ApiHandler {
                 } catch let error as NSError {
                     print("Failed: Could not save. \(error), \(error.userInfo)")
                 }
-                
             }
         }
-        
     }
     
     func getContext() -> NSManagedObjectContext {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
-        
     }
     
 }

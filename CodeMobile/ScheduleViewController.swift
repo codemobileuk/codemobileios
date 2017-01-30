@@ -1,11 +1,11 @@
 //
-//  HomeViewController.swift
+//  ScheduleViewController.swift
 //  CodeMobile
 //
 //  Created by Louis Woods on 19/01/2017.
 //  Copyright © 2017 Footsqueek. All rights reserved.
 //
-//
+
 import UIKit
 import CoreData
 
@@ -14,8 +14,8 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var scheduleTableView: UITableView!
     @IBOutlet weak var currentDateSelected: UILabel!
     
-    let api = ApiHandler()
-    let coreData = CoreDataHandler()
+    private let api = ApiHandler()
+    private let coreData = CoreDataHandler()
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -27,7 +27,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         setupScheduleData()
     }
     
-    var chosenDate = "2017-04-18"
+    private var chosenDate = "2017-04-18"
     
     func sortByDate(sender: UIBarButtonItem) {
         
@@ -39,7 +39,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             self.chosenDate = "2017-04-18"
             self.currentDateSelected.text = "Tuesday 18th April"
             self.scheduleTableView.reloadData()
-            
         })
         let dayTwo = UIAlertAction(title: "Wednesday 19th April", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
@@ -47,7 +46,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             self.chosenDate = "2017-04-19"
             self.currentDateSelected.text = "Wednesday 19th April"
             self.scheduleTableView.reloadData()
-            
         })
         let dayThree = UIAlertAction(title: "Thursday 20th April", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
@@ -55,7 +53,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             self.chosenDate = "2017-04-20"
             self.currentDateSelected.text = "Thursday 20th April"
             self.scheduleTableView.reloadData()
-            
         })
         
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: {
@@ -84,10 +81,10 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         setupScheduleData()
     }
     
-    var sessions: [NSManagedObject] = []
-    var speakers: [NSManagedObject] = []
+    private var sessions: [NSManagedObject] = []
+    private var speakers: [NSManagedObject] = []
     
-    func setupScheduleData() {
+    private func setupScheduleData() {
         
         // Speaker Core Data
         // Recieve speaker data from core data
@@ -97,7 +94,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             print("Speakers core data is empty, storing speakers data...")
             api.storeSpeakers(updateData: { () -> Void in
                 self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-                
                 self.scheduleTableView.reloadData()
             })
         } else {print("Speakers core data is not empty")}
@@ -122,10 +118,10 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    var timeSections = [String: [TableItem]]()
-    var sortedSections = [String]()
+    private var timeSections = [String: [TableItem]]()
+    private var sortedSections = [String]()
     
-    func sortOutSections() {
+    private func sortOutSections() {
         
         for item in sessions {
             
@@ -205,6 +201,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let tableSection = timeSections[sortedSections[indexPath.section]]
         let tableItem = tableSection![indexPath.row]
         cell.sessionTitleLbl.text = tableItem.title
+        cell.buildingIconImgView.image = UIImage(named: "beswick")
         for speaker in speakers {
             // Find speakerId in speaker array and collect relevent information to match session
             if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
@@ -228,6 +225,7 @@ class FullWidthCell: UITableViewCell {
 
 // Struct to represent data in each table cell
 struct TableItem {
+    
     let title: String
     let date : Date
     let speakerId : Int

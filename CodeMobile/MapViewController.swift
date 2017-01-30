@@ -14,6 +14,5 @@ class MapViewController: UIViewController {
         
         tabBarController?.navigationItem.title = "Map"
         tabBarController?.navigationItem.rightBarButtonItem = nil
-
     }
 }
