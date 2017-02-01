@@ -16,6 +16,8 @@
 		BFC6946C1E30BCDC006C24C5 /* ApiHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6946B1E30BCDC006C24C5 /* ApiHandler.swift */; };
 		BFC694711E30BEFF006C24C5 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */; };
 		BFC6949C1E30EFE1006C24C5 /* CoreDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6949B1E30EFE1006C24C5 /* CoreDataHandler.swift */; };
+		BFCA1F7D1E41EC5300BA42A2 /* ImageViewRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCA1F7C1E41EC5300BA42A2 /* ImageViewRadius.swift */; };
+		BFCA1F851E41F57200BA42A2 /* CollectionViewCellRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */; };
 		BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */; };
 		BFDEFBDB1E3B7DC0008C99BA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */; };
 		E6533D55B76E37ADCB29FAEE /* Pods_CodeMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39586D35D8A21E61594C59BE /* Pods_CodeMobile.framework */; };
@@ -36,6 +38,8 @@
 		BFC6946B1E30BCDC006C24C5 /* ApiHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApiHandler.swift; path = ../ApiHandler.swift; sourceTree = "<group>"; };
 		BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		BFC6949B1E30EFE1006C24C5 /* CoreDataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHandler.swift; sourceTree = "<group>"; };
+		BFCA1F7C1E41EC5300BA42A2 /* ImageViewRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewRadius.swift; sourceTree = "<group>"; };
+		BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCellRadius.swift; sourceTree = "<group>"; };
 		BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeakersViewController.swift; sourceTree = "<group>"; };
 		BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,6 +99,7 @@
 				BFC6946D1E30BE8A006C24C5 /* Api */,
 				BFC694731E30BF23006C24C5 /* Core Data */,
 				BFC6946A1E30B509006C24C5 /* Supporting FIles */,
+				BFCA1F7E1E41EC5C00BA42A2 /* UI Controls */,
 			);
 			path = CodeMobile;
 			sourceTree = "<group>";
@@ -136,6 +141,15 @@
 				BFC6949B1E30EFE1006C24C5 /* CoreDataHandler.swift */,
 			);
 			name = "Core Data";
+			sourceTree = "<group>";
+		};
+		BFCA1F7E1E41EC5C00BA42A2 /* UI Controls */ = {
+			isa = PBXGroup;
+			children = (
+				BFCA1F7C1E41EC5300BA42A2 /* ImageViewRadius.swift */,
+				BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */,
+			);
+			name = "UI Controls";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,8 +276,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFCA1F851E41F57200BA42A2 /* CollectionViewCellRadius.swift in Sources */,
 				BFC6945E1E30B44D006C24C5 /* CodeMobile.xcdatamodeld in Sources */,
 				BFC6949C1E30EFE1006C24C5 /* CoreDataHandler.swift in Sources */,
+				BFCA1F7D1E41EC5300BA42A2 /* ImageViewRadius.swift in Sources */,
 				BFC694561E30B44D006C24C5 /* AppDelegate.swift in Sources */,
 				BFC6946C1E30BCDC006C24C5 /* ApiHandler.swift in Sources */,
 				BFC694711E30BEFF006C24C5 /* ScheduleViewController.swift in Sources */,

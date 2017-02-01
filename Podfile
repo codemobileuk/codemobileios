@@ -6,8 +6,11 @@ target 'CodeMobile' do
   use_frameworks!
 
   # Pods for CodeMobile
-
-pod 'Alamofire'
-pod 'SwiftyJSON'
+    #Alamofire for URL requests
+    pod 'Alamofire'
+    #SwiftyJSON for JSON converting
+    pod 'SwiftyJSON'
+    #Kingfisher for handling image requests
+    pod 'Kingfisher'
 
 end

@@ -19,7 +19,7 @@
         <attribute name="firstname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fullName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="organisation" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="photoURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="photoURL" optional="YES" attributeType="String" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="profile" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="speakerId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="surname" optional="YES" attributeType="String" syncable="YES"/>

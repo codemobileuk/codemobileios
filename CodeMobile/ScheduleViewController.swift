@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Kingfisher
 
 class ScheduleViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -26,6 +27,8 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         setupScheduleData()
     }
+    
+    
     
     private var chosenDate = "2017-04-18"
     
@@ -65,6 +68,8 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         optionMenu.addAction(dayThree)
         optionMenu.addAction(cancel)
         optionMenu.view.tintColor = UIColor.red
+        optionMenu.popoverPresentationController?.sourceView = self.view
+        optionMenu.popoverPresentationController?.sourceRect = self.view.bounds
         
         self.present(optionMenu, animated: true, completion: nil)
     }
@@ -216,13 +221,14 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let tableItem = tableSection![indexPath.row]
         cell.sessionTitleLbl.text = tableItem.title
         cell.buildingIconImgView.image = UIImage(named: tableItem.locationName)
-        for speaker in speakers {
+                for speaker in speakers {
             // Find speakerId in speaker array and collect relevent information to match session
             if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
         
                 let firstName = speaker.value(forKey: "firstname") as! String
                 let lastName = speaker.value(forKey: "surname") as! String
                 cell.sessionFullNameLbl.text = firstName + " " + lastName
+                               
             }
         }
         return cell
