@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import TwitterKit
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -28,12 +29,45 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         scheduleCollectionView.reloadData()
         tweetsCollectionView.reloadData()
     }
-    
+    func showTimeline() {
+        // Create an API client and data source to fetch Tweets for the timeline
+        let client = TWTRAPIClient()
+        //TODO: Replace with your collection id or a different data source
+        let dataSource = TWTRUserTimelineDataSource(screenName: "Codemobileuk", apiClient: client)
+        // Create the timeline view controller
+        let timelineViewControlller = TWTRTimelineViewController(dataSource: dataSource)
+        // Create done button to dismiss the view controller
+        let button = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissTimeline))
+        timelineViewControlller.navigationItem.leftBarButtonItem = button
+        // Create a navigation controller to hold the
+        let navigationController = UINavigationController(rootViewController: timelineViewControlller)
+        
+        showDetailViewController(navigationController, sender: self)
+         
+    }
+    func dismissTimeline() {
+        dismiss(animated: true, completion: nil)
+    }
+
+
     override func viewDidLoad() {
+        
         setupScheduleData()
 
+        loadTweets()
+        
     }
     
+    var tweetsArray = [String]()
+    func loadTweets() {
+        
+        // TODO: Base this Tweet ID on some data from elsewhere in your app
+        TWTRAPIClient().loadTweet(withID: "826705123434979329") { (tweet, error) in
+        print(tweet)
+    }
+        
+
+    }
     private let api = ApiHandler()
     private let coreData = CoreDataHandler()
     
@@ -51,6 +85,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             api.storeSpeakers(updateData: { () -> Void in
                 self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
                 self.scheduleCollectionView.reloadData()
+                self.tweetsCollectionView.reloadData()
             })
         } else {print("Speakers core data is not empty")}
         
@@ -62,13 +97,22 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             api.storeSchedule(updateData: { () -> Void in
                 self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
                 self.scheduleCollectionView.reloadData()
+                self.tweetsCollectionView.reloadData()
             })
         } else {
             print("Schedule core data is not empty")
            
         }
+        
     }
 
+    @IBAction func seeAllTweets(_ sender: Any) {
+        showTimeline()
+    }
+    @IBAction func seeFullSchedule(_ sender: Any) {
+        
+        tabBarController?.selectedIndex = 1
+    }
     //  MARK: Collection View Functions
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

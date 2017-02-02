@@ -17,7 +17,26 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1.5.1</string>
+	<string>1.6</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>97fa31712870af6845364de30a096251583d51b2</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict>
+					<key>consumerKey</key>
+					<string>wbPBKhKMz7QNzkTJuH6drRFaf</string>
+					<key>consumerSecret</key>
+					<string>vNC0GcThmoi3vSugoAJT4PGbHC2aFV3JpIRsSj5p2tej3c1tC8</string>
+				</dict>
+				<key>KitName</key>
+				<string>Twitter</string>
+			</dict>
+		</array>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

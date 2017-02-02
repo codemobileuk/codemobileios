@@ -25,9 +25,14 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let rightBtn = UIBarButtonItem(title: "Sort", style: UIBarButtonItemStyle.plain, target: self, action: #selector(sortByDate(sender:)))
         tabBarController?.navigationItem.rightBarButtonItem = rightBtn
         
-        setupScheduleData()
+      
     }
     
+    override func viewDidLoad() {
+     
+      
+        setupScheduleData()
+    }
     
     
     private var chosenDate = "2017-04-18"
@@ -68,6 +73,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         optionMenu.addAction(dayThree)
         optionMenu.addAction(cancel)
         optionMenu.view.tintColor = UIColor.red
+        // Handles iPad crash
         optionMenu.popoverPresentationController?.sourceView = self.view
         optionMenu.popoverPresentationController?.sourceRect = self.view.bounds
         
@@ -95,18 +101,18 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         // Recieve speaker data from core data
         speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
         // Check if data contains data, if not retrieve data from the API then store the data into speaker array.
-        if speakers.isEmpty{
+        /*if speakers.isEmpty{
             print("Speakers core data is empty, storing speakers data...")
             api.storeSpeakers(updateData: { () -> Void in
                 self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
                 self.scheduleTableView.reloadData()
             })
-        } else {print("Speakers core data is not empty")}
+        } else {print("Speakers core data is not empty")}*/
         
         // Sessions Core Data - Repeated for session information
         sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
         
-        if sessions.isEmpty{
+        /*if sessions.isEmpty{
             print("Schedule core data is empty, storing schedule data...")
             api.storeSchedule(updateData: { () -> Void in
                 self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
@@ -119,7 +125,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                 // Split data into correct sections for table view
                 self.sortOutSections()
             }
-        }
+         }*/
+        sortOutSections()
+       
     }
     
     private var timeSections = [String: [TableItem]]()
