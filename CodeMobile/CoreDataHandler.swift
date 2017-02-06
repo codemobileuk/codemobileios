@@ -25,7 +25,11 @@ class CoreDataHandler {
         if entityNamed == Entities.SCHEDULE{
             let sortorder = NSSortDescriptor(key: "sessionStartDateTime", ascending: true)
             fetchRequest.sortDescriptors=[sortorder]
-           
+        }
+        if entityNamed == Entities.SPEAKERS{
+            let sortorder = NSSortDescriptor(key: "firstname", ascending: true)
+            fetchRequest.sortDescriptors=[sortorder]
+            
         }
     
         do {
@@ -43,6 +47,8 @@ class CoreDataHandler {
         } catch let error as NSError {
             print("Failed: Could not fetch. \(error), \(error.userInfo)")
         }
+        
+        
         
         return sessions
         

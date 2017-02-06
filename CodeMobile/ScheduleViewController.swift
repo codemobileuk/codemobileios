@@ -15,29 +15,22 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var scheduleTableView: UITableView!
     @IBOutlet weak var currentDateSelected: UILabel!
     
-    private let api = ApiHandler()
     private let coreData = CoreDataHandler()
     
     override func viewWillAppear(_ animated: Bool) {
         
         // Navigation bar setup
         tabBarController?.navigationItem.title = "Schedule"
-        let rightBtn = UIBarButtonItem(title: "Sort", style: UIBarButtonItemStyle.plain, target: self, action: #selector(sortByDate(sender:)))
-        tabBarController?.navigationItem.rightBarButtonItem = rightBtn
-        
-      
     }
     
     override func viewDidLoad() {
-     
-      
-        setupScheduleData()
+        
+        recieveCoreData()
     }
-    
     
     private var chosenDate = "2017-04-18"
     
-    func sortByDate(sender: UIBarButtonItem) {
+    @IBAction func sortDate(_ sender: Any) {
         
         let optionMenu = UIAlertController(title: nil, message: "Sort by date", preferredStyle: .actionSheet)
         
@@ -78,7 +71,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         optionMenu.popoverPresentationController?.sourceRect = self.view.bounds
         
         self.present(optionMenu, animated: true, completion: nil)
+        
     }
+    
     
     // Test function - This function will be deleted/ Used to delete all data instead of having to re-run the app
     @IBAction func deleteTest(_ sender: Any) {
@@ -95,45 +90,18 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
     
-    private func setupScheduleData() {
+    private func recieveCoreData() {
         
-        // Speaker Core Data
-        // Recieve speaker data from core data
         speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-        // Check if data contains data, if not retrieve data from the API then store the data into speaker array.
-        /*if speakers.isEmpty{
-            print("Speakers core data is empty, storing speakers data...")
-            api.storeSpeakers(updateData: { () -> Void in
-                self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-                self.scheduleTableView.reloadData()
-            })
-        } else {print("Speakers core data is not empty")}*/
-        
-        // Sessions Core Data - Repeated for session information
         sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
-        
-        /*if sessions.isEmpty{
-            print("Schedule core data is empty, storing schedule data...")
-            api.storeSchedule(updateData: { () -> Void in
-                self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
-                self.sortOutSections()
-                self.scheduleTableView.reloadData()
-            })
-        } else {
-            print("Schedule core data is not empty")
-            if sortedSections.isEmpty{
-                // Split data into correct sections for table view
-                self.sortOutSections()
-            }
-         }*/
         sortOutSections()
-       
     }
     
     private var timeSections = [String: [TableItem]]()
     private var sortedSections = [String]()
     private var endDateSections = [String]()
     
+    // Function responsible for sorting out schedule data into seperate sections
     private func sortOutSections() {
         
         for item in sessions {
@@ -146,11 +114,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             
             date = (item.value(forKey: "SessionStartDateTime") as! String?)!
             endDate = (item.value(forKey: "SessionEndDateTime") as! String?)!
-
+            
             // Format date to remove useless data in string
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-            let dated = dateFormatter.date(from: date)
+            let dated = Date().formatDate(dateToFormat: (item.value(forKey: "SessionStartDateTime") as! String?)!)
             
             title = (item.value(forKey: "SessionTitle") as! String?)!
             speaker = (item.value(forKey: "speakerId") as! Int )
@@ -161,16 +127,16 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             
             // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
             if self.timeSections.index(forKey: date) == nil {
-                self.timeSections[date] = [TableItem(title: title, date: dated!, speakerId: speaker, day: day!, locationName: building)]
+                self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building)]
             } else {
-                self.timeSections[date]!.append(TableItem(title: title, date: dated!, speakerId: speaker, day: day!, locationName: building))
+                self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building))
             }
             
             if self.endDateSections.contains(endDate) == false {
                 endDateSections.append(endDate)
             }
             
-           
+            
         }
         for item in timeSections { sortedSections.append(item.key) }
         // Sort array in time order
@@ -178,7 +144,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         // Update table
         scheduleTableView.reloadData()
     }
-
+    
     // MARK: Table View Functions
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -229,17 +195,39 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let tableItem = tableSection![indexPath.row]
         cell.sessionTitleLbl.text = tableItem.title
         cell.buildingIconImgView.image = UIImage(named: tableItem.locationName)
-                for speaker in speakers {
+        for speaker in speakers {
             // Find speakerId in speaker array and collect relevent information to match session
             if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
-        
+                
                 let firstName = speaker.value(forKey: "firstname") as! String
                 let lastName = speaker.value(forKey: "surname") as! String
                 cell.sessionFullNameLbl.text = firstName + " " + lastName
-                               
+                
             }
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let tableSection = timeSections[sortedSections[indexPath.section]]
+        let tableItem = tableSection![indexPath.row]
+        let vc =  self.storyboard?.instantiateViewController(withIdentifier: "Detail") as! DetailViewController
+        
+        for speaker in speakers {
+            // Find speakerId in speaker array and collect relevent information to match session
+            if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
+                
+                let firstName = speaker.value(forKey: "firstname") as! String
+                let lastName = speaker.value(forKey: "surname") as! String
+                vc.fullname = firstName + " " + lastName
+                
+            }
+        }
+        
+        
+        self.navigationController?.show(vc, sender: self)
+        
     }
 }
 

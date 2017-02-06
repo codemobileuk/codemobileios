@@ -12,9 +12,9 @@ import TwitterKit
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    //  let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-    //  cell.buildingIconImgView.kf.setImage(with: url)
-
+    private let api = ApiHandler()
+    private let coreData = CoreDataHandler()
+    
     @IBOutlet weak var tweetsCollectionView: UICollectionView!
     @IBOutlet weak var scheduleCollectionView: UICollectionView!
     @IBOutlet weak var scheduleView: UIView!
@@ -24,12 +24,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         tabBarController?.navigationItem.title = "Home"
         tabBarController?.navigationItem.rightBarButtonItem = nil
-        
-     
         scheduleCollectionView.reloadData()
         tweetsCollectionView.reloadData()
     }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        if UIDevice.current.orientation.isLandscape {
+            print("Landscape")
+        }
+    }
+    
+    override func viewDidLoad() {
+        
+        // Set up coredata once
+        setupAndRecieveCoreData()
+    }
+    
     func showTimeline() {
+        
         // Create an API client and data source to fetch Tweets for the timeline
         let client = TWTRAPIClient()
         //TODO: Replace with your collection id or a different data source
@@ -43,38 +55,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let navigationController = UINavigationController(rootViewController: timelineViewControlller)
         
         showDetailViewController(navigationController, sender: self)
-         
-    }
-    func dismissTimeline() {
-        dismiss(animated: true, completion: nil)
-    }
-
-
-    override func viewDidLoad() {
-        
-        setupScheduleData()
-
-        loadTweets()
-        
     }
     
-    var tweetsArray = [String]()
-    func loadTweets() {
+    func dismissTimeline() {
         
-        // TODO: Base this Tweet ID on some data from elsewhere in your app
-        TWTRAPIClient().loadTweet(withID: "826705123434979329") { (tweet, error) in
-        print(tweet)
+        dismiss(animated: true, completion: nil)
     }
-        
-
-    }
-    private let api = ApiHandler()
-    private let coreData = CoreDataHandler()
+    
+    /*func loadTweets() {
+     
+     TWTRAPIClient().loadTweet(withID: "826705123434979329") { (tweet, error) in
+     print(tweet)
+     }
+     }*/
     
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
     
-    private func setupScheduleData() {
+    private func setupAndRecieveCoreData() {
         
         // Speaker Core Data
         // Recieve speaker data from core data
@@ -99,20 +97,19 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.scheduleCollectionView.reloadData()
                 self.tweetsCollectionView.reloadData()
             })
-        } else {
-            print("Schedule core data is not empty")
-           
-        }
+        } else {print("Schedule core data is not empty")}
         
     }
-
+    
     @IBAction func seeAllTweets(_ sender: Any) {
+        
         showTimeline()
     }
     @IBAction func seeFullSchedule(_ sender: Any) {
         
         tabBarController?.selectedIndex = 1
     }
+    
     //  MARK: Collection View Functions
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -122,29 +119,47 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-       // let cell = scheduleCollectionView.dequeueReusableCell(withReuseIdentifier: "CurrentlyOn", for: indexPath)
-        
+        // Schedule Collection View
         if collectionView == scheduleCollectionView {
-            let cell = scheduleCollectionView.dequeueReusableCell(withReuseIdentifier: "CurrentlyOn", for: indexPath) as! SessionCollectionCell
-            
             let item = sessions[indexPath.row]
+            let cell = scheduleCollectionView.dequeueReusableCell(withReuseIdentifier: "CurrentlyOn", for: indexPath) as! SessionCollectionCell
             cell.sessionTitleLbl.text = item.value(forKey: "SessionTitle") as! String?
             cell.speakerImageView.setRadius(radius: 20.0)
-            for speaker in speakers {
             
+            let startTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionStartDateTime")! as! String)
+            let endTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionEndDateTime")! as! String)
+            print(item.value(forKey: "SessionTitle")!)
+            print("Start Time  : \(startTime)")
+            print("End Time    : \(endTime)")
+            print("Current Time: \(Date())") // Current time
+            if Date().isBetweeen(date: startTime, andDate: endTime) {
+                print("Session is on")
+                cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
+                cell.liveInWhichBuildingLbl.textColor = UIColor.red
+                
+            } else {
+                print ("Session is off")
+                cell.liveInWhichBuildingLbl.textColor = UIColor.blue
+                cell.liveInWhichBuildingLbl.text = Date().wordedDate(Date: startTime)
+            }
+            print("-----------------------------")
+            
+            for speaker in speakers {
+                
                 if speaker.value(forKey: "speakerId") as! Int == item.value(forKey: "speakerId") as! Int{
                     let firstName = speaker.value(forKey: "firstname") as! String
                     let lastName = speaker.value(forKey: "surname") as! String
                     cell.speakerNameLbl.text = firstName + " " + lastName
                     let url = URL(string: speaker.value(forKey: "photoURL") as! String)
                     cell.speakerImageView.kf.setImage(with: url)
-
+                    
                 }
                 
-            
+                
             }
             return cell
         }
+            // Tweets Collection View
         else  {
             
             let cell = tweetsCollectionView.dequeueReusableCell(withReuseIdentifier: "TweetCell", for: indexPath) as! TweetCollectionCell
@@ -152,7 +167,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             return cell
         }
         
-       
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
