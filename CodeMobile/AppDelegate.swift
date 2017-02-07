@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationController.setBackgroundImage(UIImage(named: "NavigationBarBackground"), for: .default)
         navigationController.shadowImage = UIImage()
         navigationController.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        navigationController.tintColor = UIColor.white
         
         tabController.isTranslucent = false
         tabController.barTintColor = UIColor(red: 51.0/255, green: 51.0/255, blue: 51.0/255, alpha: 1.0)

@@ -216,26 +216,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         self.performSegue(withIdentifier: "showDetail", sender: self)
-        
-        
-        /*let tableSection = timeSections[sortedSections[indexPath.section]]
-        let tableItem = tableSection![indexPath.row]
-        let vc =  self.storyboard?.instantiateViewController(withIdentifier: "Detail") as! DetailViewController
-        
-        for speaker in speakers {
-            // Find speakerId in speaker array and collect relevent information to match session
-            if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
-                
-                let firstName = speaker.value(forKey: "firstname") as! String
-                let lastName = speaker.value(forKey: "surname") as! String
-                vc.fullname = firstName + " " + lastName
-                
-            }
-        }
-        
-        
-        showDetailViewController(vc, sender: self)*/
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -261,7 +241,10 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                     let firstName = speaker.value(forKey: "firstname") as! String
                     let lastName = speaker.value(forKey: "surname") as! String
                     vc.fullname = firstName + " " + lastName
+                    let url = URL(string: speaker.value(forKey: "photoURL") as! String)
+                    vc.speakerImageURL = url
                     
+                    vc.company = speaker.value(forKey: "organisation") as! String
                 }
             }
 

@@ -146,6 +146,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             
             for speaker in speakers {
                 
+
                 if speaker.value(forKey: "speakerId") as! Int == item.value(forKey: "speakerId") as! Int{
                     let firstName = speaker.value(forKey: "firstname") as! String
                     let lastName = speaker.value(forKey: "surname") as! String

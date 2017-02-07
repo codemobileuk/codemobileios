@@ -15,12 +15,16 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
     @IBOutlet weak var companyLbl: UILabel!
     
     var fullname = ""
+    var speakerImageURL: URL!
+    var company = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         fullnameLbl.text = fullname
-        
+        speakerImageView.kf.setImage(with: speakerImageURL)
+        companyLbl.text = company
+        speakerImageView.setRadius(radius: speakerImageView.frame.size.height / 2)
         
  
     }

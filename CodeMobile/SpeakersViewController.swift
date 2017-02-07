@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SpeakersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate  {
+class SpeakersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate  {
 
     private let coreData = CoreDataHandler()
     @IBOutlet weak var speakersTableView: UITableView!
@@ -23,6 +23,10 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         
         recieveCoreData()
+        self.splitViewController?.delegate = self
+        self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
+        self.extendedLayoutIncludesOpaqueBars = true
+
     }
     
     private var sessions: [NSManagedObject] = []
@@ -64,6 +68,39 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
 
         return cell
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        self.performSegue(withIdentifier: "showSpeakerDetail", sender: self)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "showSpeakerDetail" {
+            
+            let index = self.speakersTableView.indexPathForSelectedRow! as NSIndexPath
+            
+            let nav = segue.destination as! UINavigationController
+            
+            let vc = nav.viewControllers[0] as! DetailViewController
+            
+            let speaker = speakers[index.row]
+            
+            vc.extendedLayoutIncludesOpaqueBars = true
+            let firstName = speaker.value(forKey: "firstname") as! String
+            let lastName = speaker.value(forKey: "surname") as! String
+            vc.fullname = firstName + " " + lastName
+            let url = URL(string: speaker.value(forKey: "photoURL") as! String)
+            vc.speakerImageURL = url
+            vc.company = speaker.value(forKey: "organisation") as! String
+
+            self.speakersTableView.deselectRow(at: index as IndexPath, animated: true)
+        }
+    }
+    
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        return true
+    }
+
+
     
 }
 // Class to represent UI of each speaker cell
