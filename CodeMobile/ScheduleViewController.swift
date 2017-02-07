@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import Kingfisher
 
-class ScheduleViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ScheduleViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate {
     
     @IBOutlet weak var scheduleTableView: UITableView!
     @IBOutlet weak var currentDateSelected: UILabel!
@@ -21,11 +21,16 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         // Navigation bar setup
         tabBarController?.navigationItem.title = "Schedule"
+        scheduleTableView.reloadData()
     }
     
     override func viewDidLoad() {
         
         recieveCoreData()
+        self.splitViewController?.delegate = self
+        self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
+     
+        self.extendedLayoutIncludesOpaqueBars = true
     }
     
     private var chosenDate = "2017-04-18"
@@ -210,7 +215,10 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let tableSection = timeSections[sortedSections[indexPath.section]]
+        self.performSegue(withIdentifier: "showDetail", sender: self)
+        
+        
+        /*let tableSection = timeSections[sortedSections[indexPath.section]]
         let tableItem = tableSection![indexPath.row]
         let vc =  self.storyboard?.instantiateViewController(withIdentifier: "Detail") as! DetailViewController
         
@@ -226,8 +234,44 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         
         
-        self.navigationController?.show(vc, sender: self)
+        showDetailViewController(vc, sender: self)*/
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "showDetail" {
+            
+            let index = self.scheduleTableView.indexPathForSelectedRow! as NSIndexPath
+            
+            let nav = segue.destination as! UINavigationController
+            
+            let vc = nav.viewControllers[0] as! DetailViewController
+            
+            
+            
+            let tableSection = timeSections[sortedSections[index.section]]
+            let tableItem = tableSection![index.row]
+           
+            vc.extendedLayoutIncludesOpaqueBars = true
+            for speaker in speakers {
+                // Find speakerId in speaker array and collect relevent information to match session
+                if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
+                    
+                    let firstName = speaker.value(forKey: "firstname") as! String
+                    let lastName = speaker.value(forKey: "surname") as! String
+                    vc.fullname = firstName + " " + lastName
+                    
+                }
+            }
+
+            
+            self.scheduleTableView.deselectRow(at: index as IndexPath, animated: true)
+        }
+    }
+    
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        return true
     }
 }
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, UISplitViewControllerDelegate {
 
     @IBOutlet weak var speakerImageView: UIImageView!
     @IBOutlet weak var fullnameLbl: UILabel!
@@ -20,7 +20,11 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         fullnameLbl.text = fullname
+        
+        
+ 
     }
-
+    
+    
   
 }
