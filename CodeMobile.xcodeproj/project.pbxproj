@@ -22,6 +22,7 @@
 		BFCA1F851E41F57200BA42A2 /* CollectionViewCellRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */; };
 		BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */; };
 		BFDEFBDB1E3B7DC0008C99BA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */; };
+		BFEA19DA1E4B700300869259 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA19D91E4B700300869259 /* FilterViewController.swift */; };
 		E6533D55B76E37ADCB29FAEE /* Pods_CodeMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39586D35D8A21E61594C59BE /* Pods_CodeMobile.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,8 @@
 		BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCellRadius.swift; sourceTree = "<group>"; };
 		BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeakersViewController.swift; sourceTree = "<group>"; };
 		BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		BFEA19D81E4B65B400869259 /* CodeMobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CodeMobile-Bridging-Header.h"; sourceTree = "<group>"; };
+		BFEA19D91E4B700300869259 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,9 +113,9 @@
 				BFC694721E30BF04006C24C5 /* View Controllers */,
 				BFC6946D1E30BE8A006C24C5 /* Api */,
 				BFC694731E30BF23006C24C5 /* Core Data */,
-				BFC6946A1E30B509006C24C5 /* Supporting FIles */,
 				BFCA1F7E1E41EC5C00BA42A2 /* UI Controls */,
 				BF6269DF1E4888E900A67A84 /* Extensions */,
+				BFC6946A1E30B509006C24C5 /* Supporting FIles */,
 			);
 			path = CodeMobile;
 			sourceTree = "<group>";
@@ -120,6 +123,7 @@
 		BFC6946A1E30B509006C24C5 /* Supporting FIles */ = {
 			isa = PBXGroup;
 			children = (
+				BFEA19D81E4B65B400869259 /* CodeMobile-Bridging-Header.h */,
 				BFC694551E30B44D006C24C5 /* AppDelegate.swift */,
 				BFC6945F1E30B44D006C24C5 /* Assets.xcassets */,
 				BFC694611E30B44D006C24C5 /* LaunchScreen.storyboard */,
@@ -144,6 +148,7 @@
 				BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */,
 				BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */,
 				BF1F21141E44A0B90072E991 /* DetailViewController.swift */,
+				BFEA19D91E4B700300869259 /* FilterViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -203,6 +208,7 @@
 					BFC694511E30B44D006C24C5 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 558X48344N;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -311,6 +317,7 @@
 				BFCA1F7D1E41EC5300BA42A2 /* ImageViewRadius.swift in Sources */,
 				BFC694561E30B44D006C24C5 /* AppDelegate.swift in Sources */,
 				BFC6946C1E30BCDC006C24C5 /* ApiHandler.swift in Sources */,
+				BFEA19DA1E4B700300869259 /* FilterViewController.swift in Sources */,
 				BFC694711E30BEFF006C24C5 /* ScheduleViewController.swift in Sources */,
 				BF6269DE1E4888E500A67A84 /* NSDateExtensions.swift in Sources */,
 				BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */,
@@ -381,7 +388,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -426,7 +433,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -441,12 +448,15 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 558X48344N;
 				INFOPLIST_FILE = CodeMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Footsqueek.CodeMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CodeMobile/CodeMobile-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -458,11 +468,14 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 558X48344N;
 				INFOPLIST_FILE = CodeMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Footsqueek.CodeMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CodeMobile/CodeMobile-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

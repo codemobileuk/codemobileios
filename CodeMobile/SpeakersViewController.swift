@@ -12,21 +12,17 @@ import CoreData
 class SpeakersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate  {
 
     private let coreData = CoreDataHandler()
+    
     @IBOutlet weak var speakersTableView: UITableView!
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        tabBarController?.navigationItem.title = "Speakers"
-        tabBarController?.navigationItem.rightBarButtonItem = nil
-    }
+    // MARK: View Controller Life Cycle
     
     override func viewDidLoad() {
         
         recieveCoreData()
+        // Split view setup
         self.splitViewController?.delegate = self
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
-        self.extendedLayoutIncludesOpaqueBars = true
-
     }
     
     private var sessions: [NSManagedObject] = []
@@ -95,6 +91,8 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
             self.speakersTableView.deselectRow(at: index as IndexPath, animated: true)
         }
     }
+    
+     // MARK: Split View
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return true

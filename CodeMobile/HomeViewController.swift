@@ -12,18 +12,18 @@ import TwitterKit
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    private let api = ApiHandler()
-    private let coreData = CoreDataHandler()
-    
     @IBOutlet weak var tweetsCollectionView: UICollectionView!
     @IBOutlet weak var scheduleCollectionView: UICollectionView!
     @IBOutlet weak var scheduleView: UIView!
     @IBOutlet weak var bannerBackground: UIView!
     
+    private let api = ApiHandler()
+    private let coreData = CoreDataHandler()
+    
+    //  MARK: View Controller Life Cycle 
+    
     override func viewWillAppear(_ animated: Bool) {
         
-        tabBarController?.navigationItem.title = "Home"
-        tabBarController?.navigationItem.rightBarButtonItem = nil
         scheduleCollectionView.reloadData()
         tweetsCollectionView.reloadData()
     }

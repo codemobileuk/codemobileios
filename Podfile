@@ -16,5 +16,7 @@ target 'CodeMobile' do
     pod 'Fabric'
     pod 'TwitterKit'
     pod 'TwitterCore'
+    #Pod for side menu
+    pod 'SWRevealViewController'
 
 end

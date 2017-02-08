@@ -9,28 +9,27 @@
 import UIKit
 import CoreData
 import Kingfisher
+import SWRevealViewController
 
 class ScheduleViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate {
     
     @IBOutlet weak var scheduleTableView: UITableView!
     @IBOutlet weak var currentDateSelected: UILabel!
+    @IBOutlet weak var openBtn: UIBarButtonItem!
     
     private let coreData = CoreDataHandler()
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        // Navigation bar setup
-        tabBarController?.navigationItem.title = "Schedule"
-        scheduleTableView.reloadData()
-    }
+    // MARK: View Controller Life Cycle
     
     override func viewDidLoad() {
         
         recieveCoreData()
+        // Split view setup
         self.splitViewController?.delegate = self
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
+        openBtn.target = self.revealViewController()
+        openBtn.action = #selector((SWRevealViewController.revealToggle) as (SWRevealViewController) -> (Void) -> Void)
      
-        self.extendedLayoutIncludesOpaqueBars = true
     }
     
     private var chosenDate = "2017-04-18"
@@ -252,6 +251,8 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             self.scheduleTableView.deselectRow(at: index as IndexPath, animated: true)
         }
     }
+    
+    // MARK: Split View
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return true
