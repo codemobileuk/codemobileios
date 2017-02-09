@@ -24,7 +24,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="LMh-kp-u7F">
-                                <rect key="frame" x="0.0" y="120" width="315" height="547"/>
+                                <rect key="frame" x="0.0" y="125" width="315" height="542"/>
                                 <color key="backgroundColor" red="0.199973762" green="0.2000150383" blue="0.19997116919999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="separatorColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <prototypes>
@@ -57,7 +57,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TsT-7Q-rlK">
-                                <rect key="frame" x="0.0" y="20" width="315" height="100"/>
+                                <rect key="frame" x="0.0" y="25" width="315" height="100"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="Dlx-Al-tRv">
                                         <rect key="frame" x="50.5" y="15" width="215" height="70"/>
@@ -73,7 +73,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.199973762" green="0.2000150383" blue="0.19997116919999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="TsT-7Q-rlK" firstAttribute="top" secondItem="bMH-la-Iea" secondAttribute="bottom" id="7fr-4t-n6q"/>
+                            <constraint firstItem="TsT-7Q-rlK" firstAttribute="top" secondItem="bMH-la-Iea" secondAttribute="bottom" constant="5" id="7fr-4t-n6q"/>
                             <constraint firstItem="TsT-7Q-rlK" firstAttribute="leading" secondItem="77b-Lz-urs" secondAttribute="leading" id="9xm-h5-U8P"/>
                             <constraint firstItem="LMh-kp-u7F" firstAttribute="top" secondItem="TsT-7Q-rlK" secondAttribute="bottom" id="VuB-b0-BB6"/>
                             <constraint firstItem="LMh-kp-u7F" firstAttribute="top" secondItem="TsT-7Q-rlK" secondAttribute="bottom" id="ahg-d6-IGs"/>

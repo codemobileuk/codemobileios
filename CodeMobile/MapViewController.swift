@@ -10,9 +10,9 @@ import UIKit
 
 class MapViewController: UIViewController {
 
+    // MARK: View Controller Life Cycle
+    
     override func viewWillAppear(_ animated: Bool) {
         
-        tabBarController?.navigationItem.title = "Map"
-        tabBarController?.navigationItem.rightBarButtonItem = nil
     }
 }
