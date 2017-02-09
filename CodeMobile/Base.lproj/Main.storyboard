@@ -91,10 +91,10 @@
             </objects>
             <point key="canvasLocation" x="2286" y="2131"/>
         </scene>
-        <!--Reveal View Controller-->
+        <!--Schedule-->
         <scene sceneID="vIt-RU-a4p">
             <objects>
-                <viewController id="myU-L2-W7g" customClass="SWRevealViewController" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="myU-L2-W7g" customClass="SWRevealViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="T5w-qW-Kcq"/>
                         <viewControllerLayoutGuide type="bottom" id="8N6-G3-Q2D"/>
@@ -104,14 +104,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Schedule" image="Schedule" id="zfV-us-ZJh"/>
                     <connections>
-                        <segue destination="cYt-MU-P5S" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegueSetController" id="Sqg-p9-fj6"/>
                         <segue destination="Q4E-Qh-W27" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegueSetController" id="JYH-Zi-eFe"/>
+                        <segue destination="l73-Nt-5K7" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegueSetController" id="EQ2-5g-sO1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DjY-bu-lfb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3038" y="686"/>
+            <point key="canvasLocation" x="3038" y="-122"/>
         </scene>
         <!--Schedule-->
         <scene sceneID="tne-QT-ifu">
@@ -155,7 +156,7 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Molloy" translatesAutoresizingMaskIntoConstraints="NO" id="wEp-k4-692">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="molloywhite" translatesAutoresizingMaskIntoConstraints="NO" id="wEp-k4-692">
                                         <rect key="frame" x="8" y="34" width="38" height="38"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="38" id="Hkr-nG-fLN"/>
@@ -171,7 +172,7 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Beswick" translatesAutoresizingMaskIntoConstraints="NO" id="P2D-pD-oHj">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="beswhite" translatesAutoresizingMaskIntoConstraints="NO" id="P2D-pD-oHj">
                                         <rect key="frame" x="152" y="34" width="38" height="38"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="38" id="5oM-BE-twQ"/>
@@ -214,7 +215,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="j0S-Fq-MJ9" id="Wvs-Jg-Vu9">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ToK-fB-Qts">
@@ -276,7 +277,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Schedule" id="se3-Id-BWV">
-                        <barButtonItem key="leftBarButtonItem" title="Filter" id="F5c-eK-PMi"/>
+                        <barButtonItem key="leftBarButtonItem" image="menu" id="F5c-eK-PMi"/>
                         <barButtonItem key="rightBarButtonItem" image="Schedule" id="dIJ-IV-Tvm">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
@@ -377,12 +378,12 @@
                     <tabBarItem key="tabBarItem" title="Schedule" image="Schedule" id="3nx-iQ-EJe"/>
                     <connections>
                         <segue destination="k9f-lY-0Qw" kind="relationship" relationship="detailViewController" id="S0L-hJ-zqL"/>
-                        <segue destination="myU-L2-W7g" kind="relationship" relationship="masterViewController" id="lYv-UR-U6X"/>
+                        <segue destination="cYt-MU-P5S" kind="relationship" relationship="masterViewController" id="QPd-ff-wrE"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EDv-2j-GVA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3038" y="-121"/>
+            <point key="canvasLocation" x="3038" y="686"/>
         </scene>
         <!--Map-->
         <scene sceneID="zXJ-eS-xaj">
@@ -447,7 +448,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z48-9y-5Z4" id="qon-fB-kWD">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="99"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="miA-1c-Ufy">
@@ -799,9 +800,9 @@
                     </tabBar>
                     <connections>
                         <segue destination="NEk-Gx-kwg" kind="relationship" relationship="viewControllers" id="BW5-zC-D3X"/>
-                        <segue destination="l73-Nt-5K7" kind="relationship" relationship="viewControllers" id="G4s-V0-rGl"/>
-                        <segue destination="gRu-OW-pa4" kind="relationship" relationship="viewControllers" id="MBO-Uu-DOj"/>
-                        <segue destination="5mc-Os-YJV" kind="relationship" relationship="viewControllers" id="hGN-cR-4wU"/>
+                        <segue destination="myU-L2-W7g" kind="relationship" relationship="viewControllers" id="zAa-M5-4lT"/>
+                        <segue destination="gRu-OW-pa4" kind="relationship" relationship="viewControllers" id="QEe-Ls-TPc"/>
+                        <segue destination="5mc-Os-YJV" kind="relationship" relationship="viewControllers" id="wYp-eG-Rp9"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hMx-pc-rSd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -918,14 +919,15 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Beswick" width="29" height="29"/>
         <image name="Home" width="29" height="29"/>
         <image name="Logo" width="215" height="70"/>
         <image name="Map" width="16" height="23"/>
-        <image name="Molloy" width="29" height="29"/>
         <image name="Redspeaker" width="23" height="23"/>
         <image name="Schedule" width="22" height="23"/>
         <image name="Speaker" width="23" height="23"/>
+        <image name="beswhite" width="29" height="29"/>
+        <image name="menu" width="21" height="21"/>
+        <image name="molloywhite" width="29" height="29"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="6T6-L4-JRK"/>

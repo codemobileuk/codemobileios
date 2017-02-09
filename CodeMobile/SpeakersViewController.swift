@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class SpeakersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate  {
-
+    
     private let coreData = CoreDataHandler()
     
     @IBOutlet weak var speakersTableView: UITableView!
@@ -20,20 +20,10 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         
         recieveCoreData()
-        // Split view setup
-        self.splitViewController?.delegate = self
-        self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
+        setupSplitView()
     }
     
-    private var sessions: [NSManagedObject] = []
-    private var speakers: [NSManagedObject] = []
-    
-    func recieveCoreData() {
-        
-        speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-        sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
-    }
-     // MARK: Table View Functions
+    // MARK: Table View Functions
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -57,17 +47,20 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
             // Find speakerId in speaker array and collect relevent information to match session
             if session.value(forKey: "speakerId") as! Int == speaker.value(forKey: "speakerId") as! Int{
                 
-                    cell.sessionTitlesLbl.text = session.value(forKey: "SessionTitle") as! String?
+                cell.sessionTitlesLbl.text = session.value(forKey: "SessionTitle") as! String?
             }
         }
-
-
+        
+        
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         self.performSegue(withIdentifier: "showSpeakerDetail", sender: self)
     }
+    
+    // MARK: Segue
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "showSpeakerDetail" {
@@ -87,18 +80,33 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
             let url = URL(string: speaker.value(forKey: "photoURL") as! String)
             vc.speakerImageURL = url
             vc.company = speaker.value(forKey: "organisation") as! String
-
+            
             self.speakersTableView.deselectRow(at: index as IndexPath, animated: true)
         }
     }
     
-     // MARK: Split View
+    // MARK: Split View
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return true
     }
-
-
+    
+    func setupSplitView(){
+        
+        self.splitViewController?.delegate = self
+        self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
+    }
+    
+    // MARK: Other
+    
+    private var sessions: [NSManagedObject] = []
+    private var speakers: [NSManagedObject] = []
+    
+    func recieveCoreData() {
+        
+        speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
+        sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+    }
     
 }
 // Class to represent UI of each speaker cell

@@ -24,12 +24,134 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         
         recieveCoreData()
-        // Split view setup
+        setupSplitView()
+        setupSideMenu()
+    }
+    
+    // MARK: Table View Functions
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        
+        if sortedSections.isEmpty{
+            return 0
+        }
+        return timeSections.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return 80
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if sortedSections.isEmpty{ return 0 }
+        var day = ""
+        for item in timeSections[sortedSections[section]]! { day = item.day }
+        // If date of section is not current date selected for sorting, return 0 number of rows
+        if day != chosenDate { return 0 }
+        
+        return timeSections[sortedSections[section]]!.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        if sortedSections.isEmpty{ return "" }
+        var day = ""
+        for item in timeSections[sortedSections[section]]! { day = item.day }
+        // If date of section is not current date selected for sorting, return nil so no header appears
+        if day != chosenDate { return nil }
+        // Seperate only the time from the day/time string & remove the seconds from the time
+        let returnvalue = sortedSections[section].components(separatedBy: "T").last
+        let endIndex = returnvalue?.index((returnvalue?.endIndex)!, offsetBy:  -3)
+        
+        let returnvalue2 = endDateSections[section].components(separatedBy: "T").last
+        
+        
+        return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))!
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = self.scheduleTableView.dequeueReusableCell(withIdentifier: "FullCell", for: indexPath) as! FullWidthCell
+        let tableSection = timeSections[sortedSections[indexPath.section]]
+        let tableItem = tableSection![indexPath.row]
+        cell.sessionTitleLbl.text = tableItem.title
+        cell.buildingIconImgView.image = UIImage(named: tableItem.locationName)
+        for speaker in speakers {
+            // Find speakerId in speaker array and collect relevent information to match session
+            if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
+                
+                let firstName = speaker.value(forKey: "firstname") as! String
+                let lastName = speaker.value(forKey: "surname") as! String
+                cell.sessionFullNameLbl.text = firstName + " " + lastName
+                
+            }
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        self.performSegue(withIdentifier: "showDetail", sender: self)
+    }
+    
+    // MARK: Segue
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "showDetail" {
+            
+            let index = self.scheduleTableView.indexPathForSelectedRow! as NSIndexPath
+            
+            let nav = segue.destination as! UINavigationController
+            
+            let vc = nav.viewControllers[0] as! DetailViewController
+            
+            
+            
+            let tableSection = timeSections[sortedSections[index.section]]
+            let tableItem = tableSection![index.row]
+            
+            vc.extendedLayoutIncludesOpaqueBars = true
+            for speaker in speakers {
+                // Find speakerId in speaker array and collect relevent information to match session
+                if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
+                    
+                    let firstName = speaker.value(forKey: "firstname") as! String
+                    let lastName = speaker.value(forKey: "surname") as! String
+                    vc.fullname = firstName + " " + lastName
+                    let url = URL(string: speaker.value(forKey: "photoURL") as! String)
+                    vc.speakerImageURL = url
+                    
+                    vc.company = speaker.value(forKey: "organisation") as! String
+                }
+            }
+            
+            
+            self.scheduleTableView.deselectRow(at: index as IndexPath, animated: true)
+        }
+    }
+    
+    // MARK: Split View
+    
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        return true
+    }
+    
+    func setupSplitView(){
+        
         self.splitViewController?.delegate = self
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
+    }
+    
+    // MARK: Other
+    
+    func setupSideMenu() {
+        
         openBtn.target = self.revealViewController()
         openBtn.action = #selector((SWRevealViewController.revealToggle) as (SWRevealViewController) -> (Void) -> Void)
-     
+        self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
     }
     
     private var chosenDate = "2017-04-18"
@@ -149,114 +271,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         scheduleTableView.reloadData()
     }
     
-    // MARK: Table View Functions
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        
-        if sortedSections.isEmpty{
-            return 0
-        }
-        return timeSections.count
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        return 80
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if sortedSections.isEmpty{ return 0 }
-        var day = ""
-        for item in timeSections[sortedSections[section]]! { day = item.day }
-        // If date of section is not current date selected for sorting, return 0 number of rows
-        if day != chosenDate { return 0 }
-        
-        return timeSections[sortedSections[section]]!.count
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
-        if sortedSections.isEmpty{ return "" }
-        var day = ""
-        for item in timeSections[sortedSections[section]]! { day = item.day }
-        // If date of section is not current date selected for sorting, return nil so no header appears
-        if day != chosenDate { return nil }
-        // Seperate only the time from the day/time string & remove the seconds from the time
-        let returnvalue = sortedSections[section].components(separatedBy: "T").last
-        let endIndex = returnvalue?.index((returnvalue?.endIndex)!, offsetBy:  -3)
-        
-        let returnvalue2 = endDateSections[section].components(separatedBy: "T").last
-        
-        
-        return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))!
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = self.scheduleTableView.dequeueReusableCell(withIdentifier: "FullCell", for: indexPath) as! FullWidthCell
-        let tableSection = timeSections[sortedSections[indexPath.section]]
-        let tableItem = tableSection![indexPath.row]
-        cell.sessionTitleLbl.text = tableItem.title
-        cell.buildingIconImgView.image = UIImage(named: tableItem.locationName)
-        for speaker in speakers {
-            // Find speakerId in speaker array and collect relevent information to match session
-            if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
-                
-                let firstName = speaker.value(forKey: "firstname") as! String
-                let lastName = speaker.value(forKey: "surname") as! String
-                cell.sessionFullNameLbl.text = firstName + " " + lastName
-                
-            }
-        }
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        self.performSegue(withIdentifier: "showDetail", sender: self)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "showDetail" {
-            
-            let index = self.scheduleTableView.indexPathForSelectedRow! as NSIndexPath
-            
-            let nav = segue.destination as! UINavigationController
-            
-            let vc = nav.viewControllers[0] as! DetailViewController
-            
-            
-            
-            let tableSection = timeSections[sortedSections[index.section]]
-            let tableItem = tableSection![index.row]
-           
-            vc.extendedLayoutIncludesOpaqueBars = true
-            for speaker in speakers {
-                // Find speakerId in speaker array and collect relevent information to match session
-                if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
-                    
-                    let firstName = speaker.value(forKey: "firstname") as! String
-                    let lastName = speaker.value(forKey: "surname") as! String
-                    vc.fullname = firstName + " " + lastName
-                    let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-                    vc.speakerImageURL = url
-                    
-                    vc.company = speaker.value(forKey: "organisation") as! String
-                }
-            }
-
-            
-            self.scheduleTableView.deselectRow(at: index as IndexPath, animated: true)
-        }
-    }
-    
-    // MARK: Split View
-    
-    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
-        return true
-    }
 }
 
 // Class to represent UI of each cell

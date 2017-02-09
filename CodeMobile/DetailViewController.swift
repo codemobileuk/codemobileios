@@ -9,7 +9,7 @@
 import UIKit
 
 class DetailViewController: UIViewController, UISplitViewControllerDelegate {
-
+    
     @IBOutlet weak var speakerImageView: UIImageView!
     @IBOutlet weak var fullnameLbl: UILabel!
     @IBOutlet weak var companyLbl: UILabel!
@@ -18,17 +18,22 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
     var speakerImageURL: URL!
     var company = ""
     
+    // MARK: View Controller Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupDetailData()
+    }
+    
+    // MARK: Other
+    
+    func setupDetailData() {
         
         fullnameLbl.text = fullname
         speakerImageView.kf.setImage(with: speakerImageURL)
         companyLbl.text = company
         speakerImageView.setRadius(radius: speakerImageView.frame.size.height / 2)
-        
- 
     }
     
-    
-  
 }

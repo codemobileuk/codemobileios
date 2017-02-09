@@ -35,7 +35,7 @@ class CoreDataHandler {
         do {
             
             let searchResults = try managedContext.fetch(fetchRequest)
-            print("...Retrieved \(searchResults.count) tables for \(entityNamed)!")
+            print("...Retrieved \(searchResults.count) tables for \(entityNamed) from Core Data!")
             for item in searchResults as [NSManagedObject] {
                 
                 sessions.append(item)

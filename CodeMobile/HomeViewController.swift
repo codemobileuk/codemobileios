@@ -20,7 +20,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private let api = ApiHandler()
     private let coreData = CoreDataHandler()
     
-    //  MARK: View Controller Life Cycle 
+    //  MARK: View Controller Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -28,17 +28,88 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         tweetsCollectionView.reloadData()
     }
     
+    override func viewDidLoad() {
+        // Set up Core Data once
+        setupAndRecieveCoreData()
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        
         if UIDevice.current.orientation.isLandscape {
             print("Landscape")
         }
     }
     
-    override func viewDidLoad() {
+    //  MARK: Collection View Functions
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        // Set up coredata once
-        setupAndRecieveCoreData()
+        return sessions.count
     }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        // Schedule Collection View
+        if collectionView == scheduleCollectionView {
+            let item = sessions[indexPath.row]
+            let cell = scheduleCollectionView.dequeueReusableCell(withReuseIdentifier: "CurrentlyOn", for: indexPath) as! SessionCollectionCell
+            cell.sessionTitleLbl.text = item.value(forKey: "SessionTitle") as! String?
+            cell.speakerImageView.setRadius(radius: 20.0)
+            
+            let startTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionStartDateTime")! as! String)
+            let endTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionEndDateTime")! as! String)
+            print(item.value(forKey: "SessionTitle")!)
+            print("Start Time  : \(startTime)")
+            print("End Time    : \(endTime)")
+            print("Current Time: \(Date())") // Current time
+            if Date().isBetweeen(date: startTime, andDate: endTime) {
+                print("Session is on")
+                cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
+                cell.liveInWhichBuildingLbl.textColor = UIColor.red
+                
+            } else {
+                print ("Session is off")
+                cell.liveInWhichBuildingLbl.textColor = UIColor.blue
+                cell.liveInWhichBuildingLbl.text = Date().wordedDate(Date: startTime)
+            }
+            print("-----------------------------")
+            
+            for speaker in speakers {
+                
+                
+                if speaker.value(forKey: "speakerId") as! Int == item.value(forKey: "speakerId") as! Int{
+                    let firstName = speaker.value(forKey: "firstname") as! String
+                    let lastName = speaker.value(forKey: "surname") as! String
+                    cell.speakerNameLbl.text = firstName + " " + lastName
+                    let url = URL(string: speaker.value(forKey: "photoURL") as! String)
+                    cell.speakerImageView.kf.setImage(with: url)
+                    
+                }
+                
+                
+            }
+            return cell
+        }
+            // Tweets Collection View
+        else  {
+            
+            let cell = tweetsCollectionView.dequeueReusableCell(withReuseIdentifier: "TweetCell", for: indexPath) as! TweetCollectionCell
+            cell.setRadius(radius: 5.0)
+            return cell
+        }
+        
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        if collectionView == tweetsCollectionView {
+            return CGSize(width: 320 , height: 60)
+        }
+        return CGSize(width: 170 , height: scheduleCollectionView.frame.size.height)
+    }
+    
+    // MARK: Other
     
     func showTimeline() {
         
@@ -108,75 +179,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBAction func seeFullSchedule(_ sender: Any) {
         
         tabBarController?.selectedIndex = 1
-    }
-    
-    //  MARK: Collection View Functions
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        return sessions.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        // Schedule Collection View
-        if collectionView == scheduleCollectionView {
-            let item = sessions[indexPath.row]
-            let cell = scheduleCollectionView.dequeueReusableCell(withReuseIdentifier: "CurrentlyOn", for: indexPath) as! SessionCollectionCell
-            cell.sessionTitleLbl.text = item.value(forKey: "SessionTitle") as! String?
-            cell.speakerImageView.setRadius(radius: 20.0)
-            
-            let startTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionStartDateTime")! as! String)
-            let endTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionEndDateTime")! as! String)
-            print(item.value(forKey: "SessionTitle")!)
-            print("Start Time  : \(startTime)")
-            print("End Time    : \(endTime)")
-            print("Current Time: \(Date())") // Current time
-            if Date().isBetweeen(date: startTime, andDate: endTime) {
-                print("Session is on")
-                cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
-                cell.liveInWhichBuildingLbl.textColor = UIColor.red
-                
-            } else {
-                print ("Session is off")
-                cell.liveInWhichBuildingLbl.textColor = UIColor.blue
-                cell.liveInWhichBuildingLbl.text = Date().wordedDate(Date: startTime)
-            }
-            print("-----------------------------")
-            
-            for speaker in speakers {
-                
-
-                if speaker.value(forKey: "speakerId") as! Int == item.value(forKey: "speakerId") as! Int{
-                    let firstName = speaker.value(forKey: "firstname") as! String
-                    let lastName = speaker.value(forKey: "surname") as! String
-                    cell.speakerNameLbl.text = firstName + " " + lastName
-                    let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-                    cell.speakerImageView.kf.setImage(with: url)
-                    
-                }
-                
-                
-            }
-            return cell
-        }
-            // Tweets Collection View
-        else  {
-            
-            let cell = tweetsCollectionView.dequeueReusableCell(withReuseIdentifier: "TweetCell", for: indexPath) as! TweetCollectionCell
-            cell.setRadius(radius: 5.0)
-            return cell
-        }
-        
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        if collectionView == tweetsCollectionView {
-            return CGSize(width: 320 , height: 60)
-        }
-        return CGSize(width: 170 , height: scheduleCollectionView.frame.size.height)
     }
 }
 
