@@ -65,13 +65,13 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         
         let cell = filterTableView.cellForRow(at: indexPath)
-        cell?.backgroundColor = UIColor(red: 51.0/255, green: 51.0/255, blue: 51.0/255, alpha: 1.0)
+        cell?.backgroundColor = Colours.codeMobileGrey
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
-        view.tintColor = UIColor(red: 45.0/255, green: 45.0/255, blue: 45.0/255, alpha: 1.0)
-        self.filterTableView.separatorColor = UIColor(red: 45.0/255, green: 45.0/255, blue: 45.0/255, alpha: 1.0)
+        view.tintColor = Colours.darkerCodeMobileGrey
+        self.filterTableView.separatorColor = Colours.darkerCodeMobileGrey
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = UIColor.white
     }
@@ -80,12 +80,14 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
 }
 
+// MARK: Filter TableView Cell UI
 class FilterCell : UITableViewCell {
     
     @IBOutlet weak var filterTitleLabel: UILabel!
 }
-
+// MARK: Filter Model
 struct Filters {
+    
     var sectionName : String!
     var sectionFilters : [String]!
 }

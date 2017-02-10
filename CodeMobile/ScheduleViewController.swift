@@ -43,6 +43,24 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         return 80
     }
     
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        // If item is break
+        let tableSection = timeSections[sortedSections[section]]
+        let tableItem = tableSection![0]
+        if tableItem.title == "Break" {
+        
+            let title = UILabel()
+            title.textColor = UIColor.white
+            let header = view as! UITableViewHeaderFooterView
+            header.textLabel!.font=title.font
+            header.textLabel!.textColor=title.textColor
+            header.contentView.backgroundColor = Colours.codeMobileGrey
+        
+        }         
+
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if sortedSections.isEmpty{ return 0 }
@@ -50,7 +68,11 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         for item in timeSections[sortedSections[section]]! { day = item.day }
         // If date of section is not current date selected for sorting, return 0 number of rows
         if day != chosenDate { return 0 }
-        
+        // If item is break
+        let tableSection = timeSections[sortedSections[section]]
+        let tableItem = tableSection![0]
+        if tableItem.title == "Break" { return 0 }
+
         return timeSections[sortedSections[section]]!.count
     }
     
@@ -67,6 +89,14 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         let returnvalue2 = endDateSections[section].components(separatedBy: "T").last
         
+        // If item is break
+        let tableSection = timeSections[sortedSections[section]]
+        let tableItem = tableSection![0]
+        if tableItem.title == "Break" {
+            
+             return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))! + "  Break"
+        }
+
         
         return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))!
     }
@@ -273,7 +303,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
 }
 
-// Class to represent UI of each cell
+// MARK: Session TableView Cell UI
 class FullWidthCell: UITableViewCell {
     
     @IBOutlet weak var sessionTitleLbl: UILabel!
@@ -281,7 +311,7 @@ class FullWidthCell: UITableViewCell {
     @IBOutlet weak var buildingIconImgView: UIImageView!
 }
 
-// Struct to represent data in each table cell
+// MARK: Session Model
 struct TableItem {
     
     let title: String

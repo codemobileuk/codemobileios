@@ -81,32 +81,22 @@ class MapViewController: UIViewController, UICollectionViewDelegate, UICollectio
 
     }
     
-    enum UIUserInterfaceIdiom : Int {
-        case unspecified
-        
-        case phone // iPhone and iPod touch style UI
-        case pad // iPad style UI
-    }
-
-    
-    
-    
-
 }
-
+// MARK: Location CollectionView Cell UI
 class LocationCell : UICollectionViewCell {
     
     @IBOutlet weak var locationImageView: UIImageView!
     @IBOutlet weak var locationNameLbl: UILabel!
     @IBOutlet weak var milesLbl: UILabel!
 }
-
+// MARK: Location CollectionView Header UI
 class LocationCellHeader : UICollectionReusableView {
     
     @IBOutlet weak var sectionHeaderLbl: UILabel!
 }
-
+// MARK: Location Model
 struct Locations {
+    
     var sectionName : String!
     var locationNames : [String]!
     var miles : [String]!

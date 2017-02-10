@@ -109,7 +109,8 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
 }
-// Class to represent UI of each speaker cell
+
+// MARK: Speaker TableView Cell UI
 class SpeakerCell: UITableViewCell {
     
     @IBOutlet weak var thumbnailImageView: UIImageView!

@@ -13,14 +13,13 @@ import CoreData
 // TODO: Comment class
 class ApiHandler {
     
-    let API_URL : String = "http://api.app.codemobile.co.uk/api"
     var sessions: [NSManagedObject] = []
     
     func storeSchedule(updateData: @escaping () -> Void) {
         
         let managedContext = getContext()
         
-        Alamofire.request(API_URL + Commands.SCHEDULE).responseJSON { (responseData) -> Void in
+        Alamofire.request(Commands.API_URL + Commands.SCHEDULE).responseJSON { (responseData) -> Void in
             if((responseData.result.value) != nil) {
                 
                 let swiftyJsonVar = JSON(responseData.result.value!)
@@ -54,7 +53,7 @@ class ApiHandler {
         
         let managedContext = getContext()
         
-        Alamofire.request(API_URL + Commands.SPEAKERS).responseJSON { (responseData) -> Void in
+        Alamofire.request(Commands.API_URL + Commands.SPEAKERS).responseJSON { (responseData) -> Void in
             if((responseData.result.value) != nil) {
                 
                 let swiftyJsonVar = JSON(responseData.result.value!)
@@ -71,7 +70,6 @@ class ApiHandler {
                     speaker.setValue(item.1["Profile"].string, forKeyPath: "profile")
                     speaker.setValue(item.1["PhotoURL"].string, forKeyPath: "photoURL")
                     speaker.setValue(item.1["FullName"].string, forKeyPath: "fullName")
-                    
                 }
                 
                 do {
@@ -85,12 +83,11 @@ class ApiHandler {
         }
     }
     
-    // To be editted
-    func storeLocations() {
+    func storeLocations(updateData: @escaping () -> Void) {
         
         let managedContext = getContext()
         
-        Alamofire.request(API_URL + Commands.LOCATIONS).responseJSON { (responseData) -> Void in
+        Alamofire.request(Commands.API_URL + Commands.LOCATIONS).responseJSON { (responseData) -> Void in
             if((responseData.result.value) != nil) {
                 
                 let swiftyJsonVar = JSON(responseData.result.value!)
@@ -103,12 +100,12 @@ class ApiHandler {
                     location.setValue(item.1["Longitude"].double, forKeyPath: "longitude")
                     location.setValue(item.1["Latitude"].double, forKeyPath: "latitude")
                     location.setValue(item.1["Description"].string, forKeyPath: "locationDescription")
-                    
                 }
                 
                 do {
                     try managedContext.save()
                     print("Saved location data!")
+                    updateData()
                 } catch let error as NSError {
                     print("Failed: Could not save. \(error), \(error.userInfo)")
                 }
@@ -124,10 +121,5 @@ class ApiHandler {
     
 }
 
-class Commands{
-    // List of all api commands
-    static let SCHEDULE = "/Schedule"
-    static let SPEAKERS = "/Speakers"
-    static let LOCATIONS = "/Locations"
-}
+
 

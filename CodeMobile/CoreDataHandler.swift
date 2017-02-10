@@ -47,7 +47,6 @@ class CoreDataHandler {
         }
         
         
-        
         return sessions
         
     }
@@ -91,11 +90,5 @@ class CoreDataHandler {
     
 }
 
-class Entities{
-    // List of all entity names
-    static let SCHEDULE = "Schedule"
-    static let SPEAKERS = "Speaker"
-    static let LOCATIONS = "SessionLocation"
-}
 
 

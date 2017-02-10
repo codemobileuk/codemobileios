@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationController.tintColor = UIColor.white
         
         tabController.isTranslucent = false
-        tabController.barTintColor = UIColor(red: 51.0/255, green: 51.0/255, blue: 51.0/255, alpha: 1.0)
+        tabController.barTintColor = Colours.codeMobileGrey
         tabController.tintColor = UIColor.red
         tabController.shadowImage = UIImage()
         

@@ -20,6 +20,9 @@
 		BFC6949C1E30EFE1006C24C5 /* CoreDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6949B1E30EFE1006C24C5 /* CoreDataHandler.swift */; };
 		BFCA1F7D1E41EC5300BA42A2 /* ImageViewRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCA1F7C1E41EC5300BA42A2 /* ImageViewRadius.swift */; };
 		BFCA1F851E41F57200BA42A2 /* CollectionViewCellRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */; };
+		BFDCC7BC1E4DD314004CD420 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDCC7BB1E4DD314004CD420 /* Commands.swift */; };
+		BFDCC7BE1E4DD322004CD420 /* Colours.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDCC7BD1E4DD322004CD420 /* Colours.swift */; };
+		BFDCC7C01E4DD37D004CD420 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDCC7BF1E4DD37D004CD420 /* Entities.swift */; };
 		BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */; };
 		BFDEFBDB1E3B7DC0008C99BA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */; };
 		BFEA19DA1E4B700300869259 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA19D91E4B700300869259 /* FilterViewController.swift */; };
@@ -45,6 +48,9 @@
 		BFC6949B1E30EFE1006C24C5 /* CoreDataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHandler.swift; sourceTree = "<group>"; };
 		BFCA1F7C1E41EC5300BA42A2 /* ImageViewRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewRadius.swift; sourceTree = "<group>"; };
 		BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCellRadius.swift; sourceTree = "<group>"; };
+		BFDCC7BB1E4DD314004CD420 /* Commands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
+		BFDCC7BD1E4DD322004CD420 /* Colours.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colours.swift; sourceTree = "<group>"; };
+		BFDCC7BF1E4DD37D004CD420 /* Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeakersViewController.swift; sourceTree = "<group>"; };
 		BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		BFEA19D81E4B65B400869259 /* CodeMobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CodeMobile-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -115,6 +121,7 @@
 				BFC694731E30BF23006C24C5 /* Core Data */,
 				BFCA1F7E1E41EC5C00BA42A2 /* UI Controls */,
 				BF6269DF1E4888E900A67A84 /* Extensions */,
+				BFDCC7BA1E4DD26F004CD420 /* Constants */,
 				BFC6946A1E30B509006C24C5 /* Supporting FIles */,
 			);
 			path = CodeMobile;
@@ -169,6 +176,16 @@
 				BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */,
 			);
 			name = "UI Controls";
+			sourceTree = "<group>";
+		};
+		BFDCC7BA1E4DD26F004CD420 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				BFDCC7BB1E4DD314004CD420 /* Commands.swift */,
+				BFDCC7BD1E4DD322004CD420 /* Colours.swift */,
+				BFDCC7BF1E4DD37D004CD420 /* Entities.swift */,
+			);
+			name = Constants;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -323,6 +340,9 @@
 				BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */,
 				BFB706FF1E324DA800D3CDF2 /* HomeViewController.swift in Sources */,
 				BFDEFBDB1E3B7DC0008C99BA /* MapViewController.swift in Sources */,
+				BFDCC7BC1E4DD314004CD420 /* Commands.swift in Sources */,
+				BFDCC7C01E4DD37D004CD420 /* Entities.swift in Sources */,
+				BFDCC7BE1E4DD322004CD420 /* Colours.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

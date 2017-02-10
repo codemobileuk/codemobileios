@@ -109,6 +109,52 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return CGSize(width: 170 , height: scheduleCollectionView.frame.size.height)
     }
     
+    // MARK: Recieve all API data and store in Core Data
+    
+    private var sessions: [NSManagedObject] = []
+    private var speakers: [NSManagedObject] = []
+    private var locations: [NSManagedObject] = []
+    
+    private func setupAndRecieveCoreData() {
+        
+        // SPEAKERS
+        // Recieve speaker data from core data
+        speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
+        // Check if data contains data, if not retrieve data from the API then store the data into speaker array.
+        if speakers.isEmpty{
+            print("Speakers core data is empty, storing speakers data...")
+            api.storeSpeakers(updateData: { () -> Void in
+                // When data has been successfully stored
+                self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
+                self.scheduleCollectionView.reloadData()
+                self.tweetsCollectionView.reloadData()
+            })
+        } else {print("Speakers core data is not empty")}
+        // Repeat for other tables
+        
+        // SESSIONS
+        sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+        
+        if sessions.isEmpty{
+            print("Schedule core data is empty, storing schedule data...")
+            api.storeSchedule(updateData: { () -> Void in
+                self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+                self.scheduleCollectionView.reloadData()
+                self.tweetsCollectionView.reloadData()
+            })
+        } else {print("Schedule core data is not empty")}
+        
+        // LOCATIONS
+        locations = coreData.recieveCoreData(entityNamed: Entities.LOCATIONS)
+        
+        if locations.isEmpty{
+            print("Locations core data is empty, storing locations data...")
+            api.storeLocations(updateData: { () -> Void in
+                self.locations = self.coreData.recieveCoreData(entityNamed: Entities.LOCATIONS)
+            })
+        } else {print("Schedule core data is not empty")}
+    }
+
     // MARK: Other
     
     func showTimeline() {
@@ -140,38 +186,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
      }
      }*/
     
-    private var sessions: [NSManagedObject] = []
-    private var speakers: [NSManagedObject] = []
-    
-    private func setupAndRecieveCoreData() {
-        
-        // Speaker Core Data
-        // Recieve speaker data from core data
-        speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-        // Check if data contains data, if not retrieve data from the API then store the data into speaker array.
-        if speakers.isEmpty{
-            print("Speakers core data is empty, storing speakers data...")
-            api.storeSpeakers(updateData: { () -> Void in
-                self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-                self.scheduleCollectionView.reloadData()
-                self.tweetsCollectionView.reloadData()
-            })
-        } else {print("Speakers core data is not empty")}
-        
-        // Sessions Core Data - Repeated for session information
-        sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
-        
-        if sessions.isEmpty{
-            print("Schedule core data is empty, storing schedule data...")
-            api.storeSchedule(updateData: { () -> Void in
-                self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
-                self.scheduleCollectionView.reloadData()
-                self.tweetsCollectionView.reloadData()
-            })
-        } else {print("Schedule core data is not empty")}
-        
-    }
-    
     @IBAction func seeAllTweets(_ sender: Any) {
         
         showTimeline()
@@ -182,7 +196,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 }
 
-// Class to represent UI of schedule collection cell
+// MARK: Schedule CollectionView Cell UI
 class SessionCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var speakerImageView: UIImageView!
@@ -190,7 +204,7 @@ class SessionCollectionCell: UICollectionViewCell {
     @IBOutlet weak var speakerNameLbl: UILabel!
     @IBOutlet weak var sessionTitleLbl: UILabel!
 }
-// Class to represent UI of tweet collection cell
+// MARK: Tweet CollectionView Cell UI
 class TweetCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var tweetTextView: UITextView!
