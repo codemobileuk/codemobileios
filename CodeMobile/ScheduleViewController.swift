@@ -21,6 +21,11 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // MARK: View Controller Life Cycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        scheduleTableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         
         recieveCoreData()
@@ -57,7 +62,15 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             header.textLabel!.textColor=title.textColor
             header.contentView.backgroundColor = Colours.codeMobileGrey
         
-        }         
+        } else {
+            let title = UILabel()
+            title.textColor = UIColor.black
+            let header = view as! UITableViewHeaderFooterView
+            header.textLabel!.font=title.font
+            header.textLabel!.textColor=title.textColor
+            header.contentView.backgroundColor = UIColor.groupTableViewBackground
+
+        }
 
     }
     

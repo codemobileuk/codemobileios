@@ -17,6 +17,11 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // MARK: View Controller Life Cycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        speakersTableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         
         recieveCoreData()

@@ -16,6 +16,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var scheduleCollectionView: UICollectionView!
     @IBOutlet weak var scheduleView: UIView!
     @IBOutlet weak var bannerBackground: UIView!
+    @IBOutlet weak var scheduleSpinner: UIActivityIndicatorView!
+    @IBOutlet weak var twitterSpinner: UIActivityIndicatorView!
     
     private let api = ApiHandler()
     private let coreData = CoreDataHandler()
@@ -26,11 +28,15 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         scheduleCollectionView.reloadData()
         tweetsCollectionView.reloadData()
+        
     }
     
     override func viewDidLoad() {
         // Set up Core Data once
         setupAndRecieveCoreData()
+        scheduleSpinner.hidesWhenStopped = true
+        twitterSpinner.hidesWhenStopped = true
+        
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -134,6 +140,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         // SESSIONS
         sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+        scheduleSpinner.startAnimating()
+        twitterSpinner.startAnimating()
         
         if sessions.isEmpty{
             print("Schedule core data is empty, storing schedule data...")
@@ -141,8 +149,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
                 self.scheduleCollectionView.reloadData()
                 self.tweetsCollectionView.reloadData()
+                self.scheduleSpinner.stopAnimating()
+                self.twitterSpinner.stopAnimating()
             })
-        } else {print("Schedule core data is not empty")}
+        } else {
+            print("Schedule core data is not empty")
+            self.scheduleSpinner.stopAnimating()
+            self.twitterSpinner.stopAnimating()
+        }
         
         // LOCATIONS
         locations = coreData.recieveCoreData(entityNamed: Entities.LOCATIONS)

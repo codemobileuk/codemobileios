@@ -23,7 +23,6 @@ class ApiHandler {
             if((responseData.result.value) != nil) {
                 
                 let swiftyJsonVar = JSON(responseData.result.value!)
-                // print(swiftyJsonVar)
                 let entity = NSEntityDescription.entity(forEntityName: "Schedule", in: managedContext)!
                
                 for item in swiftyJsonVar {

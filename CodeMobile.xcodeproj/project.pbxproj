@@ -20,6 +20,7 @@
 		BFC6949C1E30EFE1006C24C5 /* CoreDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6949B1E30EFE1006C24C5 /* CoreDataHandler.swift */; };
 		BFCA1F7D1E41EC5300BA42A2 /* ImageViewRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCA1F7C1E41EC5300BA42A2 /* ImageViewRadius.swift */; };
 		BFCA1F851E41F57200BA42A2 /* CollectionViewCellRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */; };
+		BFD989BE1E4DF8EF00F2DF67 /* MapDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD989BD1E4DF8EF00F2DF67 /* MapDetailViewController.swift */; };
 		BFDCC7BC1E4DD314004CD420 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDCC7BB1E4DD314004CD420 /* Commands.swift */; };
 		BFDCC7BE1E4DD322004CD420 /* Colours.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDCC7BD1E4DD322004CD420 /* Colours.swift */; };
 		BFDCC7C01E4DD37D004CD420 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDCC7BF1E4DD37D004CD420 /* Entities.swift */; };
@@ -48,6 +49,7 @@
 		BFC6949B1E30EFE1006C24C5 /* CoreDataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHandler.swift; sourceTree = "<group>"; };
 		BFCA1F7C1E41EC5300BA42A2 /* ImageViewRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewRadius.swift; sourceTree = "<group>"; };
 		BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCellRadius.swift; sourceTree = "<group>"; };
+		BFD989BD1E4DF8EF00F2DF67 /* MapDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapDetailViewController.swift; sourceTree = "<group>"; };
 		BFDCC7BB1E4DD314004CD420 /* Commands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		BFDCC7BD1E4DD322004CD420 /* Colours.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colours.swift; sourceTree = "<group>"; };
 		BFDCC7BF1E4DD37D004CD420 /* Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
@@ -153,9 +155,10 @@
 				BFB706FE1E324DA700D3CDF2 /* HomeViewController.swift */,
 				BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */,
 				BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */,
-				BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */,
 				BF1F21141E44A0B90072E991 /* DetailViewController.swift */,
 				BFEA19D91E4B700300869259 /* FilterViewController.swift */,
+				BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */,
+				BFD989BD1E4DF8EF00F2DF67 /* MapDetailViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 				BFCA1F851E41F57200BA42A2 /* CollectionViewCellRadius.swift in Sources */,
 				BFC6945E1E30B44D006C24C5 /* CodeMobile.xcdatamodeld in Sources */,
 				BFC6949C1E30EFE1006C24C5 /* CoreDataHandler.swift in Sources */,
+				BFD989BE1E4DF8EF00F2DF67 /* MapDetailViewController.swift in Sources */,
 				BFCA1F7D1E41EC5300BA42A2 /* ImageViewRadius.swift in Sources */,
 				BFC694561E30B44D006C24C5 /* AppDelegate.swift in Sources */,
 				BFC6946C1E30BCDC006C24C5 /* ApiHandler.swift in Sources */,
@@ -495,7 +499,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Footsqueek.CodeMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "CodeMobile/CodeMobile-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
