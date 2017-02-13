@@ -147,6 +147,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             print("Schedule core data is empty, storing schedule data...")
             api.storeSchedule(updateData: { () -> Void in
                 self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+                for (i,num) in self.sessions.enumerated().reversed() {
+                    // Remove past sessions
+                    let endTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionEndDateTime")! as! String)
+                    if endTime < Date() {
+                        self.sessions.remove(at: i)
+                    }// Remove breaks
+                    else if num.value(forKey: "SessionTitle") as! String == "Break"{
+                        self.sessions.remove(at: i)
+                    }
+                }
+                
                 self.scheduleCollectionView.reloadData()
                 self.tweetsCollectionView.reloadData()
                 self.scheduleSpinner.stopAnimating()
@@ -154,6 +165,18 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             })
         } else {
             print("Schedule core data is not empty")
+            
+            for (i,num) in self.sessions.enumerated().reversed() {
+                // Remove past sessions
+                let endTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionEndDateTime")! as! String)
+                if endTime < Date() {
+                    self.sessions.remove(at: i)
+                }// Remove breaks
+                else if num.value(forKey: "SessionTitle") as! String == "Break"{
+                    self.sessions.remove(at: i)
+                }
+            }
+            
             self.scheduleSpinner.stopAnimating()
             self.twitterSpinner.stopAnimating()
         }

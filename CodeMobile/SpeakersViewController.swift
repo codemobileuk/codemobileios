@@ -111,6 +111,12 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         
         speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
         sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+        // Remove breaks
+        for (i,num) in speakers.enumerated().reversed() {
+            if num.value(forKey: "firstname") as! String == "Break"{
+                speakers.remove(at: i)
+            }
+        }
     }
     
 }

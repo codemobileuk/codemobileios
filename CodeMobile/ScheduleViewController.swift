@@ -151,8 +151,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             
             let vc = nav.viewControllers[0] as! DetailViewController
             
-            
-            
             let tableSection = timeSections[sortedSections[index.section]]
             let tableItem = tableSection![index.row]
             
