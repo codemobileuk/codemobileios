@@ -46,7 +46,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    //  MARK: Collection View Functions
+    //  MARK: CollectionView 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -89,7 +89,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     cell.speakerNameLbl.text = firstName + " " + lastName
                     let url = URL(string: speaker.value(forKey: "photoURL") as! String)
                     cell.speakerImageView.kf.setImage(with: url)
-                
+                    
                     
                 }
                 
@@ -116,7 +116,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return CGSize(width: 170 , height: scheduleCollectionView.frame.size.height)
     }
     
-    // MARK: Recieve all API data and store in Core Data
+    // MARK: Core Data
     
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
@@ -192,7 +192,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             })
         } else {print("Schedule core data is not empty")}
     }
-
+    
     // MARK: Other
     
     func showTimeline() {

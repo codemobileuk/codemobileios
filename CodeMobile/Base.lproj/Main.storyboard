@@ -289,6 +289,7 @@
                         <outlet property="currentDateSelected" destination="Fuy-4i-hkE" id="dpw-4x-qXT"/>
                         <outlet property="openBtn" destination="F5c-eK-PMi" id="Bgg-UG-UOz"/>
                         <outlet property="scheduleTableView" destination="AFy-7P-wQC" id="wL5-hj-pVw"/>
+                        <outlet property="sessionSegment" destination="gB7-Ns-gBy" id="OGj-k7-A5i"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -397,32 +398,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FBW-4V-22b">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="140" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FBW-4V-22b">
                                 <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LocationCell" rowHeight="150" id="7Qe-Y0-u7b" customClass="LocationCell" customModule="CodeMobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="320" height="150"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LocationCell" rowHeight="140" id="7Qe-Y0-u7b" customClass="LocationCell" customModule="CodeMobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Qe-Y0-u7b" id="Pkb-yB-rUb">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="149"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="139"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="IPX-5n-thS">
-                                                    <rect key="frame" x="156" y="18" width="131" height="22"/>
+                                                    <rect key="frame" x="166" y="9" width="121" height="26"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jvB-hu-DiZ">
-                                                    <rect key="frame" x="8" y="18" width="140" height="114"/>
+                                                    <rect key="frame" x="8" y="9" width="150" height="121.5"/>
                                                     <color key="backgroundColor" red="0.88462060689999999" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="140" id="jR6-zv-Ewg"/>
+                                                        <constraint firstAttribute="width" constant="150" id="jR6-zv-Ewg"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Miles till / other info" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Vnj-zY-ErV">
-                                                    <rect key="frame" x="156" y="65" width="131" height="20"/>
+                                                    <rect key="frame" x="166" y="60" width="121" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -434,7 +435,7 @@
                                                 <constraint firstItem="IPX-5n-thS" firstAttribute="leading" secondItem="Vnj-zY-ErV" secondAttribute="leading" id="9EM-9A-oZc"/>
                                                 <constraint firstItem="jvB-hu-DiZ" firstAttribute="leading" secondItem="Pkb-yB-rUb" secondAttribute="leadingMargin" id="9VE-bg-cJP"/>
                                                 <constraint firstItem="IPX-5n-thS" firstAttribute="trailing" secondItem="Vnj-zY-ErV" secondAttribute="trailing" id="KVa-T7-50k"/>
-                                                <constraint firstItem="jvB-hu-DiZ" firstAttribute="top" secondItem="Pkb-yB-rUb" secondAttribute="topMargin" constant="10" id="Oye-hJ-afN"/>
+                                                <constraint firstItem="jvB-hu-DiZ" firstAttribute="top" secondItem="Pkb-yB-rUb" secondAttribute="topMargin" constant="1" id="Oye-hJ-afN"/>
                                                 <constraint firstItem="jvB-hu-DiZ" firstAttribute="centerY" secondItem="Pkb-yB-rUb" secondAttribute="centerY" id="fF6-wo-Xak"/>
                                                 <constraint firstItem="jvB-hu-DiZ" firstAttribute="top" secondItem="IPX-5n-thS" secondAttribute="top" id="kL9-Gz-e5G"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="IPX-5n-thS" secondAttribute="trailing" constant="25" id="lG5-Lq-Woi"/>
@@ -445,6 +446,7 @@
                                             <outlet property="locationNameLbl" destination="IPX-5n-thS" id="74f-s9-03o"/>
                                             <outlet property="locationThumbnailImageView" destination="jvB-hu-DiZ" id="AnC-dT-CUk"/>
                                             <outlet property="milesLbl" destination="Vnj-zY-ErV" id="Gle-Vm-7Xi"/>
+                                            <segue destination="DiZ-Oe-9HW" kind="showDetail" identifier="showMapDetail" id="reR-m0-MR9"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -484,7 +486,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="V0y-Ha-uXQ">
-                                <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -497,17 +499,26 @@
                     </view>
                     <navigationItem key="navigationItem" id="5NG-VY-KHd">
                         <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="qc6-7G-9O7">
-                            <rect key="frame" x="8" y="7" width="304" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="Standard"/>
-                                <segment title="Satelite"/>
-                                <segment title="Hybrid"/>
-                            </segments>
-                            <color key="tintColor" red="0.88462060689999999" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </segmentedControl>
+                        <barButtonItem key="rightBarButtonItem" id="YpS-A0-e7x">
+                            <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="SvA-w7-qRb">
+                                <rect key="frame" x="50" y="7" width="254" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Standard"/>
+                                    <segment title="Satellite"/>
+                                    <segment title="Hybrid"/>
+                                </segments>
+                                <color key="tintColor" red="0.88462060689999999" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="changeMapType:" destination="pSl-Is-ZTg" eventType="valueChanged" id="mAw-7V-ZZ8"/>
+                                </connections>
+                            </segmentedControl>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="chesterMapView" destination="V0y-Ha-uXQ" id="lc0-KI-iV6"/>
+                        <outlet property="mapTypeSegment" destination="SvA-w7-qRb" id="dGc-DV-0BL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Kq-rv-5nI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -619,6 +630,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Speakers" id="ksc-SJ-Zc9"/>
                     <connections>
+                        <outlet property="speakerSegment" destination="RV1-hd-qQc" id="x55-3y-6A4"/>
                         <outlet property="speakersTableView" destination="Dqc-uE-EXC" id="cfo-ab-fVj"/>
                     </connections>
                 </viewController>
@@ -985,7 +997,7 @@
         <!--Map-->
         <scene sceneID="OzA-tJ-tRy">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5mc-Os-YJV" sceneMemberID="viewController">
+                <navigationController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="5mc-Os-YJV" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" image="Map" id="71V-LA-Xff"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="cJC-oJ-Ih4">
@@ -1055,7 +1067,7 @@
         <!--Navigation Controller-->
         <scene sceneID="IcL-Ds-pom">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DiZ-Oe-9HW" sceneMemberID="viewController">
+                <navigationController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="DiZ-Oe-9HW" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="LSa-X3-6oH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -1083,6 +1095,7 @@
         <image name="molloywhite" width="29" height="29"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="6T6-L4-JRK"/>
+        <segue reference="HxD-cZ-gC3"/>
+        <segue reference="reR-m0-MR9"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -14,6 +14,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     private let coreData = CoreDataHandler()
     
     @IBOutlet weak var speakersTableView: UITableView!
+    @IBOutlet weak var speakerSegment: UISegmentedControl!
     
     // MARK: View Controller Life Cycle
     
@@ -26,9 +27,10 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         
         recieveCoreData()
         setupSplitView()
+        setupUI()
     }
     
-    // MARK: Table View Functions
+    // MARK: TableView 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -90,7 +92,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    // MARK: Split View
+    // MARK: SplitView
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return true
@@ -102,7 +104,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
     }
     
-    // MARK: Other
+    // MARK: Core Data
     
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
@@ -117,6 +119,14 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
                 speakers.remove(at: i)
             }
         }
+    }
+    
+    // MARK: Other
+    
+    func setupUI() {
+        
+        speakerSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
+        speakerSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
     }
     
 }

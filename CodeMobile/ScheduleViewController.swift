@@ -16,6 +16,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var scheduleTableView: UITableView!
     @IBOutlet weak var currentDateSelected: UILabel!
     @IBOutlet weak var openBtn: UIBarButtonItem!
+    @IBOutlet weak var sessionSegment: UISegmentedControl!
     
     private let coreData = CoreDataHandler()
     
@@ -31,9 +32,10 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         recieveCoreData()
         setupSplitView()
         setupSideMenu()
+        setupUI()
     }
     
-    // MARK: Table View Functions
+    // MARK: TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -186,73 +188,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
     }
     
-    // MARK: Other
-    
-    func setupSideMenu() {
-        
-        openBtn.target = self.revealViewController()
-        openBtn.action = #selector((SWRevealViewController.revealToggle) as (SWRevealViewController) -> (Void) -> Void)
-        self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-    }
-    
-    private var chosenDate = "2017-04-18"
-    
-    @IBAction func sortDate(_ sender: Any) {
-        
-        let optionMenu = UIAlertController(title: nil, message: "Sort by date", preferredStyle: .actionSheet)
-        
-        let dayOne = UIAlertAction(title: "Tuesday 18th April", style: .default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Day 1 tapped")
-            self.chosenDate = "2017-04-18"
-            self.currentDateSelected.text = "Tuesday 18th April"
-            self.scheduleTableView.reloadData()
-        })
-        let dayTwo = UIAlertAction(title: "Wednesday 19th April", style: .default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Day 2 tapped")
-            self.chosenDate = "2017-04-19"
-            self.currentDateSelected.text = "Wednesday 19th April"
-            self.scheduleTableView.reloadData()
-        })
-        let dayThree = UIAlertAction(title: "Thursday 20th April", style: .default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Day 3 tapped")
-            self.chosenDate = "2017-04-20"
-            self.currentDateSelected.text = "Thursday 20th April"
-            self.scheduleTableView.reloadData()
-        })
-        
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        optionMenu.addAction(dayOne)
-        optionMenu.addAction(dayTwo)
-        optionMenu.addAction(dayThree)
-        optionMenu.addAction(cancel)
-        optionMenu.view.tintColor = UIColor.red
-        // Handles iPad crash
-        optionMenu.popoverPresentationController?.sourceView = self.view
-        optionMenu.popoverPresentationController?.sourceRect = self.view.bounds
-        
-        self.present(optionMenu, animated: true, completion: nil)
-        
-    }
-    
-    
-    // Test function - This function will be deleted/ Used to delete all data instead of having to re-run the app
-    @IBAction func deleteTest(_ sender: Any) {
-        
-        coreData.deleteAllData(entityNamed: Entities.SCHEDULE)
-        coreData.deleteAllData(entityNamed: Entities.SPEAKERS)
-        sessions.removeAll()
-        speakers.removeAll()
-        sortedSections.removeAll()
-        timeSections.removeAll()
-        scheduleTableView.reloadData()
-    }
+    // MARK: Core Data
     
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
@@ -309,6 +245,79 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         // Sort array in time order
         sortedSections = sortedSections.sorted {$0 < $1}
         // Update table
+        scheduleTableView.reloadData()
+    }
+
+    // MARK: Other
+    
+    func setupSideMenu() {
+        
+        openBtn.target = self.revealViewController()
+        openBtn.action = #selector((SWRevealViewController.revealToggle) as (SWRevealViewController) -> (Void) -> Void)
+        self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+    }
+    
+    private var chosenDate = "2017-04-18"
+    
+    @IBAction func sortDate(_ sender: Any) {
+        
+        let optionMenu = UIAlertController(title: nil, message: "Sort by date", preferredStyle: .actionSheet)
+        
+        let dayOne = UIAlertAction(title: "Tuesday 18th April", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Day 1 tapped")
+            self.chosenDate = "2017-04-18"
+            self.currentDateSelected.text = "Tuesday 18th April"
+            self.scheduleTableView.reloadData()
+        })
+        let dayTwo = UIAlertAction(title: "Wednesday 19th April", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Day 2 tapped")
+            self.chosenDate = "2017-04-19"
+            self.currentDateSelected.text = "Wednesday 19th April"
+            self.scheduleTableView.reloadData()
+        })
+        let dayThree = UIAlertAction(title: "Thursday 20th April", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Day 3 tapped")
+            self.chosenDate = "2017-04-20"
+            self.currentDateSelected.text = "Thursday 20th April"
+            self.scheduleTableView.reloadData()
+        })
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            print("Cancelled")
+        })
+        
+        optionMenu.addAction(dayOne)
+        optionMenu.addAction(dayTwo)
+        optionMenu.addAction(dayThree)
+        optionMenu.addAction(cancel)
+        optionMenu.view.tintColor = UIColor.red
+        // Handles iPad crash
+        optionMenu.popoverPresentationController?.sourceView = self.view
+        optionMenu.popoverPresentationController?.sourceRect = self.view.bounds
+        
+        self.present(optionMenu, animated: true, completion: nil)
+        
+    }
+    
+    func setupUI() {
+        
+        sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
+        sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
+    }
+    
+    // Test function - This function will be deleted/ Used to delete all data instead of having to re-run the app
+    @IBAction func deleteTest(_ sender: Any) {
+        
+        coreData.deleteAllData(entityNamed: Entities.SCHEDULE)
+        coreData.deleteAllData(entityNamed: Entities.SPEAKERS)
+        sessions.removeAll()
+        speakers.removeAll()
+        sortedSections.removeAll()
+        timeSections.removeAll()
         scheduleTableView.reloadData()
     }
     
