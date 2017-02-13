@@ -8,69 +8,42 @@
 
 import UIKit
 
-class MapViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISplitViewControllerDelegate   {
+class MapViewController: UIViewController, UISplitViewControllerDelegate, UITableViewDelegate, UITableViewDataSource {
 
-    @IBOutlet weak var locationCollectionView: UICollectionView!
-    
-    var locationsArray = [Locations]()
-   
+    @IBOutlet weak var locationTableView: UITableView!
     
     // MARK: View Controller Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
-         locationsArray = [Locations(sectionName:"Points of Interest", locationNames: ["Beswick", "Molloy", "Town Hall", "Queen's Hotel"], miles: ["1", "2", "3", "4"], imagesURLs: ["!£!@£@!", "123!@", "!@£!@l", "!@£!@l"]), Locations(sectionName:"Transport", locationNames: ["Abbey Taxis", "Bus Station", "Kingkabs", "Train Station"], miles: ["1", "2", "3","4"], imagesURLs: ["!£!@£@!", "123!@", "!@£!@l", "!@£!@l"])]
-        
-      locationCollectionView.reloadData()
     }
     
     override func viewDidLoad() {
         
-        locationCollectionView.reloadData()
         setupSplitView()
     }
     
-    //  MARK: Collection View Functions
+    // MARK: Table View Functions
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    
-        return locationsArray[section].locationNames.count
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = locationCollectionView.dequeueReusableCell(withReuseIdentifier: "LocationCell", for: indexPath) as! LocationCell
-        cell.locationNameLbl.text = locationsArray[indexPath.section].locationNames[indexPath.row]
+        let cell = self.locationTableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath) as! LocationCell
+        let url = URL(string: "http://www.atop-ltd.co.uk/images/chester2.jpg")
+        cell.locationThumbnailImageView.kf.setImage(with: url)
+        cell.locationThumbnailImageView.setRadius(radius: 5)
         
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        return CGSize(width: view.frame.size.width / 2 - 10, height: view.frame.size.width / 2 - 10)
-        
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-          return locationsArray.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        switch kind {
-        //2
-        case UICollectionElementKindSectionHeader:
-            //3
-            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                             withReuseIdentifier: "LocationCellHeader",
-                                                                             for: indexPath) as! LocationCellHeader
-            headerView.sectionHeaderLbl.text = locationsArray[(indexPath as NSIndexPath).section].sectionName
-            
-            return headerView
-        default:
-            //4
-            assert(false, "Unexpected element kind")
-        }
-
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Header"
     }
     
     // MARK: Split View
@@ -87,18 +60,15 @@ class MapViewController: UIViewController, UICollectionViewDelegate, UICollectio
 
     
 }
-// MARK: Location CollectionView Cell UI
-class LocationCell : UICollectionViewCell {
+// MARK: Location TableView Cell UI
+class LocationCell : UITableViewCell {
     
-    @IBOutlet weak var locationImageView: UIImageView!
     @IBOutlet weak var locationNameLbl: UILabel!
     @IBOutlet weak var milesLbl: UILabel!
+    @IBOutlet weak var locationThumbnailImageView: UIImageView!
+
 }
-// MARK: Location CollectionView Header UI
-class LocationCellHeader : UICollectionReusableView {
-    
-    @IBOutlet weak var sectionHeaderLbl: UILabel!
-}
+
 // MARK: Location Model
 struct Locations {
     

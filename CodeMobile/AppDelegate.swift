@@ -35,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabController.shadowImage = UIImage()
         
         Fabric.with([Twitter.self])
+        
         return true
     }
 
