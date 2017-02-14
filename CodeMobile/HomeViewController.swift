@@ -22,7 +22,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private let api = ApiHandler()
     private let coreData = CoreDataHandler()
     
-    //  MARK: View Controller Life Cycle
+    // MARK: - View Controller Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -46,7 +46,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    //  MARK: CollectionView 
+    // MARK: - CollectionView
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -82,18 +82,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             
             for speaker in speakers {
                 
-                
                 if speaker.value(forKey: "speakerId") as! Int == item.value(forKey: "speakerId") as! Int{
                     let firstName = speaker.value(forKey: "firstname") as! String
                     let lastName = speaker.value(forKey: "surname") as! String
                     cell.speakerNameLbl.text = firstName + " " + lastName
                     let url = URL(string: speaker.value(forKey: "photoURL") as! String)
                     cell.speakerImageView.kf.setImage(with: url)
-                    
-                    
+    
                 }
-                
-                
             }
             return cell
         }
@@ -104,8 +100,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             cell.setRadius(radius: 5.0)
             return cell
         }
-        
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -116,7 +110,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return CGSize(width: 170 , height: scheduleCollectionView.frame.size.height)
     }
     
-    // MARK: Core Data
+    // MARK: - Core Data
     
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
@@ -193,13 +187,13 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         } else {print("Schedule core data is not empty")}
     }
     
-    // MARK: Other
+    // MARK: - Other
     
     func showTimeline() {
         
         // Create an API client and data source to fetch Tweets for the timeline
         let client = TWTRAPIClient()
-        //TODO: Replace with your collection id or a different data source
+        // Replace with your collection id or a different data source
         let dataSource = TWTRUserTimelineDataSource(screenName: "Codemobileuk", apiClient: client)
         // Create the timeline view controller
         let timelineViewControlller = TWTRTimelineViewController(dataSource: dataSource)
@@ -234,7 +228,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 }
 
-// MARK: Schedule CollectionView Cell UI
+// MARK: - Schedule CollectionView Cell UI
 class SessionCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var speakerImageView: UIImageView!
@@ -242,7 +236,7 @@ class SessionCollectionCell: UICollectionViewCell {
     @IBOutlet weak var speakerNameLbl: UILabel!
     @IBOutlet weak var sessionTitleLbl: UILabel!
 }
-// MARK: Tweet CollectionView Cell UI
+// MARK: - Tweet CollectionView Cell UI
 class TweetCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var tweetTextView: UITextView!

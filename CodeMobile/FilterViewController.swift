@@ -14,17 +14,16 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var filtersArray = [Filters]()
     
-    // MARK: View Controller Life Cycle
+    // MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         filtersArray = [Filters(sectionName:"Days", sectionFilters: ["Tuesday 18th April", "Wednesday 19th April", "Thursday 20th April"]),Filters(sectionName:"Tags", sectionFilters: ["iOS", "Android", "Design", "Security", "Other"]),]
         filterTableView.tableFooterView = UIView()
-        
     }
     
-    // MARK: Table View Functions
+    // MARK: - TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -75,17 +74,14 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = UIColor.white
     }
-    
-    // MARK: Other
-    
 }
 
-// MARK: Filter TableView Cell UI
+// MARK: - Filter TableView Cell UI
 class FilterCell : UITableViewCell {
     
     @IBOutlet weak var filterTitleLabel: UILabel!
 }
-// MARK: Filter Model
+// MARK: - Filter Model
 struct Filters {
     
     var sectionName : String!

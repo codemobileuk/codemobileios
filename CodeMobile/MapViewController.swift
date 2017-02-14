@@ -15,7 +15,7 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
     
     private let coreData = CoreDataHandler()
     
-    // MARK: View Controller Life Cycle
+    // MARK: - View Controller Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -28,7 +28,7 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         setupSplitView()
     }
     
-    // MARK: TableView 
+    // MARK: - TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -55,7 +55,7 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         return "Header"
     }
     
-    // MARK: SplitView
+    // MARK: - SplitView
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         
@@ -68,7 +68,7 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
     }
     
-    // MARK: Segue
+    // MARK: - Segue
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -85,7 +85,7 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
     }
 
     
-    // MARK: Core Data
+    // MARK: - Core Data
     
     private var locations: [NSManagedObject] = []
     
@@ -98,7 +98,7 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
     
 }
 
-// MARK: Location TableView Cell UI
+// MARK: - Location TableView Cell UI
 class LocationCell : UITableViewCell {
     
     @IBOutlet weak var locationNameLbl: UILabel!
@@ -107,7 +107,7 @@ class LocationCell : UITableViewCell {
     
 }
 
-// MARK: Location Model
+// MARK: - Location Model
 struct Locations {
     
     var sectionName : String!

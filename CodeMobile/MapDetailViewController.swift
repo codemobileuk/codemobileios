@@ -15,7 +15,7 @@ class MapDetailViewController: UIViewController {
     @IBOutlet weak var chesterMapView: MKMapView!
     @IBOutlet weak var mapTypeSegment: UISegmentedControl!
   
-    // MARK: View Controller Life Cycle
+    // MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
         
@@ -23,7 +23,7 @@ class MapDetailViewController: UIViewController {
         setupUI()
     }
     
-    // MARK: MapKit
+    // MARK: - MapKit
     
     let initialLocation = CLLocation(latitude: 53.190391, longitude: -2.891635)
     let regionRadius: CLLocationDistance = 1000
@@ -43,7 +43,7 @@ class MapDetailViewController: UIViewController {
         }
     }
     
-    // MARK: Other
+    // MARK: - Other
     
     func setupUI() {
         

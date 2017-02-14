@@ -16,7 +16,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var speakersTableView: UITableView!
     @IBOutlet weak var speakerSegment: UISegmentedControl!
     
-    // MARK: View Controller Life Cycle
+    // MARK: - View Controller Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -30,7 +30,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         setupUI()
     }
     
-    // MARK: TableView 
+    // MARK: - TableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -66,7 +66,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         self.performSegue(withIdentifier: "showSpeakerDetail", sender: self)
     }
     
-    // MARK: Segue
+    // MARK: - Segue
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -92,9 +92,10 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    // MARK: SplitView
+    // MARK: - SplitView
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        
         return true
     }
     
@@ -104,7 +105,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
     }
     
-    // MARK: Core Data
+    // MARK: - Core Data
     
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
@@ -121,7 +122,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    // MARK: Other
+    // MARK: - Other
     
     func setupUI() {
         
@@ -131,7 +132,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     
 }
 
-// MARK: Speaker TableView Cell UI
+// MARK: - Speaker TableView Cell UI
 class SpeakerCell: UITableViewCell {
     
     @IBOutlet weak var thumbnailImageView: UIImageView!

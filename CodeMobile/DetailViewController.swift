@@ -18,7 +18,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
     var speakerImageURL: URL!
     var company = ""
     
-    // MARK: View Controller Life Cycle
+    // MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +26,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
         setupDetailData()
     }
     
-    // MARK: Other
+    // MARK: - Other
     
     func setupDetailData() {
         

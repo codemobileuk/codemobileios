@@ -20,7 +20,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     private let coreData = CoreDataHandler()
     
-    // MARK: View Controller Life Cycle
+    // MARK: - View Controller Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -35,7 +35,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         setupUI()
     }
     
-    // MARK: TableView
+    // MARK: - TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -60,16 +60,16 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             let title = UILabel()
             title.textColor = UIColor.white
             let header = view as! UITableViewHeaderFooterView
-            header.textLabel!.font=title.font
             header.textLabel!.textColor=title.textColor
+            header.textLabel!.font = UIFont.boldSystemFont(ofSize: 16)
             header.contentView.backgroundColor = Colours.codeMobileGrey
         
         } else {
             let title = UILabel()
             title.textColor = UIColor.black
             let header = view as! UITableViewHeaderFooterView
-            header.textLabel!.font=title.font
             header.textLabel!.textColor=title.textColor
+            header.textLabel!.font = UIFont.boldSystemFont(ofSize: 16)
             header.contentView.backgroundColor = UIColor.groupTableViewBackground
 
         }
@@ -141,7 +141,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         self.performSegue(withIdentifier: "showDetail", sender: self)
     }
     
-    // MARK: Segue
+    // MARK: - Segue
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -176,7 +176,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    // MARK: Split View
+    // MARK: - SplitView
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return true
@@ -188,7 +188,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
     }
     
-    // MARK: Core Data
+    // MARK: - Core Data
     
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
@@ -248,7 +248,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         scheduleTableView.reloadData()
     }
 
-    // MARK: Other
+    // MARK: - Other
     
     func setupSideMenu() {
         
@@ -265,21 +265,21 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         let dayOne = UIAlertAction(title: "Tuesday 18th April", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
-            print("Day 1 tapped")
+            print("Day 1 tapped : Tuesday 18th April")
             self.chosenDate = "2017-04-18"
             self.currentDateSelected.text = "Tuesday 18th April"
             self.scheduleTableView.reloadData()
         })
         let dayTwo = UIAlertAction(title: "Wednesday 19th April", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
-            print("Day 2 tapped")
+            print("Day 2 tapped : Wednesday 19th April")
             self.chosenDate = "2017-04-19"
             self.currentDateSelected.text = "Wednesday 19th April"
             self.scheduleTableView.reloadData()
         })
         let dayThree = UIAlertAction(title: "Thursday 20th April", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
-            print("Day 3 tapped")
+            print("Day 3 tapped : Thursday 20th April")
             self.chosenDate = "2017-04-20"
             self.currentDateSelected.text = "Thursday 20th April"
             self.scheduleTableView.reloadData()
@@ -323,7 +323,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
 }
 
-// MARK: Session TableView Cell UI
+// MARK: - Session TableView Cell UI
 class FullWidthCell: UITableViewCell {
     
     @IBOutlet weak var sessionTitleLbl: UILabel!
@@ -331,7 +331,7 @@ class FullWidthCell: UITableViewCell {
     @IBOutlet weak var buildingIconImgView: UIImageView!
 }
 
-// MARK: Session Model
+// MARK: - Session Model
 struct TableItem {
     
     let title: String
