@@ -13,8 +13,6 @@ import CoreData
 // TODO: Comment class
 class ApiHandler {
     
-    var sessions: [NSManagedObject] = []
-    
     func storeSchedule(updateData: @escaping () -> Void) {
         
         let managedContext = getContext()
@@ -91,10 +89,10 @@ class ApiHandler {
                 
                 let swiftyJsonVar = JSON(responseData.result.value!)
                 let entity = NSEntityDescription.entity(forEntityName: "SessionLocation", in: managedContext)!
-                let location = NSManagedObject(entity: entity, insertInto: managedContext)
                 
                 for item in swiftyJsonVar {
                     
+                    let location = NSManagedObject(entity: entity, insertInto: managedContext)
                     location.setValue(item.1["LocationName"].string, forKeyPath: "locationName")
                     location.setValue(item.1["Longitude"].double, forKeyPath: "longitude")
                     location.setValue(item.1["Latitude"].double, forKeyPath: "latitude")
@@ -112,6 +110,36 @@ class ApiHandler {
         }
     }
     
+    func storeTags(updateData: @escaping () -> Void) {
+        
+        let managedContext = getContext()
+        
+        Alamofire.request(Commands.API_URL + Commands.TAGS).responseJSON { (responseData) -> Void in
+            if((responseData.result.value) != nil) {
+                
+                let swiftyJsonVar = JSON(responseData.result.value!)
+                let entity = NSEntityDescription.entity(forEntityName: "Tags", in: managedContext)!
+              
+                
+                for item in swiftyJsonVar {
+                    
+                    let tag = NSManagedObject(entity: entity, insertInto: managedContext)
+                    tag.setValue(item.1["tagId"].int, forKeyPath: "tagId")
+                    tag.setValue(item.1["Tag"].string, forKeyPath: "tag")
+                    tag.setValue(item.1["sessionId"].int, forKeyPath: "sessionId")
+                }
+                
+                do {
+                    try managedContext.save()
+                    print("Saved tags data!")
+                    updateData()
+                } catch let error as NSError {
+                    print("Failed: Could not save. \(error), \(error.userInfo)")
+                }
+            }
+        }
+    }
+
     func getContext() -> NSManagedObjectContext {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

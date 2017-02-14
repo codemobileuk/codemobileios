@@ -21,7 +21,7 @@ class CoreDataHandler {
     
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityNamed)
         
-        // Sort items
+        // Sort items by ___
         if entityNamed == Entities.SCHEDULE{
             let sortorder = NSSortDescriptor(key: "sessionStartDateTime", ascending: true)
             fetchRequest.sortDescriptors=[sortorder]
@@ -29,7 +29,6 @@ class CoreDataHandler {
         if entityNamed == Entities.SPEAKERS{
             let sortorder = NSSortDescriptor(key: "firstname", ascending: true)
             fetchRequest.sortDescriptors=[sortorder]
-            
         }
     
         do {
@@ -37,7 +36,7 @@ class CoreDataHandler {
             let searchResults = try managedContext.fetch(fetchRequest)
             print("...Retrieved \(searchResults.count) tables for \(entityNamed) from Core Data!")
             for item in searchResults as [NSManagedObject] {
-                
+                // Store each item in entity searched for
                 sessions.append(item)
                 
             }
@@ -50,36 +49,6 @@ class CoreDataHandler {
         return sessions
         
     }
-    
-    func deleteAllData(entityNamed: String)
-    {
-        let managedContext = getContext()
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityNamed)
-        fetchRequest.returnsObjectsAsFaults = false
-        
-        do
-        {
-            let results = try getContext().fetch(fetchRequest)
-            for managedObject in results
-            {
-                let managedObjectData:NSManagedObject = managedObject
-                managedContext.delete(managedObjectData)
-                sessions.removeAll()
-                print("Data deleted \(sessions) for \(entityNamed)")
-            }
-            
-            do {
-                try managedContext.save()
-                print("Saved \(entityNamed) data!")
-            } catch let error as NSError {
-                print("Failed: Could not save. \(error), \(error.userInfo)")
-            }
-
-        } catch let error as NSError {
-            print("Failed: Delete all data in \(entityNamed) error : \(error) \(error.userInfo)")
-        }
-    }
-    
     
     func getContext() -> NSManagedObjectContext {
         

@@ -52,28 +52,21 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
-        // If item is break
         let tableSection = timeSections[sortedSections[section]]
         let tableItem = tableSection![0]
+        let title = UILabel()
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel!.font = UIFont.boldSystemFont(ofSize: 16)
+        // If item is break
         if tableItem.title == "Break" {
-        
-            let title = UILabel()
             title.textColor = UIColor.white
-            let header = view as! UITableViewHeaderFooterView
             header.textLabel!.textColor=title.textColor
-            header.textLabel!.font = UIFont.boldSystemFont(ofSize: 16)
             header.contentView.backgroundColor = Colours.codeMobileGrey
-        
         } else {
-            let title = UILabel()
             title.textColor = UIColor.black
-            let header = view as! UITableViewHeaderFooterView
             header.textLabel!.textColor=title.textColor
-            header.textLabel!.font = UIFont.boldSystemFont(ofSize: 16)
             header.contentView.backgroundColor = UIColor.groupTableViewBackground
-
         }
-
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -123,6 +116,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let tableItem = tableSection![indexPath.row]
         cell.sessionTitleLbl.text = tableItem.title
         cell.buildingIconImgView.image = UIImage(named: tableItem.locationName)
+        cell.sessionTitleLbl.textColor = Colours.codeMobileGrey
         for speaker in speakers {
             // Find speakerId in speaker array and collect relevent information to match session
             if speaker.value(forKey: "speakerId") as! Int == tableItem.speakerId {
@@ -166,11 +160,12 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                     vc.fullname = firstName + " " + lastName
                     let url = URL(string: speaker.value(forKey: "photoURL") as! String)
                     vc.speakerImageURL = url
-                    
                     vc.company = speaker.value(forKey: "organisation") as! String
+                    vc.detail = speaker.value(forKey: "profile") as! String
                 }
             }
-            
+           
+            vc.socialMediaHidden = false
             
             self.scheduleTableView.deselectRow(at: index as IndexPath, animated: true)
         }
@@ -192,12 +187,15 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
+    private var tags: [NSManagedObject] = []
     
     private func recieveCoreData() {
         
         speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
         sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+        tags = coreData.recieveCoreData(entityNamed: Entities.TAGS)
         sortOutSections()
+        sortOutTags()
     }
     
     private var timeSections = [String: [TableItem]]()
@@ -246,6 +244,32 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         sortedSections = sortedSections.sorted {$0 < $1}
         // Update table
         scheduleTableView.reloadData()
+    }
+    
+    private var sessionTags = [Int: [SessionTags]]()
+    
+    private func sortOutTags() {
+        
+        for item in tags {
+            
+            var title: String
+            var tagId : Int
+            var sessionId : Int
+            
+            title = (item.value(forKey: "tag") as! String?)!
+            tagId = (item.value(forKey: "tagId") as! Int )
+            sessionId = (item.value(forKey: "sessionId") as! Int )
+            
+            if self.sessionTags.index(forKey: tagId) == nil {
+                self.sessionTags[tagId] = [SessionTags(title: title, tagId: tagId, sessionId: sessionId)]
+            } else {
+                self.sessionTags[tagId]!.append(SessionTags(title: title, tagId: tagId, sessionId: sessionId))
+            }
+
+        }
+        
+        print(sessionTags)
+        
     }
 
     // MARK: - Other
@@ -309,18 +333,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
     }
     
-    // Test function - This function will be deleted/ Used to delete all data instead of having to re-run the app
-    @IBAction func deleteTest(_ sender: Any) {
-        
-        coreData.deleteAllData(entityNamed: Entities.SCHEDULE)
-        coreData.deleteAllData(entityNamed: Entities.SPEAKERS)
-        sessions.removeAll()
-        speakers.removeAll()
-        sortedSections.removeAll()
-        timeSections.removeAll()
-        scheduleTableView.reloadData()
-    }
-    
 }
 
 // MARK: - Session TableView Cell UI
@@ -341,6 +353,13 @@ struct TableItem {
     let locationName : String
 }
 
+// MARK: - Tags Model
+struct SessionTags {
+    
+    let title: String
+    let tagId : Int
+    let sessionId : Int
+}
 
 
 

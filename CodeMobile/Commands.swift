@@ -13,5 +13,6 @@ class Commands{
     static let SCHEDULE = "/Schedule"
     static let SPEAKERS = "/Speakers"
     static let LOCATIONS = "/Locations"
+    static let TAGS = "/Tags"
     static let API_URL : String = "http://api.app.codemobile.co.uk/api"
 }

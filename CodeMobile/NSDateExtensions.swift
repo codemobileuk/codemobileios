@@ -21,6 +21,14 @@ extension Date {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         let formattedDate = dateFormatter.date(from: dateToFormat )
     
+        if formattedDate == nil {
+            
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            dateFormatter.locale = NSLocale(localeIdentifier:"en_US_POSIX") as Locale! // This fixes bug when using 12 hr clock
+            let formattedDate = dateFormatter.date(from: dateToFormat )
+            
+            return formattedDate!
+        }
         return formattedDate!
         
     }

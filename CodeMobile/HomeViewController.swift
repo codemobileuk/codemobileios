@@ -28,7 +28,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         scheduleCollectionView.reloadData()
         tweetsCollectionView.reloadData()
-        
     }
     
     override func viewDidLoad() {
@@ -36,7 +35,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupAndRecieveCoreData()
         scheduleSpinner.hidesWhenStopped = true
         twitterSpinner.hidesWhenStopped = true
-        
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -115,6 +113,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
     private var locations: [NSManagedObject] = []
+    private var tags: [NSManagedObject] = []
     
     private func setupAndRecieveCoreData() {
         
@@ -185,6 +184,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.locations = self.coreData.recieveCoreData(entityNamed: Entities.LOCATIONS)
             })
         } else {print("Schedule core data is not empty")}
+        
+        // TAGS
+        tags = coreData.recieveCoreData(entityNamed: Entities.TAGS)
+        
+        if tags.isEmpty{
+            print("Tags core data is empty, storing locations data...")
+            api.storeTags(updateData: { () -> Void in
+                self.tags = self.coreData.recieveCoreData(entityNamed: Entities.TAGS)
+            })
+        } else {print("Tags core data is not empty")}
+
     }
     
     // MARK: - Other

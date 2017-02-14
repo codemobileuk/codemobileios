@@ -88,6 +88,8 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
             vc.speakerImageURL = url
             vc.company = speaker.value(forKey: "organisation") as! String
             
+            vc.socialMediaHidden = false
+            
             self.speakersTableView.deselectRow(at: index as IndexPath, animated: true)
         }
     }

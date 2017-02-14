@@ -25,9 +25,15 @@
         <attribute name="surname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="twitter" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Tags" representedClassName="Tags" syncable="YES" codeGenerationType="class">
+        <attribute name="sessionId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tagId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Schedule" positionX="-297" positionY="-189" width="128" height="150"/>
         <element name="SessionLocation" positionX="-297" positionY="-117" width="128" height="105"/>
         <element name="Speaker" positionX="-288" positionY="-135" width="128" height="165"/>
+        <element name="Tags" positionX="-288" positionY="-99" width="128" height="90"/>
     </elements>
 </model>

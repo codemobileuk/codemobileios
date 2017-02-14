@@ -5,6 +5,12 @@
       location = "container:"
       name = "NSManagedObjectClasses">
       <FileRef
+         location = "group:Tags+CoreDataClass.swift">
+      </FileRef>
+      <FileRef
+         location = "group:Tags+CoreDataProperties.swift">
+      </FileRef>
+      <FileRef
          location = "group:SessionLocation+CoreDataClass.swift">
       </FileRef>
       <FileRef

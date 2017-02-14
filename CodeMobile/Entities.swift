@@ -13,4 +13,5 @@ class Entities{
     static let SCHEDULE = "Schedule"
     static let SPEAKERS = "Speaker"
     static let LOCATIONS = "SessionLocation"
+    static let TAGS = "Tags"
 }
