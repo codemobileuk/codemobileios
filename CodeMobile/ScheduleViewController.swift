@@ -47,7 +47,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return 80
+        return 100
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -124,6 +124,15 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                 let firstName = speaker.value(forKey: "firstname") as! String
                 let lastName = speaker.value(forKey: "surname") as! String
                 cell.sessionFullNameLbl.text = firstName + " " + lastName
+             
+                var allTags = [String]()
+                let sessionId = sessionTags[tableItem.sessionId]
+                for tag in sessionId! {
+                    allTags.append(tag.title)
+                }
+                
+                cell.tagsArray = allTags
+                cell.tagsCollectionView.reloadData()
                 
             }
         }
@@ -174,6 +183,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: - SplitView
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        
         return true
     }
     
@@ -212,7 +222,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             var endDate = String()
             var speaker = Int()
             var building = String()
+            var sessionId = Int()
             
+            sessionId = item.value(forKey: "SessionId") as! Int!
             date = (item.value(forKey: "SessionStartDateTime") as! String?)!
             endDate = (item.value(forKey: "SessionEndDateTime") as! String?)!
             
@@ -228,9 +240,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             
             // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
             if self.timeSections.index(forKey: date) == nil {
-                self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building)]
+                self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId)]
             } else {
-                self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building))
+                self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId))
             }
             
             if self.endDateSections.contains(endDate) == false {
@@ -247,7 +259,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     private var sessionTags = [Int: [SessionTags]]()
-    
+   
     private func sortOutTags() {
         
         for item in tags {
@@ -260,10 +272,10 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             tagId = (item.value(forKey: "tagId") as! Int )
             sessionId = (item.value(forKey: "sessionId") as! Int )
             
-            if self.sessionTags.index(forKey: tagId) == nil {
-                self.sessionTags[tagId] = [SessionTags(title: title, tagId: tagId, sessionId: sessionId)]
+            if self.sessionTags.index(forKey: sessionId) == nil {
+                self.sessionTags[sessionId] = [SessionTags(title: title, tagId: tagId)]
             } else {
-                self.sessionTags[tagId]!.append(SessionTags(title: title, tagId: tagId, sessionId: sessionId))
+                self.sessionTags[sessionId]!.append(SessionTags(title: title, tagId: tagId))
             }
 
         }
@@ -336,13 +348,40 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
 }
 
 // MARK: - Session TableView Cell UI
-class FullWidthCell: UITableViewCell {
+class FullWidthCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var sessionTitleLbl: UILabel!
     @IBOutlet weak var sessionFullNameLbl: UILabel!
     @IBOutlet weak var buildingIconImgView: UIImageView!
+    @IBOutlet weak var tagsCollectionView: UICollectionView!
+    
+    var tagsArray = [String]()
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tagsArray.count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let item = tagsArray[indexPath.row]
+        let cell = tagsCollectionView.dequeueReusableCell(withReuseIdentifier: "tagCell", for: indexPath) as! TagCollectionViewCell
+        cell.tagLbl.text = item
+        //cell.tagLbl.textColor = UIColor.white
+        cell.setRadius(radius: 2.5)
+        //cell.backgroundColor = Colours.codeMobileGrey
+        cell.backgroundColor = UIColor.groupTableViewBackground
+        
+
+        return cell
+    }
 }
 
+class TagCollectionViewCell : UICollectionViewCell {
+    
+    @IBOutlet weak var tagLbl: UILabel!
+}
 // MARK: - Session Model
 struct TableItem {
     
@@ -351,6 +390,7 @@ struct TableItem {
     let speakerId : Int
     let day : String
     let locationName : String
+    let sessionId : Int
 }
 
 // MARK: - Tags Model
@@ -358,7 +398,6 @@ struct SessionTags {
     
     let title: String
     let tagId : Int
-    let sessionId : Int
 }
 
 

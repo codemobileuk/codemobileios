@@ -38,9 +38,8 @@ extension Date {
         formatter.dateFormat = "h:mm a 'on' MMMM dd"
         formatter.amSymbol = "AM"
         formatter.pmSymbol = "PM"
-        
         let dateString = formatter.string(from: Date)
-        print(dateString)
+      
         return dateString
     }
 }

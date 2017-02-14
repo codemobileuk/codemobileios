@@ -14,7 +14,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     @IBOutlet weak var tweetsCollectionView: UICollectionView!
     @IBOutlet weak var scheduleCollectionView: UICollectionView!
-    @IBOutlet weak var scheduleView: UIView!
     @IBOutlet weak var bannerBackground: UIView!
     @IBOutlet weak var scheduleSpinner: UIActivityIndicatorView!
     @IBOutlet weak var twitterSpinner: UIActivityIndicatorView!
@@ -62,21 +61,21 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             
             let startTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionStartDateTime")! as! String)
             let endTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionEndDateTime")! as! String)
-            print(item.value(forKey: "SessionTitle")!)
-            print("Start Time  : \(startTime)")
-            print("End Time    : \(endTime)")
-            print("Current Time: \(Date())") // Current time
+            //print(item.value(forKey: "SessionTitle")!)
+            //print("Start Time  : \(startTime)")
+            //print("End Time    : \(endTime)")
+            //print("Current Time: \(Date())") // Current time
             if Date().isBetweeen(date: startTime, andDate: endTime) {
-                print("Session is on")
+                //print("Session is on")
                 cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
                 cell.liveInWhichBuildingLbl.textColor = UIColor.red
                 
             } else {
-                print ("Session is off")
+                //print ("Session is off")
                 cell.liveInWhichBuildingLbl.textColor = UIColor.blue
                 cell.liveInWhichBuildingLbl.text = Date().wordedDate(Date: startTime)
             }
-            print("-----------------------------")
+            //print("-----------------------------")
             
             for speaker in speakers {
                 
