@@ -124,9 +124,9 @@ class ApiHandler {
                 for item in swiftyJsonVar {
                     
                     let tag = NSManagedObject(entity: entity, insertInto: managedContext)
-                    tag.setValue(item.1["tagId"].int, forKeyPath: "tagId")
+                    tag.setValue(item.1["TagId"].int, forKeyPath: "tagId")
                     tag.setValue(item.1["Tag"].string, forKeyPath: "tag")
-                    tag.setValue(item.1["sessionId"].int, forKeyPath: "sessionId")
+                    tag.setValue(item.1["SessionId"].int, forKeyPath: "sessionId")
                 }
                 
                 do {
