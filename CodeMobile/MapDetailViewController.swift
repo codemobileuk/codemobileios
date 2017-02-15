@@ -19,13 +19,15 @@ class MapDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         
-        centerMapOnLocation(location: initialLocation)
         setupUI()
+        let initialLocation = CLLocation(latitude: lat, longitude: long)
+        centerMapOnLocation(location: initialLocation)
     }
     
     // MARK: - MapKit
+    var lat = 53.1938717
+    var long = -2.8961019
     
-    private let initialLocation = CLLocation(latitude: 53.190391, longitude: -2.891635)
     private let regionRadius: CLLocationDistance = 1000
     
     private func centerMapOnLocation(location: CLLocation) {

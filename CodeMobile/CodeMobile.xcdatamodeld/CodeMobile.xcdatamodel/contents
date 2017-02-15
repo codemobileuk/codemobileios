@@ -10,10 +10,12 @@
         <attribute name="speakerId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="SessionLocation" representedClassName="SessionLocation" syncable="YES">
+        <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="locationDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locationName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Speaker" representedClassName="Speaker" syncable="YES">
         <attribute name="firstname" optional="YES" attributeType="String" syncable="YES"/>
@@ -32,7 +34,7 @@
     </entity>
     <elements>
         <element name="Schedule" positionX="-297" positionY="-189" width="128" height="150"/>
-        <element name="SessionLocation" positionX="-297" positionY="-117" width="128" height="105"/>
+        <element name="SessionLocation" positionX="-297" positionY="-117" width="128" height="135"/>
         <element name="Speaker" positionX="-288" positionY="-135" width="128" height="165"/>
         <element name="Tags" positionX="-288" positionY="-99" width="128" height="90"/>
     </elements>

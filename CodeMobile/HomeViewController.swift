@@ -85,6 +85,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     cell.speakerNameLbl.text = firstName + " " + lastName
                     let url = URL(string: speaker.value(forKey: "photoURL") as! String)
                     cell.speakerImageView.kf.setImage(with: url)
+                    //cell.speakerImageView.contentMode = UIViewContentMode.scaleAspectFit
     
                 }
             }

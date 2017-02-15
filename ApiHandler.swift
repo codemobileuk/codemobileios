@@ -13,6 +13,7 @@ import CoreData
 // TODO: Comment class
 class ApiHandler {
     
+    // SESSIONS
     func storeSchedule(updateData: @escaping () -> Void) {
         
         let managedContext = getContext()
@@ -45,7 +46,7 @@ class ApiHandler {
             }
         }
     }
-    
+    // SPEAKERS
     func storeSpeakers(updateData: @escaping () -> Void) {
         
         let managedContext = getContext()
@@ -79,7 +80,7 @@ class ApiHandler {
             }
         }
     }
-    
+    // LOCATIONS
     func storeLocations(updateData: @escaping () -> Void) {
         
         let managedContext = getContext()
@@ -97,6 +98,8 @@ class ApiHandler {
                     location.setValue(item.1["Longitude"].double, forKeyPath: "longitude")
                     location.setValue(item.1["Latitude"].double, forKeyPath: "latitude")
                     location.setValue(item.1["Description"].string, forKeyPath: "locationDescription")
+                    location.setValue(item.1["Image"].string, forKeyPath: "imageURL")
+                    location.setValue(item.1["Type"].string, forKeyPath: "type")
                 }
                 
                 do {
@@ -109,7 +112,7 @@ class ApiHandler {
             }
         }
     }
-    
+    // TAGS
     func storeTags(updateData: @escaping () -> Void) {
         
         let managedContext = getContext()
