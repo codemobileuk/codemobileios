@@ -137,6 +137,9 @@
                                             <segment title="iOS"/>
                                         </segments>
                                         <color key="tintColor" red="0.88462060689999999" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="filterSessions:" destination="BYZ-38-t0r" eventType="valueChanged" id="v2I-vd-Kpo"/>
+                                        </connections>
                                     </segmentedControl>
                                 </subviews>
                                 <color key="backgroundColor" red="0.19997376203536987" green="0.20001503825187683" blue="0.19997116923332214" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -215,7 +218,7 @@
                                         <rect key="frame" x="0.0" y="28" width="320" height="88"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="j0S-Fq-MJ9" id="Wvs-Jg-Vu9">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="87"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="88"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ToK-fB-Qts">
@@ -1174,7 +1177,7 @@
         <image name="molloywhite" width="29" height="29"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="reR-m0-MR9"/>
         <segue reference="6T6-L4-JRK"/>
+        <segue reference="reR-m0-MR9"/>
     </inferredMetricsTieBreakers>
 </document>

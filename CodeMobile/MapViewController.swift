@@ -62,7 +62,7 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         return true
     }
     
-    func setupSplitView(){
+    private func setupSplitView(){
         
         self.splitViewController?.delegate = self
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
@@ -75,11 +75,8 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         if segue.identifier == "showMapDetail" {
             
             let nav = segue.destination as! UINavigationController
-            
             let vc = nav.viewControllers[0] as! MapDetailViewController
-            
             vc.extendedLayoutIncludesOpaqueBars = true
-            
             // Pass data here
         }
     }
@@ -94,8 +91,6 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         locations = coreData.recieveCoreData(entityNamed: Entities.LOCATIONS)
         //sortOutSections()
     }
-    
-    
 }
 
 // MARK: - Location TableView Cell UI

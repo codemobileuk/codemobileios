@@ -198,7 +198,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     // MARK: - Other
     
-    func showTimeline() {
+    private func showTimeline() {
         
         // Create an API client and data source to fetch Tweets for the timeline
         let client = TWTRAPIClient()
@@ -215,7 +215,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         showDetailViewController(navigationController, sender: self)
     }
     
-    func dismissTimeline() {
+    @objc private func dismissTimeline() {
         
         dismiss(animated: true, completion: nil)
     }

@@ -33,7 +33,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
     
     // MARK: - Other
     
-    func setupDetailData() {
+    private func setupDetailData() {
         
         fullnameLbl.text = fullname
         speakerImageView.kf.setImage(with: speakerImageURL)

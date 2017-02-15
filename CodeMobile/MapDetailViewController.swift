@@ -25,10 +25,10 @@ class MapDetailViewController: UIViewController {
     
     // MARK: - MapKit
     
-    let initialLocation = CLLocation(latitude: 53.190391, longitude: -2.891635)
-    let regionRadius: CLLocationDistance = 1000
+    private let initialLocation = CLLocation(latitude: 53.190391, longitude: -2.891635)
+    private let regionRadius: CLLocationDistance = 1000
     
-    func centerMapOnLocation(location: CLLocation) {
+    private func centerMapOnLocation(location: CLLocation) {
         
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius * 2.0, regionRadius * 2.0)
         chesterMapView.setRegion(coordinateRegion, animated: true)
@@ -45,7 +45,7 @@ class MapDetailViewController: UIViewController {
     
     // MARK: - Other
     
-    func setupUI() {
+    private func setupUI() {
         
         mapTypeSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
         mapTypeSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)

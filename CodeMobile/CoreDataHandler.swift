@@ -12,7 +12,7 @@ import SwiftyJSON
 // TODO: Comment class
 class CoreDataHandler {
     
-    var sessions: [NSManagedObject] = []
+    private var sessions: [NSManagedObject] = []
     
     func recieveCoreData(entityNamed: String) -> [NSManagedObject]{
         
@@ -38,19 +38,15 @@ class CoreDataHandler {
             for item in searchResults as [NSManagedObject] {
                 // Store each item in entity searched for
                 sessions.append(item)
-                
             }
-            
         } catch let error as NSError {
             print("Failed: Could not fetch. \(error), \(error.userInfo)")
         }
         
-        
         return sessions
-        
     }
     
-    func getContext() -> NSManagedObjectContext {
+    private func getContext() -> NSManagedObjectContext {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext

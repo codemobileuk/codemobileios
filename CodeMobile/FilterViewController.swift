@@ -12,7 +12,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var filterTableView: UITableView!
     
-    var filtersArray = [Filters]()
+    private var filtersArray = [Filters]()
     
     // MARK: - View Controller Life Cycle
     

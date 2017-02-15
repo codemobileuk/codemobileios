@@ -100,7 +100,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         return true
     }
     
-    func setupSplitView(){
+    private func setupSplitView(){
         
         self.splitViewController?.delegate = self
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
@@ -111,7 +111,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
     
-    func recieveCoreData() {
+    private func recieveCoreData() {
         
         speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
         sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
@@ -125,7 +125,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // MARK: - Other
     
-    func setupUI() {
+    private func setupUI() {
         
         speakerSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
         speakerSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)

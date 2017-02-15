@@ -19,6 +19,8 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var sessionSegment: UISegmentedControl!
     
     private let coreData = CoreDataHandler()
+    var userIsFiltering = false
+    var filterItems = [Int]()
     
     // MARK: - View Controller Life Cycle
     
@@ -39,9 +41,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        if sortedSections.isEmpty{
-            return 0
-        }
+        if sortedSections.isEmpty{ return 0 }
         return timeSections.count
     }
     
@@ -94,17 +94,13 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         // Seperate only the time from the day/time string & remove the seconds from the time
         let returnvalue = sortedSections[section].components(separatedBy: "T").last
         let endIndex = returnvalue?.index((returnvalue?.endIndex)!, offsetBy:  -3)
-        
         let returnvalue2 = endDateSections[section].components(separatedBy: "T").last
-        
         // If item is break
         let tableSection = timeSections[sortedSections[section]]
         let tableItem = tableSection![0]
         if tableItem.title == "Break" {
-            
              return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))! + "  Break"
         }
-
         
         return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))!
     }
@@ -130,10 +126,8 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                 for tag in sessionId! {
                     allTags.append(tag.title)
                 }
-                
                 cell.tagsArray = allTags
                 cell.tagsCollectionView.reloadData()
-                
             }
         }
         return cell
@@ -187,7 +181,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         return true
     }
     
-    func setupSplitView(){
+    private func setupSplitView(){
         
         self.splitViewController?.delegate = self
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
@@ -215,43 +209,100 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     // Function responsible for sorting out schedule data into seperate sections
     private func sortOutSections() {
         
+        timeSections.removeAll()
+        sortedSections.removeAll()
+        endDateSections.removeAll()
+        // THIS IS A CONFUSING FUNCTION NOW
         for item in sessions {
             
-            var title = String()
-            var date = String()
-            var endDate = String()
-            var speaker = Int()
-            var building = String()
-            var sessionId = Int()
+            if userIsFiltering == true {
             
-            sessionId = item.value(forKey: "SessionId") as! Int!
-            date = (item.value(forKey: "SessionStartDateTime") as! String?)!
-            endDate = (item.value(forKey: "SessionEndDateTime") as! String?)!
-            
-            // Format date to remove useless data in string
-            let dated = Date().formatDate(dateToFormat: (item.value(forKey: "SessionStartDateTime") as! String?)!)
-            
-            title = (item.value(forKey: "SessionTitle") as! String?)!
-            speaker = (item.value(forKey: "speakerId") as! Int )
-            building = (item.value(forKey: "sessionLocationName") as! String)
-            
-            // Get day of item without time
-            let day = date.components(separatedBy: "T").first
-            
-            // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
-            if self.timeSections.index(forKey: date) == nil {
-                self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId)]
-            } else {
-                self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId))
+                var sessionId = Int()
+                sessionId = item.value(forKey: "SessionId") as! Int!
+                let tags = sessionTags[sessionId]
+                for tag in tags! {
+                    
+                    if filterItems.contains(tag.tagId){
+                        
+                        var title = String()
+                        var date = String()
+                        var endDate = String()
+                        var speaker = Int()
+                        var building = String()
+                        
+                        sessionId = item.value(forKey: "SessionId") as! Int!
+                        date = (item.value(forKey: "SessionStartDateTime") as! String?)!
+                        endDate = (item.value(forKey: "SessionEndDateTime") as! String?)!
+                        
+                        // Format date to remove useless data in string
+                        let dated = Date().formatDate(dateToFormat: (item.value(forKey: "SessionStartDateTime") as! String?)!)
+                        
+                        title = (item.value(forKey: "SessionTitle") as! String?)!
+                        speaker = (item.value(forKey: "speakerId") as! Int )
+                        building = (item.value(forKey: "sessionLocationName") as! String)
+                        
+                        // Get day of item without time
+                        let day = date.components(separatedBy: "T").first
+                        
+                        // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
+                        if self.timeSections.index(forKey: date) == nil {
+                            self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId)]
+                        } else {
+                            self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId))
+                        }
+                        
+                        if self.endDateSections.contains(endDate) == false {
+                            endDateSections.append(endDate)
+                        }
+                        
+                    }
+
+                }
+                
+                
             }
-            
-            if self.endDateSections.contains(endDate) == false {
-                endDateSections.append(endDate)
+            else {
+                
+                var title = String()
+                var date = String()
+                var endDate = String()
+                var speaker = Int()
+                var building = String()
+                var sessionId = Int()
+                
+                sessionId = item.value(forKey: "SessionId") as! Int!
+                date = (item.value(forKey: "SessionStartDateTime") as! String?)!
+                endDate = (item.value(forKey: "SessionEndDateTime") as! String?)!
+                
+                // Format date to remove useless data in string
+                let dated = Date().formatDate(dateToFormat: (item.value(forKey: "SessionStartDateTime") as! String?)!)
+                
+                title = (item.value(forKey: "SessionTitle") as! String?)!
+                speaker = (item.value(forKey: "speakerId") as! Int )
+                building = (item.value(forKey: "sessionLocationName") as! String)
+                
+                // Get day of item without time
+                let day = date.components(separatedBy: "T").first
+                
+                // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
+                if self.timeSections.index(forKey: date) == nil {
+                    self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId)]
+                } else {
+                    self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId))
+                }
+                
+                if self.endDateSections.contains(endDate) == false {
+                    endDateSections.append(endDate)
+                }
+
+                
             }
             
             
         }
+      
         for item in timeSections { sortedSections.append(item.key) }
+       
         // Sort array in time order
         sortedSections = sortedSections.sorted {$0 < $1}
         // Update table
@@ -273,20 +324,18 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             sessionId = (item.value(forKey: "sessionId") as! Int )
             
             if self.sessionTags.index(forKey: sessionId) == nil {
-                self.sessionTags[sessionId] = [SessionTags(title: title, tagId: tagId)]
+                self.sessionTags[sessionId] = [SessionTags(title: title, tagId: tagId)] // tagId unused?
             } else {
                 self.sessionTags[sessionId]!.append(SessionTags(title: title, tagId: tagId))
             }
 
         }
         
-        print(sessionTags)
-        
     }
 
     // MARK: - Other
     
-    func setupSideMenu() {
+    private func setupSideMenu() {
         
         openBtn.target = self.revealViewController()
         openBtn.action = #selector((SWRevealViewController.revealToggle) as (SWRevealViewController) -> (Void) -> Void)
@@ -339,12 +388,32 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
     }
     
-    func setupUI() {
+    private func setupUI() {
         
         sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
         sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
     }
     
+    
+    @IBAction func filterSessions(_ sender: Any) {
+        
+        switch sessionSegment.selectedSegmentIndex{
+        case 0 :
+            userIsFiltering = false
+            filterItems.removeAll()
+            sortOutSections()
+        case 1 :
+            userIsFiltering = true
+            filterItems.removeAll()
+            filterItems.append(2)
+            sortOutSections()
+        default :
+            userIsFiltering = true
+            filterItems.removeAll()
+            filterItems.append(1)
+            sortOutSections()
+        }
+    }
 }
 
 // MARK: - Session TableView Cell UI
@@ -399,9 +468,3 @@ struct SessionTags {
     let title: String
     let tagId : Int
 }
-
-
-
-
-
-
