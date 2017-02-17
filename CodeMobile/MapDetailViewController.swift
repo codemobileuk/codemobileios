@@ -22,10 +22,12 @@ class MapDetailViewController: UIViewController {
         setupUI()
         let initialLocation = CLLocation(latitude: lat, longitude: long)
         centerMapOnLocation(location: initialLocation)
+        addAnnotations()
     }
     
     // MARK: - MapKit
     
+    var locationPoints = [CLLocationCoordinate2D]()
     var lat = 53.1938717
     var long = -2.8961019
     
@@ -44,6 +46,19 @@ class MapDetailViewController: UIViewController {
         case 1 : chesterMapView.mapType = MKMapType.satellite
         default : chesterMapView.mapType = MKMapType.hybrid
         }
+    }
+    
+    func addAnnotations() {
+        
+        var annotations = [MKPointAnnotation]()
+        
+        for item in locationPoints{
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = item
+            annotations.append(annotation)
+        }
+        
+        chesterMapView.addAnnotations(annotations)
     }
     
     // MARK: - Other

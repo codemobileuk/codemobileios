@@ -27,7 +27,6 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         
         recieveCoreData()
         setupSplitView()
-        setupUI()
     }
     
     // MARK: - TableView
@@ -123,13 +122,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
-    // MARK: - Other
-    
-    private func setupUI() {
-        
-        speakerSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
-        speakerSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
-    }
+   
     
 }
 

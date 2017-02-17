@@ -41,6 +41,8 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         return locationSections[sortedSections[section]]!.count
     }
     
+    var toBeAnnotations = [CLLocationCoordinate2D]()
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let tableSection = locationSections[sortedSections[indexPath.section]]
@@ -53,6 +55,7 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         
         cell.locationNameLbl.text = tableItem.locationName
         cell.milesLbl.text = tableItem.description
+        toBeAnnotations.append(CLLocationCoordinate2D(latitude: tableItem.latitude,longitude: tableItem.longitude))
         
         return cell
     }
@@ -94,6 +97,8 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
             // Pass data here
             vc.lat = tableItem.latitude
             vc.long = tableItem.longitude
+            vc.locationPoints = toBeAnnotations
+            
         }
     }
 

@@ -31,11 +31,11 @@
                                         <rect key="frame" x="0.0" y="28" width="260" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KbJ-RL-mNH" id="ZEO-79-MAP">
-                                            <rect key="frame" x="0.0" y="0.0" width="260" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="260" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hjq-Xu-c44">
-                                                    <rect key="frame" x="15" y="0.0" width="230" height="43.5"/>
+                                                    <rect key="frame" x="15" y="0.0" width="230" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -547,32 +547,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8D0-Kc-LUO">
-                                <rect key="frame" x="0.0" y="64" width="320" height="48"/>
-                                <subviews>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="RV1-hd-qQc">
-                                        <rect key="frame" x="20" y="10" width="280" height="29"/>
-                                        <segments>
-                                            <segment title="All"/>
-                                            <segment title="Android"/>
-                                            <segment title="iOS"/>
-                                        </segments>
-                                        <color key="tintColor" red="0.88462060689999999" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </segmentedControl>
-                                </subviews>
-                                <color key="backgroundColor" red="0.199973762" green="0.2000150383" blue="0.19997116919999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstItem="RV1-hd-qQc" firstAttribute="leading" secondItem="8D0-Kc-LUO" secondAttribute="leading" constant="20" id="95U-0Q-RAW"/>
-                                    <constraint firstItem="RV1-hd-qQc" firstAttribute="centerX" secondItem="8D0-Kc-LUO" secondAttribute="centerX" id="HiB-xW-ZSR"/>
-                                    <constraint firstItem="RV1-hd-qQc" firstAttribute="centerY" secondItem="8D0-Kc-LUO" secondAttribute="centerY" id="QOa-JZ-Z9b"/>
-                                    <constraint firstItem="RV1-hd-qQc" firstAttribute="centerX" secondItem="8D0-Kc-LUO" secondAttribute="centerX" id="SMZ-hv-qsN"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="48" id="SMx-Qc-5Qy"/>
-                                    <constraint firstAttribute="height" constant="48" id="aG8-GH-uNW"/>
-                                    <constraint firstItem="RV1-hd-qQc" firstAttribute="centerY" secondItem="8D0-Kc-LUO" secondAttribute="centerY" id="gz7-TM-LVI"/>
-                                </constraints>
-                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dqc-uE-EXC">
-                                <rect key="frame" x="0.0" y="112" width="320" height="407"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SpeakerCell" rowHeight="100" id="z48-9y-5Z4" customClass="SpeakerCell" customModule="CodeMobile" customModuleProvider="target">
@@ -630,23 +606,19 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Dqc-uE-EXC" firstAttribute="leading" secondItem="csX-Xe-b1a" secondAttribute="leading" id="3wO-Lk-APx"/>
-                            <constraint firstAttribute="trailing" secondItem="8D0-Kc-LUO" secondAttribute="trailing" id="5dH-7Q-7fQ"/>
-                            <constraint firstItem="8D0-Kc-LUO" firstAttribute="leading" secondItem="csX-Xe-b1a" secondAttribute="leading" id="Afa-Nz-xUL"/>
-                            <constraint firstItem="8D0-Kc-LUO" firstAttribute="top" secondItem="6rf-Yo-ozf" secondAttribute="bottom" id="Ef7-w9-YJq"/>
                             <constraint firstAttribute="trailing" secondItem="Dqc-uE-EXC" secondAttribute="trailing" id="cak-Gi-wBl"/>
-                            <constraint firstItem="Dqc-uE-EXC" firstAttribute="top" secondItem="8D0-Kc-LUO" secondAttribute="bottom" id="pBk-bC-rVL"/>
+                            <constraint firstItem="Dqc-uE-EXC" firstAttribute="top" secondItem="6rf-Yo-ozf" secondAttribute="bottom" id="irE-3i-dBJ"/>
                             <constraint firstItem="7Y8-os-Gka" firstAttribute="top" secondItem="Dqc-uE-EXC" secondAttribute="bottom" id="rox-5Y-oIW"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Speakers" id="ksc-SJ-Zc9"/>
                     <connections>
-                        <outlet property="speakerSegment" destination="RV1-hd-qQc" id="x55-3y-6A4"/>
                         <outlet property="speakersTableView" destination="Dqc-uE-EXC" id="cfo-ab-fVj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8JZ-Tq-eNK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4530" y="1587"/>
+            <point key="canvasLocation" x="4530" y="1586.6197183098591"/>
         </scene>
         <!--Home-->
         <scene sceneID="o9a-oI-PyZ">
@@ -1105,7 +1077,7 @@
         <image name="menu" width="21" height="21"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="6T6-L4-JRK"/>
         <segue reference="reR-m0-MR9"/>
+        <segue reference="HxD-cZ-gC3"/>
     </inferredMetricsTieBreakers>
 </document>

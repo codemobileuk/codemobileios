@@ -27,7 +27,16 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         scheduleTableView.reloadData()
         recieveCoreData()
-        print(TagsStruct.tagsArray)
+        print(TagsStruct.date)
+        switch (TagsStruct.date){
+            
+        case "2017-04-18" :  sessionSegment.selectedSegmentIndex = 0
+        case "2017-04-19" :  sessionSegment.selectedSegmentIndex = 1
+        case "2017-04-20" :  sessionSegment.selectedSegmentIndex = 2
+        default: sessionSegment.selectedSegmentIndex = 0
+            
+        }
+
     }
     
     override func viewDidLoad() {
@@ -36,6 +45,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         setupSplitView()
         setupSideMenu()
         setupUI()
+        
        
     }
     
@@ -77,7 +87,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         var day = ""
         for item in timeSections[sortedSections[section]]! { day = item.day }
         // If date of section is not current date selected for sorting, return 0 number of rows
-        if day != chosenDate { return 0 }
+        if day != TagsStruct.date { return 0 }
         // If item is break
         let tableSection = timeSections[sortedSections[section]]
         let tableItem = tableSection![0]
@@ -93,7 +103,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         var day = ""
         for item in timeSections[sortedSections[section]]! { day = item.day }
         // If date of section is not current date selected for sorting, return nil so no header appears
-        if day != chosenDate { return nil }
+        if day != TagsStruct.date { return nil }
         // Seperate only the time from the day/time string & remove the seconds from the time
         let returnvalue = sortedSections[section].components(separatedBy: "T").last
         let endIndex = returnvalue?.index((returnvalue?.endIndex)!, offsetBy:  -3)
@@ -233,6 +243,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                 sessionId = item.value(forKey: "SessionId") as! Int!
                 let tags = sessionTags[sessionId]
                 
+                if tags != nil {
                 for tag in tags! {
                     
                     if TagsStruct.tagsArray.contains(tag.tagId){
@@ -278,7 +289,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                     }
 
                 }
-                
+                }
                 
             }
             else {
@@ -375,21 +386,21 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         switch sessionSegment.selectedSegmentIndex{
         case 0 :
-            chosenDate = "2017-04-18"
+            TagsStruct.date = "2017-04-18"
             scheduleTableView.reloadData()
             //userIsFiltering = false
             //filterItems.removeAll()
             //sortOutSections()
         case 1 :
             //userIsFiltering = true
-            chosenDate = "2017-04-19"
+            TagsStruct.date = "2017-04-19"
              scheduleTableView.reloadData()
             //filterItems.removeAll()
             //filterItems.append(2)
             //sortOutSections()
         default :
             //userIsFiltering = true
-            chosenDate = "2017-04-20"
+            TagsStruct.date = "2017-04-20"
              scheduleTableView.reloadData()
             //filterItems.removeAll()
             //filterItems.append(1)
