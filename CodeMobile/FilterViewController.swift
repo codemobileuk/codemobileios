@@ -59,6 +59,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.filterTitleLabel.text = tableItem.tagTitle
         cell.selectionStyle = .none
         
+        
         return cell
     }
     
@@ -67,7 +68,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return sortedSections[section]
     }
     
-     var lastChecked = UITableViewCell()
+    var lastChecked = UITableViewCell()
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let index = self.filterTableView.indexPathForSelectedRow! as NSIndexPath

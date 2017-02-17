@@ -48,7 +48,11 @@ class CoreDataHandler {
     private func getContext() -> NSManagedObjectContext {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
+         if #available(iOS 10.0, *) {
         return appDelegate.persistentContainer.viewContext
+         } else {
+             return appDelegate.managedObjectContext
+        }
     }
 }
 

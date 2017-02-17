@@ -45,8 +45,8 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         setupSplitView()
         setupSideMenu()
         setupUI()
-        
-       
+        scheduleTableView.tableFooterView = UIView()
+        TagsStruct.date = "2017-04-18"
     }
     
     // MARK: - TableView

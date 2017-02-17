@@ -42,6 +42,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         if UIDevice.current.orientation.isLandscape { print("Landscape") } else { print("Portrait") }
     }
     
+    
     // MARK: - CollectionView
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

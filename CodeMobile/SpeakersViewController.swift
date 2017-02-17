@@ -27,6 +27,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         
         recieveCoreData()
         setupSplitView()
+        speakersTableView.tableFooterView = UIView()
     }
     
     // MARK: - TableView

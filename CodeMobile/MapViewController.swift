@@ -27,6 +27,7 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         
         recieveCoreData()
         setupSplitView()
+        locationTableView.tableFooterView = UIView()
     }
     
     // MARK: - TableView
