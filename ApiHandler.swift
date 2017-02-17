@@ -148,7 +148,6 @@ class ApiHandler {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
     }
-    
 }
 
 

@@ -25,6 +25,7 @@ class MapDetailViewController: UIViewController {
     }
     
     // MARK: - MapKit
+    
     var lat = 53.1938717
     var long = -2.8961019
     

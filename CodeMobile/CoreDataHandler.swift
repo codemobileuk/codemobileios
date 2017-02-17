@@ -18,10 +18,9 @@ class CoreDataHandler {
         
         sessions.removeAll()
         let managedContext = getContext()
-    
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityNamed)
         
-        // Sort items by ___
+        // Sort items by _
         if entityNamed == Entities.SCHEDULE{
             let sortorder = NSSortDescriptor(key: "sessionStartDateTime", ascending: true)
             fetchRequest.sortDescriptors=[sortorder]
@@ -50,9 +49,7 @@ class CoreDataHandler {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
-        
     }
-    
 }
 
 

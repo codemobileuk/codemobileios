@@ -30,6 +30,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     override func viewDidLoad() {
+        self.tabBarController?.tabBar.isUserInteractionEnabled = false
         // Set up Core Data once
         setupAndRecieveCoreData()
         scheduleSpinner.hidesWhenStopped = true
@@ -38,9 +39,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
-        if UIDevice.current.orientation.isLandscape {
-            print("Landscape")
-        }
+        if UIDevice.current.orientation.isLandscape { print("Landscape") } else { print("Portrait") }
     }
     
     // MARK: - CollectionView
@@ -69,7 +68,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 //print("Session is on")
                 cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
                 cell.liveInWhichBuildingLbl.textColor = UIColor.red
-                
             } else {
                 //print ("Session is off")
                 cell.liveInWhichBuildingLbl.textColor = UIColor.blue
@@ -86,7 +84,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     let url = URL(string: speaker.value(forKey: "photoURL") as! String)
                     cell.speakerImageView.kf.setImage(with: url)
                     //cell.speakerImageView.contentMode = UIViewContentMode.scaleAspectFit
-    
                 }
             }
             return cell
@@ -151,11 +148,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         self.sessions.remove(at: i)
                     }
                 }
-                
                 self.scheduleCollectionView.reloadData()
                 self.tweetsCollectionView.reloadData()
                 self.scheduleSpinner.stopAnimating()
                 self.twitterSpinner.stopAnimating()
+                self.tabBarController?.tabBar.isUserInteractionEnabled = true
+               
             })
         } else {
             print("Schedule core data is not empty")
@@ -170,9 +168,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.sessions.remove(at: i)
                 }
             }
-            
             self.scheduleSpinner.stopAnimating()
             self.twitterSpinner.stopAnimating()
+            self.tabBarController?.tabBar.isUserInteractionEnabled = true
         }
         
         // LOCATIONS

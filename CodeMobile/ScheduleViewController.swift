@@ -14,7 +14,6 @@ import SWRevealViewController
 class ScheduleViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate {
     
     @IBOutlet weak var scheduleTableView: UITableView!
-    @IBOutlet weak var currentDateSelected: UILabel!
     @IBOutlet weak var openBtn: UIBarButtonItem!
     @IBOutlet weak var sessionSegment: UISegmentedControl!
     
@@ -27,14 +26,17 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewWillAppear(_ animated: Bool) {
         
         scheduleTableView.reloadData()
+        recieveCoreData()
+        print(TagsStruct.tagsArray)
     }
     
     override func viewDidLoad() {
         
-        recieveCoreData()
+        //recieveCoreData()
         setupSplitView()
         setupSideMenu()
         setupUI()
+       
     }
     
     // MARK: - TableView
@@ -81,6 +83,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let tableItem = tableSection![0]
         if tableItem.title == "Break" { return 0 }
 
+        print(timeSections[sortedSections[section]]!.count)
         return timeSections[sortedSections[section]]!.count
     }
     
@@ -213,22 +216,34 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         sortedSections.removeAll()
         endDateSections.removeAll()
         // THIS IS A CONFUSING FUNCTION NOW
+        
+        if TagsStruct.tagsArray.isEmpty {
+            TagsStruct.userIsFiltering = false
+        }
+        
+        print(sessionTags)
+        var completedTitles = [String]()
+        completedTitles.removeAll()
+        
         for item in sessions {
             
-            if userIsFiltering == true {
+            if TagsStruct.userIsFiltering == true {
             
                 var sessionId = Int()
                 sessionId = item.value(forKey: "SessionId") as! Int!
                 let tags = sessionTags[sessionId]
+                
                 for tag in tags! {
                     
-                    if filterItems.contains(tag.tagId){
+                    if TagsStruct.tagsArray.contains(tag.tagId){
                         
                         var title = String()
                         var date = String()
                         var endDate = String()
                         var speaker = Int()
                         var building = String()
+                        
+                        
                         
                         sessionId = item.value(forKey: "SessionId") as! Int!
                         date = (item.value(forKey: "SessionStartDateTime") as! String?)!
@@ -247,8 +262,13 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                         // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
                         if self.timeSections.index(forKey: date) == nil {
                             self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId)]
+                            completedTitles.append(title)
                         } else {
-                            self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId))
+                            if completedTitles.contains(title) == false{
+                               self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId))
+                               completedTitles.append(title)
+                            }
+                           
                         }
                         
                         if self.endDateSections.contains(endDate) == false {
@@ -278,6 +298,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                 let dated = Date().formatDate(dateToFormat: (item.value(forKey: "SessionStartDateTime") as! String?)!)
                 
                 title = (item.value(forKey: "SessionTitle") as! String?)!
+             
                 speaker = (item.value(forKey: "speakerId") as! Int )
                 building = (item.value(forKey: "sessionLocationName") as! String)
                 
@@ -313,6 +334,8 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
    
     private func sortOutTags() {
         
+        sessionTags.removeAll()
+        
         for item in tags {
             
             var title: String
@@ -328,9 +351,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             } else {
                 self.sessionTags[sessionId]!.append(SessionTags(title: title, tagId: tagId))
             }
-
         }
-        
     }
 
     // MARK: - Other
@@ -344,74 +365,35 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     private var chosenDate = "2017-04-18"
     
-    @IBAction func sortDate(_ sender: Any) {
-        
-        let optionMenu = UIAlertController(title: nil, message: "Sort by date", preferredStyle: .actionSheet)
-        
-        let dayOne = UIAlertAction(title: "Tuesday 18th April", style: .default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Day 1 tapped : Tuesday 18th April")
-            self.chosenDate = "2017-04-18"
-            self.currentDateSelected.text = "Tuesday 18th April"
-            self.scheduleTableView.reloadData()
-        })
-        let dayTwo = UIAlertAction(title: "Wednesday 19th April", style: .default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Day 2 tapped : Wednesday 19th April")
-            self.chosenDate = "2017-04-19"
-            self.currentDateSelected.text = "Wednesday 19th April"
-            self.scheduleTableView.reloadData()
-        })
-        let dayThree = UIAlertAction(title: "Thursday 20th April", style: .default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Day 3 tapped : Thursday 20th April")
-            self.chosenDate = "2017-04-20"
-            self.currentDateSelected.text = "Thursday 20th April"
-            self.scheduleTableView.reloadData()
-        })
-        
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        optionMenu.addAction(dayOne)
-        optionMenu.addAction(dayTwo)
-        optionMenu.addAction(dayThree)
-        optionMenu.addAction(cancel)
-        optionMenu.view.tintColor = UIColor.red
-        // Handles iPad crash
-        optionMenu.popoverPresentationController?.sourceView = self.view
-        optionMenu.popoverPresentationController?.sourceRect = self.view.bounds
-        
-        self.present(optionMenu, animated: true, completion: nil)
-        
-    }
-    
     private func setupUI() {
         
         sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
         sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
     }
     
-    
     @IBAction func filterSessions(_ sender: Any) {
         
         switch sessionSegment.selectedSegmentIndex{
         case 0 :
-            userIsFiltering = false
-            filterItems.removeAll()
-            sortOutSections()
+            chosenDate = "2017-04-18"
+            scheduleTableView.reloadData()
+            //userIsFiltering = false
+            //filterItems.removeAll()
+            //sortOutSections()
         case 1 :
-            userIsFiltering = true
-            filterItems.removeAll()
-            filterItems.append(2)
-            sortOutSections()
+            //userIsFiltering = true
+            chosenDate = "2017-04-19"
+             scheduleTableView.reloadData()
+            //filterItems.removeAll()
+            //filterItems.append(2)
+            //sortOutSections()
         default :
-            userIsFiltering = true
-            filterItems.removeAll()
-            filterItems.append(1)
-            sortOutSections()
+            //userIsFiltering = true
+            chosenDate = "2017-04-20"
+             scheduleTableView.reloadData()
+            //filterItems.removeAll()
+            //filterItems.append(1)
+            //sortOutSections()
         }
     }
 }

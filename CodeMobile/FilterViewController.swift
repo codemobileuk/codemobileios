@@ -13,7 +13,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var filterTableView: UITableView!
     
     private var filtersArray = [Filters]()
-    
+    var filterItems = [Int]()
     // MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
@@ -55,8 +55,49 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             if cell.accessoryType == .none {
                 cell.accessoryType = .checkmark
+                print(indexPath.row)
+                if indexPath.row == 0 {
+                    filterItems.append(1)
+                    
+                    TagsStruct.tagsArray = filterItems
+                    TagsStruct.userIsFiltering = true
+                    self.revealViewController().frontViewController.loadView()
+                }
+                else if indexPath.row == 1 {
+                    filterItems.append(2)
+                    TagsStruct.tagsArray = filterItems
+                    TagsStruct.userIsFiltering = true
+                    self.revealViewController().frontViewController.loadView()
+                    
+                }
+                else if indexPath.row == 2 {
+                    filterItems.append(3)
+                    TagsStruct.tagsArray = filterItems
+                    TagsStruct.userIsFiltering = true
+                    self.revealViewController().frontViewController.loadView()
+                    
+                }
+
             } else {
                 cell.accessoryType = .none
+                if indexPath.row == 0 {
+                    filterItems = filterItems.filter() {$0 != 1}
+                    TagsStruct.tagsArray = filterItems
+                    TagsStruct.userIsFiltering = true
+                    self.revealViewController().frontViewController.loadView()
+                }
+                else if indexPath.row == 1 {
+                     filterItems = filterItems.filter() {$0 != 2}
+                    TagsStruct.tagsArray = filterItems
+                    TagsStruct.userIsFiltering = true
+                    self.revealViewController().frontViewController.loadView()
+                }
+                else if indexPath.row == 2 {
+                    filterItems = filterItems.filter() {$0 != 3}
+                    TagsStruct.tagsArray = filterItems
+                    TagsStruct.userIsFiltering = true
+                    self.revealViewController().frontViewController.loadView()
+                }
             }
         }
     }
@@ -74,6 +115,29 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = UIColor.white
     }
+    
+    // MARK: - Segue
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let nav = segue.destination as! UINavigationController
+        
+        let vc = nav.viewControllers[0] as! ScheduleViewController
+        
+        vc.filterItems = filterItems
+        vc.userIsFiltering = true
+        vc.scheduleTableView.reloadData()
+
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+       
+        
+    }
+    
+    
+    
+    
 }
 
 // MARK: - Filter TableView Cell UI
@@ -86,4 +150,10 @@ struct Filters {
     
     var sectionName : String!
     var sectionFilters : [String]!
+}
+
+struct TagsStruct {
+    static var userIsFiltering = false
+    static var tagsArray = [Int]()
+    static var date = "2017-04-18"
 }
