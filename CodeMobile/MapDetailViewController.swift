@@ -23,6 +23,7 @@ class MapDetailViewController: UIViewController {
         let initialLocation = CLLocation(latitude: lat, longitude: long)
         centerMapOnLocation(location: initialLocation)
         addAnnotations()
+        
     }
     
     // MARK: - MapKit
@@ -30,6 +31,9 @@ class MapDetailViewController: UIViewController {
     var locationPoints = [CLLocationCoordinate2D]()
     var lat = 53.1938717
     var long = -2.8961019
+    var annotationSections = [AnnotationItem]()
+    var selectedTitle = ""
+    var selectedSubtitle = ""
     
     private let regionRadius: CLLocationDistance = 1000
     
@@ -52,10 +56,26 @@ class MapDetailViewController: UIViewController {
         
         var annotations = [MKPointAnnotation]()
         
-        for item in locationPoints{
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = item
-            annotations.append(annotation)
+        for item in annotationSections {
+            
+            if item.locationName == selectedTitle {
+                
+                let startingAnnotation = MKPointAnnotation()
+                startingAnnotation.title = selectedTitle
+                startingAnnotation.subtitle = selectedSubtitle
+                startingAnnotation.coordinate = CLLocationCoordinate2D(latitude: lat,longitude: long)
+                chesterMapView.addAnnotation(startingAnnotation)
+                chesterMapView.selectAnnotation(startingAnnotation, animated: true)
+                
+            }else {
+                
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = CLLocationCoordinate2D(latitude: item.latitude,longitude: item.longitude)
+                annotation.title = item.locationName
+                annotation.subtitle = item.description
+                annotations.append(annotation)
+            }
+            
         }
         
         chesterMapView.addAnnotations(annotations)

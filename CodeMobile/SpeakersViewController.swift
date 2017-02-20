@@ -57,10 +57,9 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
                 cell.sessionTitlesLbl.text = session.value(forKey: "SessionTitle") as! String?
             }
         }
-        
-        
         return cell
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         self.performSegue(withIdentifier: "showSpeakerDetail", sender: self)
@@ -87,7 +86,25 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
             let url = URL(string: speaker.value(forKey: "photoURL") as! String)
             vc.speakerImageURL = url
             vc.company = speaker.value(forKey: "organisation") as! String
+            vc.profile = speaker.value(forKey: "profile") as! String
             vc.socialMediaHidden = false
+            
+            for item in sessions{
+                
+                if item.value(forKey: "speakerId") as! Int == speaker.value(forKey: "speakerId") as! Int {
+                    
+                    var descArray = [String]()
+                    descArray.append(item.value(forKey: "sessionDescription") as! String)
+                    vc.buildingName = item.value(forKey: "sessionLocationName") as! String!
+                    vc.talkName = item.value(forKey: "sessionTitle") as! String!
+                    vc.timeStarted = item.value(forKey: "sessionStartDateTime") as! String!
+                    vc.talks = descArray
+                    vc.profileViewSelected = true
+                    
+                }
+
+                
+            }
             
             self.speakersTableView.deselectRow(at: index as IndexPath, animated: true)
         }

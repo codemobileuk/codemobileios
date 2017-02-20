@@ -13,7 +13,9 @@ import MapKit
 class MapViewController: UIViewController, UISplitViewControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var locationTableView: UITableView!
+    @IBOutlet weak var locationSpinner: UIActivityIndicatorView!
     
+    private let api = ApiHandler()
     private let coreData = CoreDataHandler()
     
     // MARK: - View Controller Life Cycle
@@ -25,9 +27,10 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
     
     override func viewDidLoad() {
         
-        recieveCoreData()
+        setupAndRecieveCoreData()
         setupSplitView()
         locationTableView.tableFooterView = UIView()
+        locationSpinner.hidesWhenStopped = true
     }
     
     // MARK: - TableView
@@ -99,22 +102,44 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
             vc.lat = tableItem.latitude
             vc.long = tableItem.longitude
             vc.locationPoints = toBeAnnotations
+            vc.annotationSections = annotationSections
+            vc.selectedTitle = tableItem.locationName
+            vc.selectedSubtitle = tableItem.description
             
         }
     }
-
     
     // MARK: - Core Data
     
     private var locations: [NSManagedObject] = []
     
-    private func recieveCoreData() {
+    private func setupAndRecieveCoreData() {
         
+        // LOCATIONS
         locations = coreData.recieveCoreData(entityNamed: Entities.LOCATIONS)
-        sortOutSections()
+        locationSpinner.startAnimating()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
+        if locations.isEmpty{
+            print("Locations core data is empty, storing locations data...")
+            api.storeLocations(updateData: { () -> Void in
+                self.locations = self.coreData.recieveCoreData(entityNamed: Entities.LOCATIONS)
+                self.locationSpinner.stopAnimating()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.sortOutSections()
+            })
+        } else {
+            print("Schedule core data is not empty")
+            locationSpinner.stopAnimating()
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            sortOutSections()
+        }
+
+       
     }
     
     private var locationSections = [String: [LocationItem]]()
+    private var annotationSections = [AnnotationItem]()
     private var sortedSections = [String]()
     
     private func sortOutSections() {
@@ -142,6 +167,9 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
             } else {
                 self.locationSections[type]!.append(LocationItem(locationName: locationName, type: type, thumbnailImage: thumbnailImage, description: description, latitude: latitude, longitude: longitude))
             }
+            self.annotationSections.append(AnnotationItem(locationName: locationName, description: description, latitude: latitude, longitude: longitude))
+           
+
             
         }
         
@@ -153,7 +181,10 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         locationTableView.reloadData()
         
     }
+    
+   
 }
+
 
 // MARK: - Location TableView Cell UI
 class LocationCell : UITableViewCell {
@@ -164,14 +195,7 @@ class LocationCell : UITableViewCell {
     
 }
 
-// MARK: - Location Model TEST
-struct Locations {
-    
-    var sectionName : String!
-    var locationNames : [String]!
-    var miles : [String]!
-    var imagesURLs : [String]!
-}
+
 // MARK: - Location Model
 struct LocationItem {
     
@@ -182,5 +206,14 @@ struct LocationItem {
     let latitude : Double
     let longitude : Double
 }
+// MARK: - Location Model
+struct AnnotationItem {
+        
+        let locationName: String
+        let description : String
+        let latitude : Double
+        let longitude : Double
+}
+
 
 

@@ -42,7 +42,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         if UIDevice.current.orientation.isLandscape { print("Landscape") } else { print("Portrait") }
     }
     
-    
     // MARK: - CollectionView
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -134,6 +133,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
         scheduleSpinner.startAnimating()
         twitterSpinner.startAnimating()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
         if sessions.isEmpty{
             print("Schedule core data is empty, storing schedule data...")
@@ -153,6 +153,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.tweetsCollectionView.reloadData()
                 self.scheduleSpinner.stopAnimating()
                 self.twitterSpinner.stopAnimating()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.tabBarController?.tabBar.isUserInteractionEnabled = true
                
             })
@@ -171,29 +172,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
             self.scheduleSpinner.stopAnimating()
             self.twitterSpinner.stopAnimating()
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             self.tabBarController?.tabBar.isUserInteractionEnabled = true
         }
         
-        // LOCATIONS
-        locations = coreData.recieveCoreData(entityNamed: Entities.LOCATIONS)
-        
-        if locations.isEmpty{
-            print("Locations core data is empty, storing locations data...")
-            api.storeLocations(updateData: { () -> Void in
-                self.locations = self.coreData.recieveCoreData(entityNamed: Entities.LOCATIONS)
-            })
-        } else {print("Schedule core data is not empty")}
-        
-        // TAGS
-        tags = coreData.recieveCoreData(entityNamed: Entities.TAGS)
-        
-        if tags.isEmpty{
-            print("Tags core data is empty, storing locations data...")
-            api.storeTags(updateData: { () -> Void in
-                self.tags = self.coreData.recieveCoreData(entityNamed: Entities.TAGS)
-            })
-        } else {print("Tags core data is not empty")}
-
+               
     }
     
     // MARK: - Other
