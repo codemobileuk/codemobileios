@@ -97,9 +97,10 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
                     descArray.append(item.value(forKey: "sessionDescription") as! String)
                     vc.buildingName = item.value(forKey: "sessionLocationName") as! String!
                     vc.talkName = item.value(forKey: "sessionTitle") as! String!
-                    vc.timeStarted = item.value(forKey: "sessionStartDateTime") as! String!
                     vc.talks = descArray
                     vc.profileViewSelected = true
+                    let startTime = Date().formatDate(dateToFormat: item.value(forKey: "sessionStartDateTime") as! String!)
+                    vc.timeStarted = Date().wordedDate(Date: startTime)
                     
                 }
 

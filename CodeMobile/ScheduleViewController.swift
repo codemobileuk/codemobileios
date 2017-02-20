@@ -188,11 +188,14 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             descArray.append(tableItem.description)
             vc.buildingName = tableItem.locationName
             vc.talkName = tableItem.title
-            vc.timeStarted = String(describing: tableItem.date)
+           
             
             vc.talks = descArray
             vc.profileViewSelected = false
             vc.socialMediaHidden = false
+            
+            let startTime = Date().formatDate(dateToFormat: tableItem.untouchedDate)
+            vc.timeStarted = Date().wordedDate(Date: startTime)
             
             self.scheduleTableView.deselectRow(at: index as IndexPath, animated: true)
         }
@@ -284,8 +287,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                         var speaker = Int()
                         var building = String()
                         var description = String()
+                        var untouchedDate = String()
                         
-                    
+                        untouchedDate = (item.value(forKey: "SessionStartDateTime") as! String?)!
                         description = (item.value(forKey: "sessionDescription") as! String?)!
                         sessionId = item.value(forKey: "SessionId") as! Int!
                         date = (item.value(forKey: "SessionStartDateTime") as! String?)!
@@ -303,11 +307,11 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                         
                         // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
                         if self.timeSections.index(forKey: date) == nil {
-                            self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId, description: description)]
+                            self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId, description: description, untouchedDate: untouchedDate)]
                             completedTitles.append(title)
                         } else {
                             if completedTitles.contains(title) == false{
-                               self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId, description: description))
+                               self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId, description: description, untouchedDate: untouchedDate))
                                completedTitles.append(title)
                             }
                            
@@ -332,8 +336,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                 var building = String()
                 var sessionId = Int()
                 var description = String()
+                var untouchedDate = String()
                 
-                
+                untouchedDate = (item.value(forKey: "SessionStartDateTime") as! String?)!
                 description = (item.value(forKey: "sessionDescription") as! String?)!
                 sessionId = item.value(forKey: "SessionId") as! Int!
                 date = (item.value(forKey: "SessionStartDateTime") as! String?)!
@@ -352,9 +357,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
                 if self.timeSections.index(forKey: date) == nil {
-                    self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId, description: description)]
+                    self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId, description: description, untouchedDate: untouchedDate)]
                 } else {
-                    self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId, description: description))
+                    self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId, description: description, untouchedDate: untouchedDate))
                 }
                 
                 if self.endDateSections.contains(endDate) == false {
@@ -488,6 +493,7 @@ struct TableItem {
     let locationName : String
     let sessionId : Int
     let description : String
+    let untouchedDate : String
 }
 
 // MARK: - Tags Model
