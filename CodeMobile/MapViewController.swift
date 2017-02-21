@@ -12,11 +12,16 @@ import MapKit
 
 class MapViewController: UIViewController, UISplitViewControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    @IBOutlet weak var locationTableView: UITableView!
-    @IBOutlet weak var locationSpinner: UIActivityIndicatorView!
-    
     private let api = ApiHandler()
     private let coreData = CoreDataHandler()
+    private var locations: [NSManagedObject] = []
+    private var locationSections = [String: [LocationItem]]()
+    private var annotationSections = [AnnotationItem]()
+    private var sortedSections = [String]()
+    private var toBeAnnotations = [CLLocationCoordinate2D]()
+    
+    @IBOutlet weak var locationTableView: UITableView!
+    @IBOutlet weak var locationSpinner: UIActivityIndicatorView!
     
     // MARK: - View Controller Life Cycle
     
@@ -29,8 +34,6 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         
         setupAndRecieveCoreData()
         setupSplitView()
-        locationTableView.tableFooterView = UIView()
-        locationSpinner.hidesWhenStopped = true
     }
     
     // MARK: - TableView
@@ -45,18 +48,14 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         return locationSections[sortedSections[section]]!.count
     }
     
-    var toBeAnnotations = [CLLocationCoordinate2D]()
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let tableSection = locationSections[sortedSections[indexPath.section]]
         let tableItem = tableSection![0]
         let cell = self.locationTableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath) as! LocationCell
-        
         let url = URL(string: tableItem.thumbnailImage)
         cell.locationThumbnailImageView.kf.setImage(with: url)
         cell.locationThumbnailImageView.setRadius(radius: 5)
-        
         cell.locationNameLbl.text = tableItem.locationName
         cell.milesLbl.text = tableItem.description
         toBeAnnotations.append(CLLocationCoordinate2D(latitude: tableItem.latitude,longitude: tableItem.longitude))
@@ -107,11 +106,11 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
             vc.selectedSubtitle = tableItem.description
             
         }
+        let index = self.locationTableView.indexPathForSelectedRow! as NSIndexPath
+        self.locationTableView.deselectRow(at: index as IndexPath, animated: true)
     }
     
     // MARK: - Core Data
-    
-    private var locations: [NSManagedObject] = []
     
     private func setupAndRecieveCoreData() {
         
@@ -137,10 +136,6 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
 
        
     }
-    
-    private var locationSections = [String: [LocationItem]]()
-    private var annotationSections = [AnnotationItem]()
-    private var sortedSections = [String]()
     
     private func sortOutSections() {
         
@@ -169,8 +164,6 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
             }
             self.annotationSections.append(AnnotationItem(locationName: locationName, description: description, latitude: latitude, longitude: longitude))
            
-
-            
         }
         
         for item in locationSections { sortedSections.append(item.key) }
@@ -182,7 +175,13 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         
     }
     
-   
+    // MARK: - UI
+    
+    private func setupUI() {
+        
+        locationTableView.tableFooterView = UIView()
+        locationSpinner.hidesWhenStopped = true
+    }
 }
 
 
@@ -195,7 +194,6 @@ class LocationCell : UITableViewCell {
     
 }
 
-
 // MARK: - Location Model
 struct LocationItem {
     
@@ -206,6 +204,7 @@ struct LocationItem {
     let latitude : Double
     let longitude : Double
 }
+
 // MARK: - Location Model
 struct AnnotationItem {
         

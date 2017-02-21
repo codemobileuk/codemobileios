@@ -11,17 +11,20 @@ import CoreData
 
 class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    @IBOutlet weak var filterTableView: UITableView!
-    
     private let coreData = CoreDataHandler()
-    var filterItems = [Int]()
-    
+    private var filterItems = [Int]()
+    private var lastChecked = UITableViewCell()
+    private var tags: [NSManagedObject] = []
+    private let sortedSections = ["Days", "Tags"]
+    private var sortedTags = [String:[TagData]]()
+    private var completedTags = [String]()
+
+    @IBOutlet weak var filterTableView: UITableView!
     
     // MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         filterTableView.tableFooterView = UIView()
         filterTableView.tableFooterView?.backgroundColor = UIColor.groupTableViewBackground
@@ -37,9 +40,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        print(sortedTags)
-        print(sortedSections)
-        print(sortedSections[section])
         if sortedTags.isEmpty == false {
             return sortedTags[sortedSections[section]]!.count
         }
@@ -52,14 +52,9 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let tableSection = sortedTags[sortedSections[indexPath.section]]
         let tableItem = tableSection![indexPath.row]
-        
-        
         let cell = self.filterTableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath) as! FilterCell
-        //cell.filterTitleLabel.text = filtersArray[indexPath.section].sectionFilters[indexPath.row]
         cell.filterTitleLabel.text = tableItem.tagTitle
         cell.selectionStyle = .none
-        
-
         
         return cell
     }
@@ -69,13 +64,12 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return sortedSections[section]
     }
     
-    var lastChecked = UITableViewCell()
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let index = self.filterTableView.indexPathForSelectedRow! as NSIndexPath
         let tableSection = sortedTags[sortedSections[index.section]]
         let tableItem = tableSection![index.row]
-        
+        // Days Section
         if indexPath.section == 0 {
             
             if let cell = filterTableView.cellForRow(at: indexPath) {
@@ -95,11 +89,9 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     self.revealViewController().frontViewController.loadView()
                     
                 }
-                
-                
             }
         }
-        
+        // Tags Section
         if indexPath.section == 1 {
             if let cell = filterTableView.cellForRow(at: indexPath) {
                 
@@ -117,11 +109,8 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     TagsStruct.userIsFiltering = true
                     self.revealViewController().frontViewController.loadView()
                 }
-                
             }
         }
-        
-        
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -152,16 +141,13 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    private var tags: [NSManagedObject] = []
-    var sortedSections = ["Days", "Tags"]
+    // MARK: - Core Data
+    
     private func recieveCoreData() {
         
         tags = coreData.recieveCoreData(entityNamed: Entities.TAGS)
         sortTags()
     }
-    
-    var sortedTags = [String:[TagData]]()
-    var completedTags = [String]()
     
     func sortTags() {
         
@@ -184,7 +170,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         print(sortedTags)
         filterTableView.reloadData()
-        
     }
 }
 

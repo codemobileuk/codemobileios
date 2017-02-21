@@ -13,15 +13,23 @@ import SWRevealViewController
 
 class ScheduleViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate {
     
+    var userIsFiltering = false
+    var filterItems = [Int]()
+    private let api = ApiHandler()
+    private let coreData = CoreDataHandler()
+    private var sessions: [NSManagedObject] = []
+    private var speakers: [NSManagedObject] = []
+    private var tags: [NSManagedObject] = []
+    private var chosenDate = "2017-04-18"
+    private var timeSections = [String: [TableItem]]()
+    private var sortedSections = [String]()
+    private var endDateSections = [String]()
+    private var sessionTags = [Int: [SessionTags]]()
+
     @IBOutlet weak var scheduleTableView: UITableView!
     @IBOutlet weak var openBtn: UIBarButtonItem!
     @IBOutlet weak var sessionSegment: UISegmentedControl!
     @IBOutlet weak var scheduleSpinner: UIActivityIndicatorView!
-    
-    private let api = ApiHandler()
-    private let coreData = CoreDataHandler()
-    var userIsFiltering = false
-    var filterItems = [Int]()
     
     // MARK: - View Controller Life Cycle
     
@@ -29,16 +37,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         scheduleTableView.reloadData()
         setupAndRecieveCoreData()
-        
-        switch (TagsStruct.date){
-            
-        case "2017-04-18" :  sessionSegment.selectedSegmentIndex = 0
-        case "2017-04-19" :  sessionSegment.selectedSegmentIndex = 1
-        case "2017-04-20" :  sessionSegment.selectedSegmentIndex = 2
-        default: sessionSegment.selectedSegmentIndex = 0
-            
-        }
-
     }
     
     override func viewDidLoad() {
@@ -46,9 +44,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         setupSplitView()
         setupSideMenu()
         setupUI()
-        scheduleTableView.tableFooterView = UIView()
         TagsStruct.date = "2017-04-18"
-        scheduleSpinner.hidesWhenStopped = true
     }
     
     // MARK: - TableView
@@ -71,7 +67,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let title = UILabel()
         let header = view as! UITableViewHeaderFooterView
         header.textLabel!.font = UIFont.boldSystemFont(ofSize: 16)
-        // If item is break
+        // If item is break - No longer needed throughout app, as API has fixed this?
         if tableItem.title == "Break" {
             title.textColor = UIColor.white
             header.textLabel!.textColor=title.textColor
@@ -216,10 +212,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // MARK: - Core Data
     
-    private var sessions: [NSManagedObject] = []
-    private var speakers: [NSManagedObject] = []
-    private var tags: [NSManagedObject] = []
-    
     private func setupAndRecieveCoreData() {
         
         speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
@@ -248,18 +240,13 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
        
     }
     
-    private var timeSections = [String: [TableItem]]()
-    private var sortedSections = [String]()
-    private var endDateSections = [String]()
-    
-    // Function responsible for sorting out schedule data into seperate sections
+    // Function responsible for sorting out schedule data into seperate sections - Sorry that it is confusing.
     private func sortOutSections() {
         
         timeSections.removeAll()
         sortedSections.removeAll()
         endDateSections.removeAll()
-        // THIS IS A CONFUSING FUNCTION NOW
-        
+       
         if TagsStruct.tagsArray.isEmpty {
             TagsStruct.userIsFiltering = false
         }
@@ -380,8 +367,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         scheduleTableView.reloadData()
     }
     
-    private var sessionTags = [Int: [SessionTags]]()
-   
     private func sortOutTags() {
         
         sessionTags.removeAll()
@@ -404,22 +389,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
-    // MARK: - Other
-    
-    private func setupSideMenu() {
-        
-        openBtn.target = self.revealViewController()
-        openBtn.action = #selector((SWRevealViewController.revealToggle) as (SWRevealViewController) -> (Void) -> Void)
-        self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-    }
-    
-    private var chosenDate = "2017-04-18"
-    
-    private func setupUI() {
-        
-        sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
-        sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
-    }
+    // MARK: - IBActions
     
     @IBAction func filterSessions(_ sender: Any) {
         
@@ -435,6 +405,36 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             scheduleTableView.reloadData()
         }
     }
+    
+    // MARK: - UI
+    
+    private func setupSideMenu() {
+        
+        openBtn.target = self.revealViewController()
+        openBtn.action = #selector((SWRevealViewController.revealToggle) as (SWRevealViewController) -> (Void) -> Void)
+        self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+    }
+    
+    private func setupUI() {
+        
+        sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
+        sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
+        scheduleSpinner.hidesWhenStopped = true
+        scheduleTableView.tableFooterView = UIView()
+    }
+    
+    private func checkDateAndSetSegment() {
+        
+        switch (TagsStruct.date){
+            
+        case "2017-04-18" :  sessionSegment.selectedSegmentIndex = 0
+        case "2017-04-19" :  sessionSegment.selectedSegmentIndex = 1
+        case "2017-04-20" :  sessionSegment.selectedSegmentIndex = 2
+        default: sessionSegment.selectedSegmentIndex = 0
+            
+        }
+    }
+
 }
 
 // MARK: - Session TableView Cell UI

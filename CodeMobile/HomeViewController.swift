@@ -12,14 +12,18 @@ import TwitterKit
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    private let api = ApiHandler()
+    private let coreData = CoreDataHandler()
+    private var sessions: [NSManagedObject] = []
+    private var speakers: [NSManagedObject] = []
+    private var locations: [NSManagedObject] = []
+    private var tags: [NSManagedObject] = []
+
     @IBOutlet weak var tweetsCollectionView: UICollectionView!
     @IBOutlet weak var scheduleCollectionView: UICollectionView!
     @IBOutlet weak var bannerBackground: UIView!
     @IBOutlet weak var scheduleSpinner: UIActivityIndicatorView!
     @IBOutlet weak var twitterSpinner: UIActivityIndicatorView!
-    
-    private let api = ApiHandler()
-    private let coreData = CoreDataHandler()
     
     // MARK: - View Controller Life Cycle
     
@@ -109,11 +113,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     // MARK: - Core Data
     
-    private var sessions: [NSManagedObject] = []
-    private var speakers: [NSManagedObject] = []
-    private var locations: [NSManagedObject] = []
-    private var tags: [NSManagedObject] = []
-    
     private func setupAndRecieveCoreData() {
         
         // SPEAKERS
@@ -181,7 +180,18 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                
     }
     
-    // MARK: - Other
+    // MARK: - IBActions
+    
+    @IBAction func seeAllTweets(_ sender: Any) {
+        
+        showTimeline()
+    }
+    @IBAction func seeFullSchedule(_ sender: Any) {
+        
+        tabBarController?.selectedIndex = 1
+    }
+    
+    // MARK: - Twitter
     
     private func showTimeline() {
         
@@ -204,22 +214,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         dismiss(animated: true, completion: nil)
     }
-    
-    /*func loadTweets() {
-     
-     TWTRAPIClient().loadTweet(withID: "826705123434979329") { (tweet, error) in
-     print(tweet)
-     }
-     }*/
-    
-    @IBAction func seeAllTweets(_ sender: Any) {
-        
-        showTimeline()
-    }
-    @IBAction func seeFullSchedule(_ sender: Any) {
-        
-        tabBarController?.selectedIndex = 1
-    }
+
 }
 
 // MARK: - Schedule CollectionView Cell UI

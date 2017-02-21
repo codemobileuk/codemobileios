@@ -559,6 +559,9 @@
                         <outlet property="speakerImageView" destination="Lgy-S6-BcP" id="ecd-cX-5jD"/>
                         <outlet property="talksBtn" destination="ZdS-fe-T3j" id="PaX-vk-WOp"/>
                         <outlet property="twitterBtn" destination="d87-n9-1Dx" id="97p-Tf-8XD"/>
+                        <outlet property="viewA" destination="ogp-3x-7EQ" id="4bd-WY-Xpc"/>
+                        <outlet property="viewB" destination="ZdS-fe-T3j" id="tMV-ev-zIB"/>
+                        <outlet property="viewC" destination="O49-iv-uX6" id="0s3-JA-9hD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zw8-7v-Bob" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -12,9 +12,10 @@ import CoreData
 class SpeakersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate  {
     
     private let coreData = CoreDataHandler()
+    private var sessions: [NSManagedObject] = []
+    private var speakers: [NSManagedObject] = []
     
     @IBOutlet weak var speakersTableView: UITableView!
-    @IBOutlet weak var speakerSegment: UISegmentedControl!
     
     // MARK: - View Controller Life Cycle
     
@@ -125,9 +126,6 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - Core Data
-    
-    private var sessions: [NSManagedObject] = []
-    private var speakers: [NSManagedObject] = []
     
     private func recieveCoreData() {
         

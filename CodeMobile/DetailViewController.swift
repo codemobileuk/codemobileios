@@ -10,15 +10,6 @@ import UIKit
 
 class DetailViewController: UIViewController, UISplitViewControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    @IBOutlet weak var speakerImageView: UIImageView!
-    @IBOutlet weak var fullNameLbl: UILabel!
-    @IBOutlet weak var companyLbl: UILabel!
-    @IBOutlet weak var twitterBtn: UIButton!
-    @IBOutlet weak var linkedBtn: UIButton!
-    @IBOutlet weak var detailTableView: UITableView!
-    @IBOutlet weak var profileBtn: UIButton!
-    @IBOutlet weak var talksBtn: UIButton!
-    
     var fullname = ""
     var speakerImageURL: URL!
     var company = ""
@@ -29,30 +20,53 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     var buildingName : String!
     var timeStarted : String!
     var talkName : String!
+
+    @IBOutlet weak var speakerImageView: UIImageView!
+    @IBOutlet weak var fullNameLbl: UILabel!
+    @IBOutlet weak var companyLbl: UILabel!
+    @IBOutlet weak var twitterBtn: UIButton!
+    @IBOutlet weak var linkedBtn: UIButton!
+    @IBOutlet weak var detailTableView: UITableView!
+    @IBOutlet weak var profileBtn: UIButton!
+    @IBOutlet weak var talksBtn: UIButton!
+    @IBOutlet weak var viewC: UIView!
+    @IBOutlet weak var viewA: UIView!
+    @IBOutlet weak var viewB: UIButton!
     
     // MARK: - View Controller Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
         
-        if profileViewSelected == true {
-            profileBtn.setTitleColor(UIColor.red, for: .normal)
-            talksBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
-        }else {
-            profileBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
-            talksBtn.setTitleColor(UIColor.red, for: .normal)
-        }
+        buttonSelectedColour()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupDetailData()
-        detailTableView.tableFooterView = UIView()
-        detailTableView.estimatedRowHeight = 150
-        detailTableView.rowHeight = UITableViewAutomaticDimension
-        self.detailTableView.setNeedsLayout()
-        self.detailTableView.layoutIfNeeded()
+        setupInitialData()
+        setupTableViewUI()
     }
+    
+    // MARK: - Initialization
+    
+    private func setupInitialData() {
+        
+        fullNameLbl.text = fullname
+        speakerImageView.kf.setImage(with: speakerImageURL)
+        companyLbl.text = company
+        speakerImageView.setRadius(radius: speakerImageView.frame.size.height / 2)
+        //detailTextView.text = detail
+        twitterBtn.isHidden = socialMediaHidden
+        linkedBtn.isHidden = socialMediaHidden
+        viewC.isHidden = socialMediaHidden
+        viewA.isHidden = socialMediaHidden
+        viewB.isHidden = socialMediaHidden
+        detailTableView.isHidden = socialMediaHidden
+        profileBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
+        talksBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
+        self.title = fullname
+    }
+
     
     // MARK: - TableView
     
@@ -91,21 +105,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         }
     }
     
-    // MARK: - Other
-    
-    private func setupDetailData() {
-        
-        fullNameLbl.text = fullname
-        speakerImageView.kf.setImage(with: speakerImageURL)
-        companyLbl.text = company
-        speakerImageView.setRadius(radius: speakerImageView.frame.size.height / 2)
-        //detailTextView.text = detail
-        twitterBtn.isHidden = socialMediaHidden
-        linkedBtn.isHidden = socialMediaHidden
-        profileBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
-        talksBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
-        self.title = fullname
-    }
+    // MARK: - IBActions
     
     @IBAction func takeUserToTwitter(_ sender: Any) {
         
@@ -129,6 +129,28 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         talksBtn.setTitleColor(UIColor.red, for: .normal)
         profileViewSelected = false
         detailTableView.reloadData()
+    }
+    
+    // MARK: - UI
+    
+    private func setupTableViewUI() {
+        
+        detailTableView.tableFooterView = UIView()
+        detailTableView.estimatedRowHeight = 150
+        detailTableView.rowHeight = UITableViewAutomaticDimension
+        self.detailTableView.setNeedsLayout()
+        self.detailTableView.layoutIfNeeded()
+    }
+    
+    private func buttonSelectedColour() {
+        
+        if profileViewSelected == true {
+            profileBtn.setTitleColor(UIColor.red, for: .normal)
+            talksBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
+        }else {
+            profileBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
+            talksBtn.setTitleColor(UIColor.red, for: .normal)
+        }
     }
     
     
