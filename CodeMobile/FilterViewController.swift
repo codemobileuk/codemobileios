@@ -14,7 +14,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var filterTableView: UITableView!
     
     private let coreData = CoreDataHandler()
-    private var filtersArray = [Filters]()
     var filterItems = [Int]()
     
     
@@ -23,9 +22,10 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        filtersArray = [Filters(sectionName:"Days", sectionFilters: ["Tuesday 18th April", "Wednesday 19th April", "Thursday 20th April"]),Filters(sectionName:"Tags", sectionFilters: ["iOS", "Android", "Design", "Security", "Other"]),]
+        
         filterTableView.tableFooterView = UIView()
-       recieveCoreData()
+        filterTableView.tableFooterView?.backgroundColor = UIColor.groupTableViewBackground
+        recieveCoreData()
     }
     
     // MARK: - TableView
@@ -52,13 +52,14 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let tableSection = sortedTags[sortedSections[indexPath.section]]
         let tableItem = tableSection![indexPath.row]
-
+        
         
         let cell = self.filterTableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath) as! FilterCell
         //cell.filterTitleLabel.text = filtersArray[indexPath.section].sectionFilters[indexPath.row]
         cell.filterTitleLabel.text = tableItem.tagTitle
         cell.selectionStyle = .none
         
+
         
         return cell
     }
@@ -74,10 +75,8 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let index = self.filterTableView.indexPathForSelectedRow! as NSIndexPath
         let tableSection = sortedTags[sortedSections[index.section]]
         let tableItem = tableSection![index.row]
-
+        
         if indexPath.section == 0 {
-            
-         
             
             if let cell = filterTableView.cellForRow(at: indexPath) {
                 
@@ -94,38 +93,34 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     default : TagsStruct.date = "2017-04-18"
                     }
                     self.revealViewController().frontViewController.loadView()
-                   
-                }
-                else {
                     
-                    cell.accessoryType = .none
-                   
                 }
+                
                 
             }
         }
         
         if indexPath.section == 1 {
-        if let cell = filterTableView.cellForRow(at: indexPath) {
-            
-            if cell.accessoryType == .none {
-                cell.accessoryType = .checkmark
-                filterItems.append(tableItem.tagId)
-                TagsStruct.tagsArray = filterItems
-                TagsStruct.userIsFiltering = true
-                self.revealViewController().frontViewController.loadView()
-            }
-            else {
-                cell.accessoryType = .none
-                filterItems = filterItems.filter() {$0 != tableItem.tagId}
-                TagsStruct.tagsArray = filterItems
-                TagsStruct.userIsFiltering = true
-                self.revealViewController().frontViewController.loadView()
-            }
-            
+            if let cell = filterTableView.cellForRow(at: indexPath) {
+                
+                if cell.accessoryType == .none {
+                    cell.accessoryType = .checkmark
+                    filterItems.append(tableItem.tagId)
+                    TagsStruct.tagsArray = filterItems
+                    TagsStruct.userIsFiltering = true
+                    self.revealViewController().frontViewController.loadView()
+                }
+                else {
+                    cell.accessoryType = .none
+                    filterItems = filterItems.filter() {$0 != tableItem.tagId}
+                    TagsStruct.tagsArray = filterItems
+                    TagsStruct.userIsFiltering = true
+                    self.revealViewController().frontViewController.loadView()
+                }
+                
             }
         }
-       
+        
         
     }
     
@@ -154,7 +149,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         vc.filterItems = filterItems
         vc.userIsFiltering = true
         vc.scheduleTableView.reloadData()
-
+        
     }
     
     private var tags: [NSManagedObject] = []
@@ -164,7 +159,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tags = coreData.recieveCoreData(entityNamed: Entities.TAGS)
         sortTags()
     }
-
+    
     var sortedTags = [String:[TagData]]()
     var completedTags = [String]()
     
@@ -180,10 +175,10 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 completedTags.append(item.value(forKey: "tag") as! String)
             } else {
                 if completedTags.contains(item.value(forKey: "tag") as! String) == false {
-                     sortedTags["Tags"]?.append(TagData(tagId: item.value(forKey: "tagId") as! Int, tagTitle: item.value(forKey: "tag") as! String))
-                     completedTags.append(item.value(forKey: "tag") as! String)
+                    sortedTags["Tags"]?.append(TagData(tagId: item.value(forKey: "tagId") as! Int, tagTitle: item.value(forKey: "tag") as! String))
+                    completedTags.append(item.value(forKey: "tag") as! String)
                 }
-               
+                
             }
             
         }
@@ -198,13 +193,8 @@ class FilterCell : UITableViewCell {
     
     @IBOutlet weak var filterTitleLabel: UILabel!
 }
-// MARK: - Filter Model
-struct Filters {
-    
-    var sectionName : String!
-    var sectionFilters : [String]!
-}
 
+// MARK: - Tag Model
 struct TagData {
     
     var tagId = Int()

@@ -30,10 +30,10 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     var timeStarted : String!
     var talkName : String!
     
-    
     // MARK: - View Controller Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
+        
         if profileViewSelected == true {
             profileBtn.setTitleColor(UIColor.red, for: .normal)
             talksBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
@@ -50,16 +50,17 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         detailTableView.tableFooterView = UIView()
         detailTableView.estimatedRowHeight = 150
         detailTableView.rowHeight = UITableViewAutomaticDimension
-      
         self.detailTableView.setNeedsLayout()
         self.detailTableView.layoutIfNeeded()
     }
+    
     // MARK: - TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
         return 1
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if profileViewSelected == false {
@@ -68,7 +69,6 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
 
         return 1
     }
-    
    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -83,13 +83,12 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
             
             return cell
         } else {
-            let cell = self.detailTableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as! ProfileCell
             
+            let cell = self.detailTableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as! ProfileCell
             cell.profileDesc.text = profile
+            
             return cell
         }
-        
-        
     }
     
     // MARK: - Other
@@ -106,16 +105,18 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         profileBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
         talksBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
         self.title = fullname
-       
     }
     
     @IBAction func takeUserToTwitter(_ sender: Any) {
+        
     }
     
     @IBAction func takeUserToLinkedIn(_ sender: Any) {
+        
     }
     
     @IBAction func viewProfile(_ sender: Any) {
+        
         profileBtn.setTitleColor(UIColor.red, for: .normal)
         talksBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
         profileViewSelected = true
@@ -123,6 +124,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     }
     
     @IBAction func viewTalks(_ sender: Any) {
+        
         profileBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
         talksBtn.setTitleColor(UIColor.red, for: .normal)
         profileViewSelected = false

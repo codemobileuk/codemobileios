@@ -427,23 +427,12 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         case 0 :
             TagsStruct.date = "2017-04-18"
             scheduleTableView.reloadData()
-            //userIsFiltering = false
-            //filterItems.removeAll()
-            //sortOutSections()
         case 1 :
-            //userIsFiltering = true
             TagsStruct.date = "2017-04-19"
-             scheduleTableView.reloadData()
-            //filterItems.removeAll()
-            //filterItems.append(2)
-            //sortOutSections()
+            scheduleTableView.reloadData()
         default :
-            //userIsFiltering = true
             TagsStruct.date = "2017-04-20"
-             scheduleTableView.reloadData()
-            //filterItems.removeAll()
-            //filterItems.append(1)
-            //sortOutSections()
+            scheduleTableView.reloadData()
         }
     }
 }

@@ -57,6 +57,7 @@
 		BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		BFEA19D81E4B65B400869259 /* CodeMobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CodeMobile-Bridging-Header.h"; sourceTree = "<group>"; };
 		BFEA19D91E4B700300869259 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		BFF2C8561E5C5CB800905043 /* CodeMobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeMobile.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +118,7 @@
 		BFC694541E30B44D006C24C5 /* CodeMobile */ = {
 			isa = PBXGroup;
 			children = (
+				BFF2C8561E5C5CB800905043 /* CodeMobile.entitlements */,
 				BFC694591E30B44D006C24C5 /* Main.storyboard */,
 				BFC694721E30BF04006C24C5 /* View Controllers */,
 				BFC6946D1E30BE8A006C24C5 /* Api */,
@@ -152,13 +154,9 @@
 		BFC694721E30BF04006C24C5 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				BFB706FE1E324DA700D3CDF2 /* HomeViewController.swift */,
-				BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */,
-				BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */,
-				BF1F21141E44A0B90072E991 /* DetailViewController.swift */,
-				BFEA19D91E4B700300869259 /* FilterViewController.swift */,
-				BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */,
-				BFD989BD1E4DF8EF00F2DF67 /* MapDetailViewController.swift */,
+				BFF2C8531E5C55C800905043 /* Tab Root Controllers */,
+				BFF2C8541E5C55EA00905043 /* Detail Controllers */,
+				BFF2C8551E5C561A00905043 /* Side Bar Controllers */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -189,6 +187,34 @@
 				BFDCC7BF1E4DD37D004CD420 /* Entities.swift */,
 			);
 			name = Constants;
+			sourceTree = "<group>";
+		};
+		BFF2C8531E5C55C800905043 /* Tab Root Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BFB706FE1E324DA700D3CDF2 /* HomeViewController.swift */,
+				BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */,
+				BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */,
+				BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */,
+			);
+			name = "Tab Root Controllers";
+			sourceTree = "<group>";
+		};
+		BFF2C8541E5C55EA00905043 /* Detail Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BF1F21141E44A0B90072E991 /* DetailViewController.swift */,
+				BFD989BD1E4DF8EF00F2DF67 /* MapDetailViewController.swift */,
+			);
+			name = "Detail Controllers";
+			sourceTree = "<group>";
+		};
+		BFF2C8551E5C561A00905043 /* Side Bar Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BFEA19D91E4B700300869259 /* FilterViewController.swift */,
+			);
+			name = "Side Bar Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,6 +256,11 @@
 						DevelopmentTeam = 558X48344N;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};

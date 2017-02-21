@@ -10,11 +10,13 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class MapDetailViewController: UIViewController {
+class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
 
     @IBOutlet weak var chesterMapView: MKMapView!
     @IBOutlet weak var mapTypeSegment: UISegmentedControl!
   
+    let locationManager = CLLocationManager()
+    
     // MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
@@ -23,7 +25,13 @@ class MapDetailViewController: UIViewController {
         let initialLocation = CLLocation(latitude: lat, longitude: long)
         centerMapOnLocation(location: initialLocation)
         addAnnotations()
-        
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
+        self.chesterMapView.showsUserLocation = true
+
+
     }
     
     // MARK: - MapKit
@@ -88,4 +96,16 @@ class MapDetailViewController: UIViewController {
         mapTypeSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
         mapTypeSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations.last
+        
+        let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        
+        self.chesterMapView.setRegion(region, animated: true)
+        
+        self.locationManager.stopUpdatingLocation()
+    }
+
 }
