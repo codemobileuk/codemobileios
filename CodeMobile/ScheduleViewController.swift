@@ -25,7 +25,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     private var chosenDate = "2017-04-18"
     private var timeSections = [String: [TableItem]]()
     private var sortedSections = [String]()
-    private var endDateSections = [String]()
     private var sessionTags = [Int: [SessionTags]]()
     
     @IBOutlet weak var scheduleTableView: UITableView!
@@ -237,7 +236,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         timeSections.removeAll()
         sortedSections.removeAll()
-        endDateSections.removeAll()
         
         if TagsStruct.tagsArray.isEmpty {
             TagsStruct.userIsFiltering = false
@@ -295,11 +293,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                                 }
                                 
                             }
-                            
-                            if self.endDateSections.contains(endDate) == false {
-                                endDateSections.append(endDate)
-                            }
-                            
                         }
                         
                     }
@@ -339,10 +332,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                     self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId, description: description, untouchedDate: untouchedDate, endDate: endDate)]
                 } else {
                     self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId, description: description, untouchedDate: untouchedDate, endDate: endDate))
-                }
-                
-                if self.endDateSections.contains(endDate) == false {
-                    endDateSections.append(endDate)
                 }
             }
         }

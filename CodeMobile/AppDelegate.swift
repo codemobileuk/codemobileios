@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationController = UINavigationBar.appearance()
         let tabController = UITabBar.appearance()
         
+        
         navigationController.isTranslucent = false
         navigationController.setBackgroundImage(UIImage(named: "NavigationBarBackground"), for: .default)
         navigationController.shadowImage = UIImage()
@@ -35,6 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabController.shadowImage = UIImage()
         
         Fabric.with([Twitter.self])
+        
+        UIApplication.shared.statusBarView?.backgroundColor = Colours.codeMobileGrey
         
         return true
     }

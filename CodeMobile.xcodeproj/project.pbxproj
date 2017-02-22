@@ -26,6 +26,7 @@
 		BFDCC7C01E4DD37D004CD420 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDCC7BF1E4DD37D004CD420 /* Entities.swift */; };
 		BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */; };
 		BFDEFBDB1E3B7DC0008C99BA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */; };
+		BFDF9AD81E5DD86F003434E1 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDF9AD71E5DD86F003434E1 /* UIApplication.swift */; };
 		BFEA19DA1E4B700300869259 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA19D91E4B700300869259 /* FilterViewController.swift */; };
 		E6533D55B76E37ADCB29FAEE /* Pods_CodeMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39586D35D8A21E61594C59BE /* Pods_CodeMobile.framework */; };
 /* End PBXBuildFile section */
@@ -55,6 +56,7 @@
 		BFDCC7BF1E4DD37D004CD420 /* Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeakersViewController.swift; sourceTree = "<group>"; };
 		BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		BFDF9AD71E5DD86F003434E1 /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		BFEA19D81E4B65B400869259 /* CodeMobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CodeMobile-Bridging-Header.h"; sourceTree = "<group>"; };
 		BFEA19D91E4B700300869259 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		BFF2C8561E5C5CB800905043 /* CodeMobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeMobile.entitlements; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				BF6269DD1E4888E500A67A84 /* NSDateExtensions.swift */,
+				BFDF9AD71E5DD86F003434E1 /* UIApplication.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -361,6 +364,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFDF9AD81E5DD86F003434E1 /* UIApplication.swift in Sources */,
 				BF1F21151E44A0B90072E991 /* DetailViewController.swift in Sources */,
 				BFCA1F851E41F57200BA42A2 /* CollectionViewCellRadius.swift in Sources */,
 				BFC6945E1E30B44D006C24C5 /* CodeMobile.xcdatamodeld in Sources */,

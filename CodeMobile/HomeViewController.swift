@@ -19,18 +19,19 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
     
-    @IBOutlet weak var tweetsCollectionView: UICollectionView!
+    //@IBOutlet weak var tweetsCollectionView: UICollectionView!
+    @IBOutlet weak var currentlyOnCollectionView: UICollectionView!
     @IBOutlet weak var scheduleCollectionView: UICollectionView!
     @IBOutlet weak var bannerBackground: UIView!
     @IBOutlet weak var scheduleSpinner: UIActivityIndicatorView!
-    @IBOutlet weak var twitterSpinner: UIActivityIndicatorView!
+    //@IBOutlet weak var twitterSpinner: UIActivityIndicatorView!
     
     // MARK: - View Controller Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
         
         scheduleCollectionView.reloadData()
-        tweetsCollectionView.reloadData()
+        currentlyOnCollectionView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -38,8 +39,16 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupUI()
         // User cannot switch tabs until data has been retrieved
         self.tabBarController?.tabBar.isUserInteractionEnabled = false
+        self.navigationController?.isNavigationBarHidden = true
         setupAndRecieveCoreData()
+        
+       
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .default
+    }
+
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
@@ -87,16 +96,15 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             return cell
         } else { // Tweets Collection View
             
-            let cell = tweetsCollectionView.dequeueReusableCell(withReuseIdentifier: "TweetCell", for: indexPath) as! TweetCollectionCell
-            cell.setRadius(radius: 5.0)
+           let cell = currentlyOnCollectionView.dequeueReusableCell(withReuseIdentifier: "DuelSessions", for: indexPath) as! DueliPhoneCollectionCell
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if collectionView == tweetsCollectionView {
-            return CGSize(width: 320 , height: 60)
+        if collectionView == currentlyOnCollectionView {
+            return CGSize(width: currentlyOnCollectionView.frame.size.width / 2 - 10, height: currentlyOnCollectionView.frame.size.height)
         }
         return CGSize(width: 170 , height: scheduleCollectionView.frame.size.height)
     }
@@ -115,7 +123,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 // When data has been successfully stored
                 self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
                 self.scheduleCollectionView.reloadData()
-                self.tweetsCollectionView.reloadData()
+                //self.tweetsCollectionView.reloadData()
             })
         } else {print("Speakers core data is not empty")}
         // Repeat for other tables
@@ -123,7 +131,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         // SESSIONS
         sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
         scheduleSpinner.startAnimating()
-        twitterSpinner.startAnimating()
+        //twitterSpinner.startAnimating()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
         if sessions.isEmpty{
@@ -141,9 +149,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     }
                 }
                 self.scheduleCollectionView.reloadData()
-                self.tweetsCollectionView.reloadData()
+               // self.tweetsCollectionView.reloadData()
                 self.scheduleSpinner.stopAnimating()
-                self.twitterSpinner.stopAnimating()
+                //self.twitterSpinner.stopAnimating()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.tabBarController?.tabBar.isUserInteractionEnabled = true
                 
@@ -162,7 +170,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 }
             }
             self.scheduleSpinner.stopAnimating()
-            self.twitterSpinner.stopAnimating()
+           // self.twitterSpinner.stopAnimating()
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             self.tabBarController?.tabBar.isUserInteractionEnabled = true
         }
@@ -208,7 +216,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private func setupUI() {
         
         scheduleSpinner.hidesWhenStopped = true
-        twitterSpinner.hidesWhenStopped = true
+        //twitterSpinner.hidesWhenStopped = true
     }
 }
 
@@ -228,3 +236,14 @@ class TweetCollectionCell: UICollectionViewCell {
     @IBOutlet weak var tweetTextView: UITextView!
     @IBOutlet weak var twitterUserLbl: UILabel!
 }
+
+// MARK: - Duel iPhone CollectionViewCell Controller
+
+class DueliPhoneCollectionCell: UICollectionViewCell {
+    
+    @IBOutlet weak var speakerNameLbl: UILabel!
+    @IBOutlet weak var sessionTitleLbl: UILabel!
+    @IBOutlet weak var speakerImageView: UIImageView!
+    
+}
+
