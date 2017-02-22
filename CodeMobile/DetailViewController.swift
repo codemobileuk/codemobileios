@@ -160,6 +160,8 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         viewA.isHidden = viewIsHidden
         viewB.isHidden = viewIsHidden
         detailTableView.isHidden = viewIsHidden
+        twitterBtn.isHidden = viewIsHidden
+        linkedBtn.isHidden = viewIsHidden
     }
 }
 

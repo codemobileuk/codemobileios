@@ -94,7 +94,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let tableItem = tableSection![0]
         if tableItem.title == "Break" { return 0 }
         
-        
         return timeSections[sortedSections[section]]!.count
     }
     
@@ -108,13 +107,16 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         // Seperate only the time from the day/time string & remove the seconds from the time
         let returnvalue = sortedSections[section].components(separatedBy: "T").last
         let endIndex = returnvalue?.index((returnvalue?.endIndex)!, offsetBy:  -3)
-        let returnvalue2 = endDateSections[section].components(separatedBy: "T").last
+       
         // If item is break
         let tableSection = timeSections[sortedSections[section]]
         let tableItem = tableSection![0]
+        let returnvalue2 = tableItem.endDate.components(separatedBy: "T").last
+        
         if tableItem.title == "Break" {
             return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))! + "  Break"
         }
+
         
         return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))!
     }
@@ -284,11 +286,11 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                             
                             // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
                             if self.timeSections.index(forKey: date) == nil {
-                                self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId, description: description, untouchedDate: untouchedDate)]
+                                self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId, description: description, untouchedDate: untouchedDate, endDate: endDate)]
                                 completedTitles.append(title)
                             } else {
                                 if completedTitles.contains(title) == false{
-                                    self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId, description: description, untouchedDate: untouchedDate))
+                                    self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId, description: description, untouchedDate: untouchedDate, endDate: endDate))
                                     completedTitles.append(title)
                                 }
                                 
@@ -334,9 +336,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                 
                 // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
                 if self.timeSections.index(forKey: date) == nil {
-                    self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId, description: description, untouchedDate: untouchedDate)]
+                    self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId, description: description, untouchedDate: untouchedDate, endDate: endDate)]
                 } else {
-                    self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId, description: description, untouchedDate: untouchedDate))
+                    self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId, description: description, untouchedDate: untouchedDate, endDate: endDate))
                 }
                 
                 if self.endDateSections.contains(endDate) == false {
@@ -386,15 +388,21 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         case 0 :
             TagsStruct.date = "2017-04-18"
             scheduleTableView.reloadData()
-            vc.filterTableView.reloadData()
+            if vc.isViewLoaded == true {
+                vc.filterTableView.reloadData()
+            }
         case 1 :
             TagsStruct.date = "2017-04-19"
             scheduleTableView.reloadData()
-            vc.filterTableView.reloadData()
+            if vc.isViewLoaded == true {
+              vc.filterTableView.reloadData()
+            }
         default :
             TagsStruct.date = "2017-04-20"
             scheduleTableView.reloadData()
-            vc.filterTableView.reloadData()
+            if vc.isViewLoaded == true {
+                vc.filterTableView.reloadData()
+            }
         }
     }
     
@@ -480,6 +488,7 @@ struct TableItem {
     let sessionId : Int
     let description : String
     let untouchedDate : String
+    let endDate : String
 }
 
 // MARK: - Tags Model
