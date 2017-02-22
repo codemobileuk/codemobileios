@@ -13,6 +13,8 @@ import SWRevealViewController
 
 class ScheduleViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate {
     
+    // MARK: - Properties
+    
     var userIsFiltering = false
     var filterItems = [Int]()
     private let api = ApiHandler()
@@ -25,7 +27,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     private var sortedSections = [String]()
     private var endDateSections = [String]()
     private var sessionTags = [Int: [SessionTags]]()
-
+    
     @IBOutlet weak var scheduleTableView: UITableView!
     @IBOutlet weak var openBtn: UIBarButtonItem!
     @IBOutlet weak var sessionSegment: UISegmentedControl!
@@ -37,10 +39,11 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         scheduleTableView.reloadData()
         setupAndRecieveCoreData()
+        checkDateAndSetSegment()
     }
     
     override func viewDidLoad() {
-    
+        
         setupSplitView()
         setupSideMenu()
         setupUI()
@@ -90,8 +93,8 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let tableSection = timeSections[sortedSections[section]]
         let tableItem = tableSection![0]
         if tableItem.title == "Break" { return 0 }
-
-        print(timeSections[sortedSections[section]]!.count)
+        
+        
         return timeSections[sortedSections[section]]!.count
     }
     
@@ -110,7 +113,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let tableSection = timeSections[sortedSections[section]]
         let tableItem = tableSection![0]
         if tableItem.title == "Break" {
-             return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))! + "  Break"
+            return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))! + "  Break"
         }
         
         return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))!
@@ -131,7 +134,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                 let firstName = speaker.value(forKey: "firstname") as! String
                 let lastName = speaker.value(forKey: "surname") as! String
                 cell.sessionFullNameLbl.text = firstName + " " + lastName
-             
                 var allTags = [String]()
                 let sessionId = sessionTags[tableItem.sessionId]
                 for tag in sessionId! {
@@ -156,14 +158,10 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         if segue.identifier == "showDetail" {
             
             let index = self.scheduleTableView.indexPathForSelectedRow! as NSIndexPath
-            
             let nav = segue.destination as! UINavigationController
-            
             let vc = nav.viewControllers[0] as! DetailViewController
-            
             let tableSection = timeSections[sortedSections[index.section]]
             let tableItem = tableSection![index.row]
-            
             vc.extendedLayoutIncludesOpaqueBars = true
             for speaker in speakers {
                 // Find speakerId in speaker array and collect relevent information to match session
@@ -176,23 +174,17 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                     vc.speakerImageURL = url
                     vc.company = speaker.value(forKey: "organisation") as! String
                     vc.profile = speaker.value(forKey: "profile") as! String
-                    
                 }
             }
-            
             var descArray = [String]()
             descArray.append(tableItem.description)
             vc.buildingName = tableItem.locationName
             vc.talkName = tableItem.title
-           
-            
             vc.talks = descArray
             vc.profileViewSelected = false
-            vc.socialMediaHidden = false
-            
+            vc.viewIsHidden = false
             let startTime = Date().formatDate(dateToFormat: tableItem.untouchedDate)
             vc.timeStarted = Date().wordedDate(Date: startTime)
-            
             self.scheduleTableView.deselectRow(at: index as IndexPath, animated: true)
         }
     }
@@ -236,84 +228,82 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             sortOutSections()
             sortOutTags()
         }
-
-       
     }
     
-    // Function responsible for sorting out schedule data into seperate sections - Sorry that it is confusing.
+    // Hellish function responsible for sorting out schedule data into seperate sections - Sorry that it is confusing, even to me...
     private func sortOutSections() {
         
         timeSections.removeAll()
         sortedSections.removeAll()
         endDateSections.removeAll()
-       
+        
         if TagsStruct.tagsArray.isEmpty {
             TagsStruct.userIsFiltering = false
         }
         
-        print(sessionTags)
         var completedTitles = [String]()
         completedTitles.removeAll()
         
         for item in sessions {
             
+            // If user IS filtering by tags
             if TagsStruct.userIsFiltering == true {
-            
+                
                 var sessionId = Int()
                 sessionId = item.value(forKey: "SessionId") as! Int!
                 let tags = sessionTags[sessionId]
                 
                 if tags != nil {
-                for tag in tags! {
-                    
-                    if TagsStruct.tagsArray.contains(tag.tagId){
+                    for tag in tags! {
                         
-                        var title = String()
-                        var date = String()
-                        var endDate = String()
-                        var speaker = Int()
-                        var building = String()
-                        var description = String()
-                        var untouchedDate = String()
-                        
-                        untouchedDate = (item.value(forKey: "SessionStartDateTime") as! String?)!
-                        description = (item.value(forKey: "sessionDescription") as! String?)!
-                        sessionId = item.value(forKey: "SessionId") as! Int!
-                        date = (item.value(forKey: "SessionStartDateTime") as! String?)!
-                        endDate = (item.value(forKey: "SessionEndDateTime") as! String?)!
-                        
-                        // Format date to remove useless data in string
-                        let dated = Date().formatDate(dateToFormat: (item.value(forKey: "SessionStartDateTime") as! String?)!)
-                        
-                        title = (item.value(forKey: "SessionTitle") as! String?)!
-                        speaker = (item.value(forKey: "speakerId") as! Int )
-                        building = (item.value(forKey: "sessionLocationName") as! String)
-                        
-                        // Get day of item without time
-                        let day = date.components(separatedBy: "T").first
-                        
-                        // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
-                        if self.timeSections.index(forKey: date) == nil {
-                            self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId, description: description, untouchedDate: untouchedDate)]
-                            completedTitles.append(title)
-                        } else {
-                            if completedTitles.contains(title) == false{
-                               self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId, description: description, untouchedDate: untouchedDate))
-                               completedTitles.append(title)
+                        if TagsStruct.tagsArray.contains(tag.tagId){
+                            
+                            var title = String()
+                            var date = String()
+                            var endDate = String()
+                            var speaker = Int()
+                            var building = String()
+                            var description = String()
+                            var untouchedDate = String()
+                            
+                            untouchedDate = (item.value(forKey: "SessionStartDateTime") as! String?)!
+                            description = (item.value(forKey: "sessionDescription") as! String?)!
+                            sessionId = item.value(forKey: "SessionId") as! Int!
+                            date = (item.value(forKey: "SessionStartDateTime") as! String?)!
+                            endDate = (item.value(forKey: "SessionEndDateTime") as! String?)!
+                            
+                            // Format date to remove useless data in string
+                            let dated = Date().formatDate(dateToFormat: (item.value(forKey: "SessionStartDateTime") as! String?)!)
+                            
+                            title = (item.value(forKey: "SessionTitle") as! String?)!
+                            speaker = (item.value(forKey: "speakerId") as! Int )
+                            building = (item.value(forKey: "sessionLocationName") as! String)
+                            
+                            // Get day of item without time
+                            let day = date.components(separatedBy: "T").first
+                            
+                            // If array doesnt contain day/time of session add new key, else add TableItem to array to key already in array
+                            if self.timeSections.index(forKey: date) == nil {
+                                self.timeSections[date] = [TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building, sessionId: sessionId, description: description, untouchedDate: untouchedDate)]
+                                completedTitles.append(title)
+                            } else {
+                                if completedTitles.contains(title) == false{
+                                    self.timeSections[date]!.append(TableItem(title: title, date: dated, speakerId: speaker, day: day!, locationName: building,  sessionId: sessionId, description: description, untouchedDate: untouchedDate))
+                                    completedTitles.append(title)
+                                }
+                                
                             }
-                           
-                        }
-                        
-                        if self.endDateSections.contains(endDate) == false {
-                            endDateSections.append(endDate)
+                            
+                            if self.endDateSections.contains(endDate) == false {
+                                endDateSections.append(endDate)
+                            }
+                            
                         }
                         
                     }
-
-                }
                 }
                 
-            }
+            } // If user is NOT filtering by tags
             else {
                 
                 var title = String()
@@ -335,7 +325,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                 let dated = Date().formatDate(dateToFormat: (item.value(forKey: "SessionStartDateTime") as! String?)!)
                 
                 title = (item.value(forKey: "SessionTitle") as! String?)!
-             
+                
                 speaker = (item.value(forKey: "speakerId") as! Int )
                 building = (item.value(forKey: "sessionLocationName") as! String)
                 
@@ -352,21 +342,18 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                 if self.endDateSections.contains(endDate) == false {
                     endDateSections.append(endDate)
                 }
-
-                
             }
-            
-            
         }
-      
+        
         for item in timeSections { sortedSections.append(item.key) }
-       
+        
         // Sort array in time order
         sortedSections = sortedSections.sorted {$0 < $1}
         // Update table
         scheduleTableView.reloadData()
     }
     
+    // Get all tags in each session Id
     private func sortOutTags() {
         
         sessionTags.removeAll()
@@ -388,21 +375,26 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
     }
-
+    
     // MARK: - IBActions
     
     @IBAction func filterSessions(_ sender: Any) {
+        
+        let vc = revealViewController().rearViewController as! FilterViewController
         
         switch sessionSegment.selectedSegmentIndex{
         case 0 :
             TagsStruct.date = "2017-04-18"
             scheduleTableView.reloadData()
+            vc.filterTableView.reloadData()
         case 1 :
             TagsStruct.date = "2017-04-19"
             scheduleTableView.reloadData()
+            vc.filterTableView.reloadData()
         default :
             TagsStruct.date = "2017-04-20"
             scheduleTableView.reloadData()
+            vc.filterTableView.reloadData()
         }
     }
     
@@ -426,18 +418,16 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     private func checkDateAndSetSegment() {
         
         switch (TagsStruct.date){
-            
         case "2017-04-18" :  sessionSegment.selectedSegmentIndex = 0
         case "2017-04-19" :  sessionSegment.selectedSegmentIndex = 1
         case "2017-04-20" :  sessionSegment.selectedSegmentIndex = 2
         default: sessionSegment.selectedSegmentIndex = 0
-            
         }
     }
-
 }
 
-// MARK: - Session TableView Cell UI
+// MARK: - Session TableViewCell Controller
+
 class FullWidthCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var sessionTitleLbl: UILabel!
@@ -446,13 +436,17 @@ class FullWidthCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
     @IBOutlet weak var tagsCollectionView: UICollectionView!
     
     var tagsArray = [String]()
-
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        
         return 1
     }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         return tagsArray.count
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let item = tagsArray[indexPath.row]
@@ -463,16 +457,19 @@ class FullWidthCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
         //cell.backgroundColor = Colours.codeMobileGrey
         cell.backgroundColor = UIColor.groupTableViewBackground
         
-
         return cell
     }
 }
+
+// Mark: - Tag CollectionViewCell Controller
 
 class TagCollectionViewCell : UICollectionViewCell {
     
     @IBOutlet weak var tagLbl: UILabel!
 }
+
 // MARK: - Session Model
+
 struct TableItem {
     
     let title: String
@@ -486,6 +483,7 @@ struct TableItem {
 }
 
 // MARK: - Tags Model
+
 struct SessionTags {
     
     let title: String

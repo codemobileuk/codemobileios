@@ -23,7 +23,7 @@ class ApiHandler {
                 
                 let swiftyJsonVar = JSON(responseData.result.value!)
                 let entity = NSEntityDescription.entity(forEntityName: "Schedule", in: managedContext)!
-               
+                
                 for item in swiftyJsonVar {
                     
                     let session = NSManagedObject(entity: entity, insertInto: managedContext)
@@ -46,6 +46,7 @@ class ApiHandler {
             }
         }
     }
+    
     // SPEAKERS
     func storeSpeakers(updateData: @escaping () -> Void) {
         
@@ -56,7 +57,7 @@ class ApiHandler {
                 
                 let swiftyJsonVar = JSON(responseData.result.value!)
                 let entity = NSEntityDescription.entity(forEntityName: "Speaker", in: managedContext)!
-               
+                
                 for item in swiftyJsonVar {
                     
                     let speaker = NSManagedObject(entity: entity, insertInto: managedContext)
@@ -80,6 +81,7 @@ class ApiHandler {
             }
         }
     }
+    
     // LOCATIONS
     func storeLocations(updateData: @escaping () -> Void) {
         
@@ -101,7 +103,7 @@ class ApiHandler {
                     location.setValue(item.1["Image"].string, forKeyPath: "imageURL")
                     location.setValue(item.1["Type"].string, forKeyPath: "type")
                 }
-                
+
                 do {
                     try managedContext.save()
                     print("Saved location data!")
@@ -112,6 +114,7 @@ class ApiHandler {
             }
         }
     }
+    
     // TAGS
     func storeTags(updateData: @escaping () -> Void) {
         
@@ -122,7 +125,7 @@ class ApiHandler {
                 
                 let swiftyJsonVar = JSON(responseData.result.value!)
                 let entity = NSEntityDescription.entity(forEntityName: "Tags", in: managedContext)!
-              
+                
                 
                 for item in swiftyJsonVar {
                     
@@ -142,13 +145,13 @@ class ApiHandler {
             }
         }
     }
-
+    
     private func getContext() -> NSManagedObjectContext {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if #available(iOS 10.0, *) {
             return appDelegate.persistentContainer.viewContext
-        } else {
+        } else { // Fallback on previous iOS versions
             return appDelegate.managedObjectContext
         }
     }

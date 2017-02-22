@@ -29,7 +29,7 @@ class CoreDataHandler {
             let sortorder = NSSortDescriptor(key: "firstname", ascending: true)
             fetchRequest.sortDescriptors=[sortorder]
         }
-    
+        
         do {
             
             let searchResults = try managedContext.fetch(fetchRequest)
@@ -48,10 +48,10 @@ class CoreDataHandler {
     private func getContext() -> NSManagedObjectContext {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-         if #available(iOS 10.0, *) {
-        return appDelegate.persistentContainer.viewContext
-         } else {
-             return appDelegate.managedObjectContext
+        if #available(iOS 10.0, *) {
+            return appDelegate.persistentContainer.viewContext
+        } else { // Fallback on previous iOS versions
+            return appDelegate.managedObjectContext
         }
     }
 }

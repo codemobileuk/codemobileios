@@ -12,6 +12,8 @@ import MapKit
 
 class MapViewController: UIViewController, UISplitViewControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    // MARK: - Properties
+    
     private let api = ApiHandler()
     private let coreData = CoreDataHandler()
     private var locations: [NSManagedObject] = []
@@ -34,6 +36,7 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
         
         setupAndRecieveCoreData()
         setupSplitView()
+        setupUI()
     }
     
     // MARK: - TableView
@@ -133,8 +136,8 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             sortOutSections()
         }
-
-       
+        
+        
     }
     
     private func sortOutSections() {
@@ -163,7 +166,7 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
                 self.locationSections[type]!.append(LocationItem(locationName: locationName, type: type, thumbnailImage: thumbnailImage, description: description, latitude: latitude, longitude: longitude))
             }
             self.annotationSections.append(AnnotationItem(locationName: locationName, description: description, latitude: latitude, longitude: longitude))
-           
+            
         }
         
         for item in locationSections { sortedSections.append(item.key) }
@@ -185,7 +188,8 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
 }
 
 
-// MARK: - Location TableView Cell UI
+// MARK: - Location TableViewCell Controller
+
 class LocationCell : UITableViewCell {
     
     @IBOutlet weak var locationNameLbl: UILabel!
@@ -195,6 +199,7 @@ class LocationCell : UITableViewCell {
 }
 
 // MARK: - Location Model
+
 struct LocationItem {
     
     let locationName: String
@@ -206,12 +211,13 @@ struct LocationItem {
 }
 
 // MARK: - Location Model
+
 struct AnnotationItem {
-        
-        let locationName: String
-        let description : String
-        let latitude : Double
-        let longitude : Double
+    
+    let locationName: String
+    let description : String
+    let latitude : Double
+    let longitude : Double
 }
 
 

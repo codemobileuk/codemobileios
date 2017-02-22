@@ -10,17 +10,19 @@ import UIKit
 
 class DetailViewController: UIViewController, UISplitViewControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    // MARK: - Properties
+    
     var fullname = ""
     var speakerImageURL: URL!
     var company = ""
     var profile : String!
     var talks : [String]!
-    var socialMediaHidden = true
+    var viewIsHidden = true
     var profileViewSelected = true
     var buildingName : String!
     var timeStarted : String!
     var talkName : String!
-
+    
     @IBOutlet weak var speakerImageView: UIImageView!
     @IBOutlet weak var fullNameLbl: UILabel!
     @IBOutlet weak var companyLbl: UILabel!
@@ -38,6 +40,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     override func viewWillAppear(_ animated: Bool) {
         
         buttonSelectedColour()
+        viewVisibility()
     }
     
     override func viewDidLoad() {
@@ -45,6 +48,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         
         setupInitialData()
         setupTableViewUI()
+        setupUI()
     }
     
     // MARK: - Initialization
@@ -54,19 +58,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         fullNameLbl.text = fullname
         speakerImageView.kf.setImage(with: speakerImageURL)
         companyLbl.text = company
-        speakerImageView.setRadius(radius: speakerImageView.frame.size.height / 2)
-        //detailTextView.text = detail
-        twitterBtn.isHidden = socialMediaHidden
-        linkedBtn.isHidden = socialMediaHidden
-        viewC.isHidden = socialMediaHidden
-        viewA.isHidden = socialMediaHidden
-        viewB.isHidden = socialMediaHidden
-        detailTableView.isHidden = socialMediaHidden
-        profileBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
-        talksBtn.setTitleColor(Colours.codeMobileGrey, for: .normal)
         self.title = fullname
     }
-
+    
     
     // MARK: - TableView
     
@@ -80,10 +74,10 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         if profileViewSelected == false {
             return talks.count
         }
-
+        
         return 1
     }
-   
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if profileViewSelected == false {
@@ -109,10 +103,12 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     
     @IBAction func takeUserToTwitter(_ sender: Any) {
         
+        print("Twitter button pressed")
     }
     
     @IBAction func takeUserToLinkedIn(_ sender: Any) {
         
+        print("Linked in button pressed")
     }
     
     @IBAction func viewProfile(_ sender: Any) {
@@ -142,6 +138,11 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         self.detailTableView.layoutIfNeeded()
     }
     
+    private func setupUI() {
+        
+        speakerImageView.setRadius(radius: speakerImageView.frame.size.height / 2)
+    }
+    
     private func buttonSelectedColour() {
         
         if profileViewSelected == true {
@@ -153,7 +154,13 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         }
     }
     
-    
+    private func viewVisibility() {
+        
+        viewC.isHidden = viewIsHidden
+        viewA.isHidden = viewIsHidden
+        viewB.isHidden = viewIsHidden
+        detailTableView.isHidden = viewIsHidden
+    }
 }
 
 class ProfileCell: UITableViewCell {

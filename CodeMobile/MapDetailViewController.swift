@@ -11,7 +11,9 @@ import MapKit
 import CoreLocation
 
 class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
-
+    
+    // MARK: - Properties
+    
     var locationPoints = [CLLocationCoordinate2D]()
     var lat = 53.1938717
     var long = -2.8961019
@@ -23,7 +25,7 @@ class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet weak var chesterMapView: MKMapView!
     @IBOutlet weak var mapTypeSegment: UISegmentedControl!
-  
+    
     // MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
@@ -107,7 +109,7 @@ class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
         default : chesterMapView.mapType = MKMapType.hybrid
         }
     }
-
+    
     // MARK: - UI
     
     private func setupUI() {

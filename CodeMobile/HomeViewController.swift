@@ -12,13 +12,13 @@ import TwitterKit
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    // MARK: - Properties
+    
     private let api = ApiHandler()
     private let coreData = CoreDataHandler()
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
-    private var locations: [NSManagedObject] = []
-    private var tags: [NSManagedObject] = []
-
+    
     @IBOutlet weak var tweetsCollectionView: UICollectionView!
     @IBOutlet weak var scheduleCollectionView: UICollectionView!
     @IBOutlet weak var bannerBackground: UIView!
@@ -34,11 +34,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     override func viewDidLoad() {
+        
+        setupUI()
+        // User cannot switch tabs until data has been retrieved
         self.tabBarController?.tabBar.isUserInteractionEnabled = false
-        // Set up Core Data once
         setupAndRecieveCoreData()
-        scheduleSpinner.hidesWhenStopped = true
-        twitterSpinner.hidesWhenStopped = true
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -55,29 +55,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        // Schedule Collection View
-        if collectionView == scheduleCollectionView {
+        if collectionView == scheduleCollectionView { // Schedule Collection View
+            
             let item = sessions[indexPath.row]
             let cell = scheduleCollectionView.dequeueReusableCell(withReuseIdentifier: "CurrentlyOn", for: indexPath) as! SessionCollectionCell
             cell.sessionTitleLbl.text = item.value(forKey: "SessionTitle") as! String?
             cell.speakerImageView.setRadius(radius: 20.0)
-            
             let startTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionStartDateTime")! as! String)
             let endTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionEndDateTime")! as! String)
-            //print(item.value(forKey: "SessionTitle")!)
-            //print("Start Time  : \(startTime)")
-            //print("End Time    : \(endTime)")
-            //print("Current Time: \(Date())") // Current time
+            
             if Date().isBetweeen(date: startTime, andDate: endTime) {
-                //print("Session is on")
+                //Session is on
                 cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
                 cell.liveInWhichBuildingLbl.textColor = UIColor.red
             } else {
-                //print ("Session is off")
+                //Session is off
                 cell.liveInWhichBuildingLbl.textColor = UIColor.blue
                 cell.liveInWhichBuildingLbl.text = Date().wordedDate(Date: startTime)
             }
-            //print("-----------------------------")
             
             for speaker in speakers {
                 
@@ -87,15 +82,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     cell.speakerNameLbl.text = firstName + " " + lastName
                     let url = URL(string: speaker.value(forKey: "photoURL") as! String)
                     cell.speakerImageView.kf.setImage(with: url)
-                    
-                    
-                   
                 }
             }
             return cell
-        }
-            // Tweets Collection View
-        else  {
+        } else { // Tweets Collection View
             
             let cell = tweetsCollectionView.dequeueReusableCell(withReuseIdentifier: "TweetCell", for: indexPath) as! TweetCollectionCell
             cell.setRadius(radius: 5.0)
@@ -156,7 +146,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.twitterSpinner.stopAnimating()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.tabBarController?.tabBar.isUserInteractionEnabled = true
-               
+                
             })
         } else {
             print("Schedule core data is not empty")
@@ -176,8 +166,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             self.tabBarController?.tabBar.isUserInteractionEnabled = true
         }
-        
-               
     }
     
     // MARK: - IBActions
@@ -214,10 +202,18 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         dismiss(animated: true, completion: nil)
     }
-
+    
+    // MARK: - UI
+    
+    private func setupUI() {
+        
+        scheduleSpinner.hidesWhenStopped = true
+        twitterSpinner.hidesWhenStopped = true
+    }
 }
 
-// MARK: - Schedule CollectionView Cell UI
+// MARK: - Schedule CollectionViewCell Controller
+
 class SessionCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var speakerImageView: UIImageView!
@@ -225,7 +221,8 @@ class SessionCollectionCell: UICollectionViewCell {
     @IBOutlet weak var speakerNameLbl: UILabel!
     @IBOutlet weak var sessionTitleLbl: UILabel!
 }
-// MARK: - Tweet CollectionView Cell UI
+// MARK: - Tweet CollectionViewCell Controller
+
 class TweetCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var tweetTextView: UITextView!

@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.saveContext()
     }
 
-    // MARK: - Core Data stack
+    // MARK: - Core Data stack for iOS 10 and iOS 9
 
     @available(iOS 10.0, *)
     lazy var persistentContainer: NSPersistentContainer = {

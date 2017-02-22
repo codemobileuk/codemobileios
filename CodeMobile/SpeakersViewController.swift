@@ -11,6 +11,8 @@ import CoreData
 
 class SpeakersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate  {
     
+    // MARK: - Properties
+    
     private let coreData = CoreDataHandler()
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
@@ -73,13 +75,9 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         if segue.identifier == "showSpeakerDetail" {
             
             let index = self.speakersTableView.indexPathForSelectedRow! as NSIndexPath
-            
             let nav = segue.destination as! UINavigationController
-            
             let vc = nav.viewControllers[0] as! DetailViewController
-            
             let speaker = speakers[index.row]
-            
             vc.extendedLayoutIncludesOpaqueBars = true
             let firstName = speaker.value(forKey: "firstname") as! String
             let lastName = speaker.value(forKey: "surname") as! String
@@ -88,7 +86,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
             vc.speakerImageURL = url
             vc.company = speaker.value(forKey: "organisation") as! String
             vc.profile = speaker.value(forKey: "profile") as! String
-            vc.socialMediaHidden = false
+            vc.viewIsHidden = false
             
             for item in sessions{
                 
@@ -102,12 +100,8 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
                     vc.profileViewSelected = true
                     let startTime = Date().formatDate(dateToFormat: item.value(forKey: "sessionStartDateTime") as! String!)
                     vc.timeStarted = Date().wordedDate(Date: startTime)
-                    
                 }
-
-                
             }
-            
             self.speakersTableView.deselectRow(at: index as IndexPath, animated: true)
         }
     }
@@ -138,12 +132,10 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
     }
-    
-   
-    
 }
 
-// MARK: - Speaker TableView Cell UI
+// MARK: - Speaker TableViewCell Controller
+
 class SpeakerCell: UITableViewCell {
     
     @IBOutlet weak var thumbnailImageView: UIImageView!

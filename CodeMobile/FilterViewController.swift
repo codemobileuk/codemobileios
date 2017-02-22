@@ -11,6 +11,8 @@ import CoreData
 
 class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    // MARK: - Properties
+    
     private let coreData = CoreDataHandler()
     private var filterItems = [Int]()
     private var lastChecked = UITableViewCell()
@@ -18,7 +20,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private let sortedSections = ["Days", "Tags"]
     private var sortedTags = [String:[TagData]]()
     private var completedTags = [String]()
-
+    
     @IBOutlet weak var filterTableView: UITableView!
     
     // MARK: - View Controller Life Cycle
@@ -55,6 +57,20 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = self.filterTableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath) as! FilterCell
         cell.filterTitleLabel.text = tableItem.tagTitle
         cell.selectionStyle = .none
+        
+        if TagsStruct.date == "2017-04-18" && cell.filterTitleLabel.text == "Tuesday 18th April"{
+            lastChecked.accessoryType = .none
+            cell.accessoryType = .checkmark
+            lastChecked = cell
+        } else if TagsStruct.date == "2017-04-19" && cell.filterTitleLabel.text == "Wednesday 19th April"{
+            lastChecked.accessoryType = .none
+            cell.accessoryType = .checkmark
+            lastChecked = cell
+        } else if TagsStruct.date == "2017-04-20" && cell.filterTitleLabel.text == "Thursday 20th April"{
+            lastChecked.accessoryType = .none
+            cell.accessoryType = .checkmark
+            lastChecked = cell
+        }
         
         return cell
     }
@@ -149,7 +165,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         sortTags()
     }
     
-    func sortTags() {
+    private func sortTags() {
         
         sortedTags["Days"] = [TagData(tagId: 0, tagTitle: "Tuesday 18th April")]
         sortedTags["Days"]?.append(TagData(tagId: 0, tagTitle: "Wednesday 19th April"))
@@ -164,29 +180,31 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     sortedTags["Tags"]?.append(TagData(tagId: item.value(forKey: "tagId") as! Int, tagTitle: item.value(forKey: "tag") as! String))
                     completedTags.append(item.value(forKey: "tag") as! String)
                 }
-                
             }
-            
         }
-        print(sortedTags)
         filterTableView.reloadData()
     }
 }
 
-// MARK: - Filter TableView Cell UI
+// MARK: - Filter TableViewCell Controller
+
 class FilterCell : UITableViewCell {
     
     @IBOutlet weak var filterTitleLabel: UILabel!
 }
 
-// MARK: - Tag Model
+// MARK: - Tag Data Model
+
 struct TagData {
     
     var tagId = Int()
     var tagTitle = String()
 }
 
+// MARK: - Filtering Model
+
 struct TagsStruct {
+    
     static var userIsFiltering = false
     static var tagsArray = [Int]()
     static var date = "2017-04-18"

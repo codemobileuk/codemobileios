@@ -20,7 +20,7 @@ extension Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         let formattedDate = dateFormatter.date(from: dateToFormat )
-    
+        
         if formattedDate == nil {
             
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
@@ -39,7 +39,7 @@ extension Date {
         formatter.amSymbol = "AM"
         formatter.pmSymbol = "PM"
         let dateString = formatter.string(from: Date)
-      
+        
         return dateString
     }
 }
