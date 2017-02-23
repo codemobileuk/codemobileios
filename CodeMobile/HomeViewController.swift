@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import TwitterKit
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISplitViewControllerDelegate   {
     
@@ -32,13 +31,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         scheduleCollectionView.reloadData()
         currentlyOnCollectionView.reloadData()
-    }
-    
-    override func viewDidLoad() {
-        
-        setupUI()
-        // User cannot switch tabs until data has been retrieved
-        self.tabBarController?.tabBar.isUserInteractionEnabled = false
         switch UIDevice.current.userInterfaceIdiom {
         case .phone:
             self.navigationController?.isNavigationBarHidden = true
@@ -47,6 +39,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         default:
             self.navigationController?.isNavigationBarHidden = true
         }
+    }
+    
+    override func viewDidLoad() {
+        
+        setupUI()
+        // User cannot switch tabs until data has been retrieved
+        self.tabBarController?.tabBar.isUserInteractionEnabled = false
+        
         
         setupAndRecieveCoreData()
         setupSplitView()
@@ -180,6 +180,82 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return CGSize(width: scheduleCollectionView.frame.size.width / 2.25 , height: scheduleCollectionView.frame.size.height)
     }
     
+    var lastSelectedIndex = IndexPath()
+    var fromSchedule = Bool()
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let cell = collectionView.cellForItem(at: indexPath)
+        lastSelectedIndex = indexPath
+        if collectionView == scheduleCollectionView {
+            fromSchedule = true
+            UIView.animate(withDuration: 0.1, animations: {
+                cell?.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+            }) { (finished) in
+                UIView.animate(withDuration: 0.1, animations: {
+                    cell?.transform = CGAffineTransform.identity
+                    self.performSegue(withIdentifier: "showHomeDetail", sender: self)
+                })
+            }
+
+        } else if collectionView == currentlyOnCollectionView && currentlyOnSessions.isEmpty == false{
+            fromSchedule = false
+            UIView.animate(withDuration: 0.1, animations: {
+                cell?.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+            }) { (finished) in
+                UIView.animate(withDuration: 0.1, animations: {
+                    cell?.transform = CGAffineTransform.identity
+                    self.performSegue(withIdentifier: "showHomeDetail", sender: self)
+                })
+            }
+
+        }
+        
+    }
+    
+    // MARK: - Segue
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "showHomeDetail" {
+            
+            let nav = segue.destination as! UINavigationController
+            let vc = nav.viewControllers[0] as! DetailViewController
+            var session = NSManagedObject()
+            if fromSchedule == true {
+                session = sessions[(lastSelectedIndex.row)]
+            } else {
+                session = currentlyOnSessions[(lastSelectedIndex.row)]
+            }
+            vc.extendedLayoutIncludesOpaqueBars = true
+            for speaker in speakers {
+                // Find speakerId in speaker array and collect relevent information to match session
+                if speaker.value(forKey: "speakerId") as! Int == session.value(forKey: "speakerId") as! Int{
+                    
+                    let firstName = speaker.value(forKey: "firstname") as! String
+                    let lastName = speaker.value(forKey: "surname") as! String
+                    vc.fullname = firstName + " " + lastName
+                    let url = URL(string: speaker.value(forKey: "photoURL") as! String)
+                    vc.speakerImageURL = url
+                    vc.company = speaker.value(forKey: "organisation") as! String
+                    vc.profile = speaker.value(forKey: "profile") as! String
+                }
+            }
+            var descArray = [String]()
+            descArray.append(session.value(forKey: "sessionDescription") as! String)
+            vc.buildingName = session.value(forKey: "sessionLocationName") as! String
+            vc.talkName = session.value(forKey: "sessionTitle") as! String
+            vc.talks = descArray
+            vc.profileViewSelected = false
+            vc.viewIsHidden = false
+            let startTime = Date().formatDate(dateToFormat: session.value(forKey: "sessionStartDateTime") as! String)
+            vc.timeStarted = Date().wordedDate(Date: startTime)
+            vc.viewIsHidden = false
+            
+            
+        }
+
+    }
     // MARK: - Core Data
     
     private func setupAndRecieveCoreData() {
@@ -194,7 +270,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 // When data has been successfully stored
                 self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
                 self.scheduleCollectionView.reloadData()
-                //self.tweetsCollectionView.reloadData()
+                for (i,num) in self.speakers.enumerated().reversed() {
+                    if num.value(forKey: "firstname") as! String == "Break"{
+                        self.speakers.remove(at: i)
+                    }
+                }
+
             })
         } else {print("Speakers core data is not empty")}
         // Repeat for other tables
@@ -292,37 +373,13 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     // MARK: - IBActions
     
-    @IBAction func seeAllTweets(_ sender: Any) {
+
+    @IBAction func viewWebsite(_ sender: Any) {
         
-        showTimeline()
     }
-    @IBAction func seeFullSchedule(_ sender: Any) {
+    @IBAction func viewSchedule(_ sender: Any) {
         
         tabBarController?.selectedIndex = 1
-    }
-    
-    // MARK: - Twitter
-    
-    private func showTimeline() {
-        
-        // Create an API client and data source to fetch Tweets for the timeline
-        let client = TWTRAPIClient()
-        // Replace with your collection id or a different data source
-        let dataSource = TWTRUserTimelineDataSource(screenName: "Codemobileuk", apiClient: client)
-        // Create the timeline view controller
-        let timelineViewControlller = TWTRTimelineViewController(dataSource: dataSource)
-        // Create done button to dismiss the view controller
-        let button = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissTimeline))
-        timelineViewControlller.navigationItem.leftBarButtonItem = button
-        // Create a navigation controller to hold the
-        let navigationController = UINavigationController(rootViewController: timelineViewControlller)
-        
-        showDetailViewController(navigationController, sender: self)
-    }
-    
-    @objc private func dismissTimeline() {
-        
-        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - UI

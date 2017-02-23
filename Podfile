@@ -12,10 +12,6 @@ target 'CodeMobile' do
     pod 'SwiftyJSON'
     #Kingfisher for handling image requests
     pod 'Kingfisher'
-    #Pods for Twitter
-    pod 'Fabric'
-    pod 'TwitterKit'
-    pod 'TwitterCore'
     #Pod for side menu
     pod 'SWRevealViewController'
 

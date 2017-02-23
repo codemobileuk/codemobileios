@@ -49,6 +49,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         setupInitialData()
         setupTableViewUI()
         setupUI()
+         self.navigationController?.isNavigationBarHidden = false
     }
     
     // MARK: - Initialization

@@ -8,8 +8,6 @@
 
 import UIKit
 import CoreData
-import Fabric
-import TwitterKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -34,7 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabController.tintColor = UIColor.red
         tabController.shadowImage = UIImage()
         
-        Fabric.with([Twitter.self])
         
         UIApplication.shared.statusBarView?.backgroundColor = Colours.codeMobileGrey
         

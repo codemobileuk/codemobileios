@@ -33,11 +33,11 @@
                                         <rect key="frame" x="0.0" y="28" width="260" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KbJ-RL-mNH" id="ZEO-79-MAP">
-                                            <rect key="frame" x="0.0" y="0.0" width="260" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="260" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hjq-Xu-c44">
-                                                    <rect key="frame" x="15" y="0.0" width="230" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="230" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -298,13 +298,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5An-cA-wZ8">
-                                <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O49-iv-uX6">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uj8-Ce-NkF">
-                                                <rect key="frame" x="0.0" y="259" width="320" height="196"/>
+                                                <rect key="frame" x="0.0" y="259" width="320" height="245"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ProfileCell" rowHeight="67" id="AwK-Bk-Jc1" customClass="ProfileCell" customModule="CodeMobile" customModuleProvider="target">
@@ -431,18 +431,18 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="5E0-O9-Az5">
-                                                        <rect key="frame" x="130" y="189" width="61" height="25"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="5E0-O9-Az5">
+                                                        <rect key="frame" x="130" y="189" width="0.0" height="25"/>
                                                         <subviews>
-                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d87-n9-1Dx">
-                                                                <rect key="frame" x="0.0" y="0.0" width="23" height="25"/>
+                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d87-n9-1Dx">
+                                                                <rect key="frame" x="-160.5" y="-253" width="0.0" height="23"/>
                                                                 <state key="normal" backgroundImage="Twitter"/>
                                                                 <connections>
                                                                     <action selector="takeUserToTwitter:" destination="JCb-qD-aN9" eventType="touchUpInside" id="Rud-bh-RPi"/>
                                                                 </connections>
                                                             </button>
-                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VdZ-kY-XPe">
-                                                                <rect key="frame" x="38" y="0.0" width="23" height="25"/>
+                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VdZ-kY-XPe">
+                                                                <rect key="frame" x="-160.5" y="-253" width="0.0" height="23"/>
                                                                 <state key="normal" backgroundImage="Linkedin"/>
                                                                 <connections>
                                                                     <action selector="takeUserToLinkedIn:" destination="JCb-qD-aN9" eventType="touchUpInside" id="6Q3-UN-lQ5"/>
@@ -695,7 +695,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V0y-Ha-uXQ">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1043,13 +1043,13 @@
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D3U-IQ-64I">
-                                                <rect key="frame" x="221" y="1" width="91" height="35.5"/>
+                                                <rect key="frame" x="217" y="1" width="95" height="35.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <state key="normal" title="Visit Website &gt;">
+                                                <state key="normal" title="Visit Website &gt; ">
                                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="seeAllTweets:" destination="uJY-fW-1Sp" eventType="touchUpInside" id="dm0-SO-SDG"/>
+                                                    <action selector="viewWebsite:" destination="uJY-fW-1Sp" eventType="touchUpInside" id="ixL-y7-wS5"/>
                                                 </connections>
                                             </button>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="oBb-X0-Shp">
@@ -1169,13 +1169,13 @@
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vxQ-5f-5zO">
-                                                <rect key="frame" x="215" y="1" width="97" height="28"/>
+                                                <rect key="frame" x="190" y="1" width="122" height="28"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <state key="normal" title="Latest Tweets &gt;">
+                                                <state key="normal" title="View full schedule &gt;">
                                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="seeAllTweets:" destination="uJY-fW-1Sp" eventType="touchUpInside" id="f6w-9b-nPz"/>
+                                                    <action selector="viewSchedule:" destination="uJY-fW-1Sp" eventType="touchUpInside" id="eLu-JC-Cr4"/>
                                                 </connections>
                                             </button>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="9SL-VL-dPu">
@@ -1239,11 +1239,12 @@
                         <outlet property="currentlyOnSpinner" destination="oBb-X0-Shp" id="iEP-Ym-Zju"/>
                         <outlet property="scheduleCollectionView" destination="g10-EX-GRV" id="p18-kx-wGs"/>
                         <outlet property="scheduleSpinner" destination="9SL-VL-dPu" id="K8g-tf-7R3"/>
+                        <segue destination="k9f-lY-0Qw" kind="showDetail" identifier="showHomeDetail" id="KXW-IB-Asn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yR6-QF-e7s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5346" y="1605"/>
+            <point key="canvasLocation" x="5346" y="1620"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="9gO-jR-LJI">
@@ -1436,7 +1437,7 @@
         <image name="menu" width="21" height="21"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="yHb-2R-uou"/>
+        <segue reference="KXW-IB-Asn"/>
         <segue reference="FRj-4u-ObJ"/>
     </inferredMetricsTieBreakers>
 </document>
