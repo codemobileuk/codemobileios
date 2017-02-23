@@ -36,8 +36,8 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewWillAppear(_ animated: Bool) {
         
-        scheduleTableView.reloadData()
         setupAndRecieveCoreData()
+        scheduleTableView.reloadData()
         checkDateAndSetSegment()
     }
     
@@ -229,6 +229,8 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             sortOutSections()
             sortOutTags()
         }
+        
+    
     }
     
     // Hellish function responsible for sorting out schedule data into seperate sections - Sorry that it is confusing, even to me...
