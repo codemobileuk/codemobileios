@@ -13,6 +13,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var codeMobileWebView: UIWebView!
     @IBOutlet weak var webSpinner: UIActivityIndicatorView!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,6 +22,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         // Do any additional setup after loading the view.
         let requestObj = NSURLRequest(url: url as! URL)
         codeMobileWebView.loadRequest(requestObj as URLRequest)
+         webSpinner.startAnimating()
     }
     
     func webViewDidStartLoad(_ : UIWebView){

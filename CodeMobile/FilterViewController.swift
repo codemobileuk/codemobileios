@@ -57,6 +57,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = self.filterTableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath) as! FilterCell
         cell.filterTitleLabel.text = tableItem.tagTitle
         cell.selectionStyle = .none
+        cell.backgroundColor = Colours.codeMobileGrey
         
         if TagsStruct.date == "2017-04-18" && cell.filterTitleLabel.text == "Tuesday 18th April"{
             lastChecked.accessoryType = .none

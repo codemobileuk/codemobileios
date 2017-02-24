@@ -22,6 +22,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var lastSelectedIndex = IndexPath()
     private var fromSchedule = Bool()
     private var viewBugFixed = false // Collection views are clipped when rotating, and on second load view everything bugs out
+    var isGrantedNotificationAccess:Bool = false
     
     @IBOutlet weak var currentlyOnCollectionView: UICollectionView!
     @IBOutlet weak var scheduleCollectionView: UICollectionView!
@@ -42,13 +43,63 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupSplitView()
     }
     
+    func notificationSquad() {
+    
+        // Notification
+        if self.isGrantedNotificationAccess{
+            if #available(iOS 10.0, *) {
+                // Set up content
+                let content = UNMutableNotificationContent()
+                content.title = "Notification Test"
+                content.subtitle = "From CodeMobile"
+                content.body = "Notification after 1 minute - Yay!!"
+                content.categoryIdentifier = "message"
+                
+                // Triggers
+                let trigger = UNTimeIntervalNotificationTrigger(
+                    timeInterval: 60.0,
+                    repeats: false)
+                
+                // Notification Request
+                
+                let request = UNNotificationRequest(
+                    identifier: "10.second.message",
+                    content: content,
+                    trigger: trigger
+                )
+                
+                // Adding notification
+                UNUserNotificationCenter.current().add(
+                    request, withCompletionHandler: nil)
+            } else {
+                // Fallback on earlier versions
+            }
+            
+            
+        }
+
+    }
+    
     override func viewDidLoad() {
         
         setupUI()
         // User cannot switch tabs until data has been retrieved
         self.tabBarController?.tabBar.isUserInteractionEnabled = false
-        setupAndRecieveCoreData()
         setupSplitView()
+        //setupAndRecieveCoreData()
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: [.alert,.sound,.badge],
+                completionHandler: { (granted,error) in
+                    self.isGrantedNotificationAccess = granted
+                    self.notificationSquad()
+            }
+            )
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
@@ -294,6 +345,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     private func setupAndRecieveCoreData() {
         
+        currentlyOnSessions.removeAll()
         // SPEAKERS
         // Recieve speaker data from core data
         speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
@@ -342,7 +394,38 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                             self.sessions.remove(at: i)
                             
                         } else {
-                            //Session is off
+                            // Notification
+                            if self.isGrantedNotificationAccess{
+                                if #available(iOS 10.0, *) {
+                                    // Set up content
+                                    let content = UNMutableNotificationContent()
+                                    content.title = "10 Second Notification Demo"
+                                    content.subtitle = "From MakeAppPie.com"
+                                    content.body = "Notification after 10 seconds - Your pizza is Ready!!"
+                                    content.categoryIdentifier = "message"
+                                    
+                                    // Triggers
+                                    let trigger = UNTimeIntervalNotificationTrigger(
+                                        timeInterval: 10.0,
+                                        repeats: false)
+                                    
+                                    // Notification Request
+                                    
+                                    let request = UNNotificationRequest(
+                                        identifier: "10.second.message",
+                                        content: content,
+                                        trigger: trigger
+                                    )
+                                    
+                                    // Adding notification
+                                    UNUserNotificationCenter.current().add(
+                                        request, withCompletionHandler: nil)
+                                } else {
+                                    // Fallback on earlier versions
+                                }
+                               
+
+                            }
                         }
                         
                     }
