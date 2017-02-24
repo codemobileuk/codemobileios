@@ -15,4 +15,5 @@ class Commands{
     static let LOCATIONS = "/Locations"
     static let TAGS = "/Tags"
     static let API_URL : String = "http://api.app.codemobile.co.uk/api"
+    static let WEBSITE_URL : String = "http://codemobile.co.uk"
 }

@@ -41,8 +41,6 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         
         buttonSelectedColour()
         viewVisibility()
-       // self.navigationController?.isNavigationBarHidden = false
-
     }
     
     override func viewDidLoad() {
@@ -51,7 +49,6 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         setupInitialData()
         setupTableViewUI()
         setupUI()
-         self.navigationController?.isNavigationBarHidden = false
     }
     
     // MARK: - Initialization

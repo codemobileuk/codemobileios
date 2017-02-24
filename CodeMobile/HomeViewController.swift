@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISplitViewControllerDelegate   {
     
@@ -18,6 +19,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
     private var currentlyOnSessions: [NSManagedObject] = []
+    private var lastSelectedIndex = IndexPath()
+    private var fromSchedule = Bool()
+    private var viewBugFixed = false // Collection views are clipped when rotating, and on second load view everything bugs out
     
     @IBOutlet weak var currentlyOnCollectionView: UICollectionView!
     @IBOutlet weak var scheduleCollectionView: UICollectionView!
@@ -31,6 +35,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         scheduleCollectionView.reloadData()
         currentlyOnCollectionView.reloadData()
+        setupUI()
+        // User cannot switch tabs until data has been retrieved
+        self.tabBarController?.tabBar.isUserInteractionEnabled = false
+        setupAndRecieveCoreData()
+        setupSplitView()
     }
     
     override func viewDidLoad() {
@@ -42,26 +51,51 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupSplitView()
     }
     
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        
+        // Reload Data here
+        
+        self.scheduleCollectionView.setNeedsDisplay()
+        scheduleCollectionView.layoutIfNeeded()
+        
+    }
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .default
     }
-
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
         if UIDevice.current.orientation.isLandscape {
             print("Landscape")
+            self.scheduleCollectionView.setNeedsDisplay()
             scheduleCollectionView.layoutIfNeeded()
-           
-            scheduleCollectionView.reloadInputViews()
-            scheduleCollectionView.reloadData()
-        
+            if viewBugFixed == false {
+                loadView()
+                loadView()
+                loadView()
+                viewBugFixed = true
+            } else {
+                loadView()
+            }
+            scheduleSpinner.hidesWhenStopped = true
+            currentlyOnSpinner.hidesWhenStopped = true
+            
         } else {
             print("Portrait")
+            self.scheduleCollectionView.setNeedsDisplay()
             scheduleCollectionView.layoutIfNeeded()
+            if viewBugFixed == false {
+                loadView()
+                loadView()
+                loadView()
+                viewBugFixed = true
+            } else {
+                loadView()
+            }
+            scheduleSpinner.hidesWhenStopped = true
+            currentlyOnSpinner.hidesWhenStopped = true
             
-            scheduleCollectionView.reloadInputViews()
-            scheduleCollectionView.reloadData()
+            
         }
     }
     
@@ -114,71 +148,76 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             
         } else {
             
-         if currentlyOnSessions.count == 0 {
-            
-            let cell = currentlyOnCollectionView.dequeueReusableCell(withReuseIdentifier: "NoSession", for: indexPath) as! NoSessionCollectionCell
-
-            return cell
-        }
-        
+            if currentlyOnSessions.count == 0 {
+                
+                let cell = currentlyOnCollectionView.dequeueReusableCell(withReuseIdentifier: "NoSession", for: indexPath) as! NoSessionCollectionCell
+                
+                UIView.animate(withDuration: 0, animations: {
+                    cell.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                }) { (finished) in
+                    UIView.animate(withDuration: 0.2, animations: {
+                        cell.transform = CGAffineTransform.identity
+                    })
+                }
+                
+                return cell
+            }
+                
             else if currentlyOnSessions.count == 1 {
-        
-            let item = currentlyOnSessions[indexPath.row]
-            let cell = currentlyOnCollectionView.dequeueReusableCell(withReuseIdentifier: "SingleSession", for: indexPath) as! SingleSessionCollectionCell
-            cell.sessionTitleLbl.text = item.value(forKey: "SessionTitle") as! String?
-            cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
-            cell.speakerImageView.setRadius(radius: 20.0)
-            for speaker in speakers {
                 
-                if speaker.value(forKey: "speakerId") as! Int == item.value(forKey: "speakerId") as! Int{
-                    let firstName = speaker.value(forKey: "firstname") as! String
-                    let lastName = speaker.value(forKey: "surname") as! String
-                    cell.speakerNameLbl.text = firstName + " " + lastName
-                    let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-                    cell.speakerImageView.kf.setImage(with: url)
-                }
-            }
-            cell.sessionInfoLbl.text = item.value(forKey: "sessionDescription") as! String?
-            
-            return cell
-
-        } else{ // Currently On Collection View
-            
-            let item = currentlyOnSessions[indexPath.row]
-            let cell = currentlyOnCollectionView.dequeueReusableCell(withReuseIdentifier: "DuelSessions", for: indexPath) as! DueliPhoneCollectionCell
-            cell.sessionTitleLbl.text = item.value(forKey: "SessionTitle") as! String?
-            cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
-            cell.speakerImageView.setRadius(radius: 20.0)
-            for speaker in speakers {
-                
-                if speaker.value(forKey: "speakerId") as! Int == item.value(forKey: "speakerId") as! Int{
-                    let firstName = speaker.value(forKey: "firstname") as! String
-                    let lastName = speaker.value(forKey: "surname") as! String
-                    cell.speakerNameLbl.text = firstName + " " + lastName
-                    let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-                    cell.speakerImageView.kf.setImage(with: url)
+                let item = currentlyOnSessions[indexPath.row]
+                let cell = currentlyOnCollectionView.dequeueReusableCell(withReuseIdentifier: "SingleSession", for: indexPath) as! SingleSessionCollectionCell
+                cell.sessionTitleLbl.text = item.value(forKey: "SessionTitle") as! String?
+                cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
+                cell.speakerImageView.setRadius(radius: 20.0)
+                for speaker in speakers {
                     
+                    if speaker.value(forKey: "speakerId") as! Int == item.value(forKey: "speakerId") as! Int{
+                        let firstName = speaker.value(forKey: "firstname") as! String
+                        let lastName = speaker.value(forKey: "surname") as! String
+                        cell.speakerNameLbl.text = firstName + " " + lastName
+                        let url = URL(string: speaker.value(forKey: "photoURL") as! String)
+                        cell.speakerImageView.kf.setImage(with: url)
+                    }
                 }
+                cell.sessionInfoLbl.text = item.value(forKey: "sessionDescription") as! String?
+                
+                return cell
+                
+            } else{ // Currently On Collection View
+                
+                let item = currentlyOnSessions[indexPath.row]
+                let cell = currentlyOnCollectionView.dequeueReusableCell(withReuseIdentifier: "DuelSessions", for: indexPath) as! DueliPhoneCollectionCell
+                cell.sessionTitleLbl.text = item.value(forKey: "SessionTitle") as! String?
+                cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
+                cell.speakerImageView.setRadius(radius: 20.0)
+                for speaker in speakers {
+                    
+                    if speaker.value(forKey: "speakerId") as! Int == item.value(forKey: "speakerId") as! Int{
+                        let firstName = speaker.value(forKey: "firstname") as! String
+                        let lastName = speaker.value(forKey: "surname") as! String
+                        cell.speakerNameLbl.text = firstName + " " + lastName
+                        let url = URL(string: speaker.value(forKey: "photoURL") as! String)
+                        cell.speakerImageView.kf.setImage(with: url)
+                        
+                    }
+                }
+                
+                return cell
             }
-
-           return cell
-        }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if collectionView == currentlyOnCollectionView && currentlyOnSessions.count < 2{
-              return CGSize(width: currentlyOnCollectionView.frame.size.width - 10, height: currentlyOnCollectionView.frame.size.height)
+            return CGSize(width: currentlyOnCollectionView.frame.size.width - 10, height: currentlyOnCollectionView.frame.size.height)
         }
         if collectionView == currentlyOnCollectionView {
             return CGSize(width: currentlyOnCollectionView.frame.size.width / 2 - 10, height: currentlyOnCollectionView.frame.size.height)
         }
         return CGSize(width: scheduleCollectionView.frame.size.width / 2.25 , height: scheduleCollectionView.frame.size.height)
     }
-    
-    var lastSelectedIndex = IndexPath()
-    var fromSchedule = Bool()
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -194,7 +233,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.performSegue(withIdentifier: "showHomeDetail", sender: self)
                 })
             }
-
+            
         } else if collectionView == currentlyOnCollectionView && currentlyOnSessions.isEmpty == false{
             fromSchedule = false
             UIView.animate(withDuration: 0.1, animations: {
@@ -205,7 +244,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.performSegue(withIdentifier: "showHomeDetail", sender: self)
                 })
             }
-
+            
         }
         
     }
@@ -218,7 +257,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             
             let nav = segue.destination as! UINavigationController
             let vc = nav.viewControllers[0] as! DetailViewController
-            var session = NSManagedObject()
+            var session : NSManagedObject
             if fromSchedule == true {
                 session = sessions[(lastSelectedIndex.row)]
             } else {
@@ -247,12 +286,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             vc.viewIsHidden = false
             let startTime = Date().formatDate(dateToFormat: session.value(forKey: "sessionStartDateTime") as! String)
             vc.timeStarted = Date().wordedDate(Date: startTime)
-            vc.viewIsHidden = false
-            vc.navigationController?.isNavigationBarHidden = false
-            
             
         }
-
+        
     }
     // MARK: - Core Data
     
@@ -273,7 +309,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         self.speakers.remove(at: i)
                     }
                 }
-
+                
             })
         } else {print("Speakers core data is not empty")}
         // Repeat for other tables
@@ -310,8 +346,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         }
                         
                     }
-
-
+                    
+                    
                 }
                 self.scheduleCollectionView.reloadData()
                 self.currentlyOnCollectionView.reloadData()
@@ -339,12 +375,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         //Session is on
                         self.currentlyOnSessions.append(num)
                         print("\(num.value(forKey: "SessionTitle")) is on!")
-                         self.sessions.remove(at: i)
+                        self.sessions.remove(at: i)
                         
                     } else {
                         //Session is off
                     }
-
+                    
                 }
                 
                 
@@ -368,12 +404,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.splitViewController?.delegate = self
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
     }
-
+    
     // MARK: - IBActions
     
-
     @IBAction func viewWebsite(_ sender: Any) {
         
+        self.performSegue(withIdentifier: "showWebsite", sender: self)
     }
     @IBAction func viewSchedule(_ sender: Any) {
         
@@ -387,6 +423,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         scheduleSpinner.hidesWhenStopped = true
         currentlyOnSpinner.hidesWhenStopped = true
     }
+
+    
 }
 
 // MARK: - Schedule CollectionViewCell Controller

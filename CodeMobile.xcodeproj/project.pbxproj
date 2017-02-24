@@ -25,8 +25,9 @@
 		BFDCC7BE1E4DD322004CD420 /* Colours.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDCC7BD1E4DD322004CD420 /* Colours.swift */; };
 		BFDCC7C01E4DD37D004CD420 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDCC7BF1E4DD37D004CD420 /* Entities.swift */; };
 		BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */; };
-		BFDEFBDB1E3B7DC0008C99BA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */; };
 		BFDF9AD81E5DD86F003434E1 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDF9AD71E5DD86F003434E1 /* UIApplication.swift */; };
+		BFE706241E605EF700750DBF /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE706231E605EF700750DBF /* MapViewController.swift */; };
+		BFE706261E605F5700750DBF /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE706251E605F5700750DBF /* WebViewController.swift */; };
 		BFEA19DA1E4B700300869259 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA19D91E4B700300869259 /* FilterViewController.swift */; };
 		E6533D55B76E37ADCB29FAEE /* Pods_CodeMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39586D35D8A21E61594C59BE /* Pods_CodeMobile.framework */; };
 /* End PBXBuildFile section */
@@ -55,8 +56,9 @@
 		BFDCC7BD1E4DD322004CD420 /* Colours.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colours.swift; sourceTree = "<group>"; };
 		BFDCC7BF1E4DD37D004CD420 /* Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeakersViewController.swift; sourceTree = "<group>"; };
-		BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		BFDF9AD71E5DD86F003434E1 /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		BFE706231E605EF700750DBF /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = ../../../../../.Trash/MapViewController.swift; sourceTree = "<group>"; };
+		BFE706251E605F5700750DBF /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		BFEA19D91E4B700300869259 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		BFF2C8561E5C5CB800905043 /* CodeMobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeMobile.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -196,7 +198,7 @@
 				BFB706FE1E324DA700D3CDF2 /* HomeViewController.swift */,
 				BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */,
 				BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */,
-				BFDEFBDA1E3B7DC0008C99BA /* MapViewController.swift */,
+				BFE706231E605EF700750DBF /* MapViewController.swift */,
 			);
 			name = "Tab Root Controllers";
 			sourceTree = "<group>";
@@ -206,6 +208,7 @@
 			children = (
 				BF1F21141E44A0B90072E991 /* DetailViewController.swift */,
 				BFD989BD1E4DF8EF00F2DF67 /* MapDetailViewController.swift */,
+				BFE706251E605F5700750DBF /* WebViewController.swift */,
 			);
 			name = "Detail Controllers";
 			sourceTree = "<group>";
@@ -348,12 +351,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFE706261E605F5700750DBF /* WebViewController.swift in Sources */,
 				BFDF9AD81E5DD86F003434E1 /* UIApplication.swift in Sources */,
 				BF1F21151E44A0B90072E991 /* DetailViewController.swift in Sources */,
 				BFCA1F851E41F57200BA42A2 /* CollectionViewCellRadius.swift in Sources */,
 				BFC6945E1E30B44D006C24C5 /* CodeMobile.xcdatamodeld in Sources */,
 				BFC6949C1E30EFE1006C24C5 /* CoreDataHandler.swift in Sources */,
 				BFD989BE1E4DF8EF00F2DF67 /* MapDetailViewController.swift in Sources */,
+				BFE706241E605EF700750DBF /* MapViewController.swift in Sources */,
 				BFCA1F7D1E41EC5300BA42A2 /* ImageViewRadius.swift in Sources */,
 				BFC694561E30B44D006C24C5 /* AppDelegate.swift in Sources */,
 				BFC6946C1E30BCDC006C24C5 /* ApiHandler.swift in Sources */,
@@ -362,7 +367,6 @@
 				BF6269DE1E4888E500A67A84 /* NSDateExtensions.swift in Sources */,
 				BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */,
 				BFB706FF1E324DA800D3CDF2 /* HomeViewController.swift in Sources */,
-				BFDEFBDB1E3B7DC0008C99BA /* MapViewController.swift in Sources */,
 				BFDCC7BC1E4DD314004CD420 /* Commands.swift in Sources */,
 				BFDCC7C01E4DD37D004CD420 /* Entities.swift in Sources */,
 				BFDCC7BE1E4DD322004CD420 /* Colours.swift in Sources */,
