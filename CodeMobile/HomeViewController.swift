@@ -31,14 +31,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         scheduleCollectionView.reloadData()
         currentlyOnCollectionView.reloadData()
-        switch UIDevice.current.userInterfaceIdiom {
-        case .phone:
-            self.navigationController?.isNavigationBarHidden = true
-        case .pad:
-            self.navigationController?.isNavigationBarHidden = false
-        default:
-            self.navigationController?.isNavigationBarHidden = true
-        }
     }
     
     override func viewDidLoad() {
@@ -46,12 +38,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupUI()
         // User cannot switch tabs until data has been retrieved
         self.tabBarController?.tabBar.isUserInteractionEnabled = false
-        
-        
         setupAndRecieveCoreData()
         setupSplitView()
-        
-       
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -63,9 +51,18 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         if UIDevice.current.orientation.isLandscape {
             print("Landscape")
-            scheduleCollectionView.reloadData() } else {
+            scheduleCollectionView.layoutIfNeeded()
+           
+            scheduleCollectionView.reloadInputViews()
+            scheduleCollectionView.reloadData()
+        
+        } else {
             print("Portrait")
-         scheduleCollectionView.reloadData()}
+            scheduleCollectionView.layoutIfNeeded()
+            
+            scheduleCollectionView.reloadInputViews()
+            scheduleCollectionView.reloadData()
+        }
     }
     
     // MARK: - CollectionView
@@ -251,6 +248,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             let startTime = Date().formatDate(dateToFormat: session.value(forKey: "sessionStartDateTime") as! String)
             vc.timeStarted = Date().wordedDate(Date: startTime)
             vc.viewIsHidden = false
+            vc.navigationController?.isNavigationBarHidden = false
             
             
         }

@@ -36,9 +36,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewWillAppear(_ animated: Bool) {
         
-        setupAndRecieveCoreData()
         scheduleTableView.reloadData()
         checkDateAndSetSegment()
+        
     }
     
     override func viewDidLoad() {
@@ -47,6 +47,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         setupSideMenu()
         setupUI()
         TagsStruct.date = "2017-04-18"
+        setupAndRecieveCoreData()
     }
     
     // MARK: - TableView
