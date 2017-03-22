@@ -16,7 +16,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     var speakerImageURL: URL!
     var company = ""
     var profile : String!
-    var talks : [String]!
+    var talks : [String]! = []
     var viewIsHidden = true
     var profileViewSelected = true
     var buildingName : String!
@@ -72,6 +72,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if profileViewSelected == false {
+            
             return talks.count
         }
         

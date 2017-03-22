@@ -322,6 +322,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     let firstName = speaker.value(forKey: "firstname") as! String
                     let lastName = speaker.value(forKey: "surname") as! String
                     vc.fullname = firstName + " " + lastName
+                    vc.title = firstName + " " + lastName
                     let url = URL(string: speaker.value(forKey: "photoURL") as! String)
                     vc.speakerImageURL = url
                     vc.company = speaker.value(forKey: "organisation") as! String
@@ -337,6 +338,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             vc.viewIsHidden = false
             let startTime = Date().formatDate(dateToFormat: session.value(forKey: "sessionStartDateTime") as! String)
             vc.timeStarted = Date().wordedDate(Date: startTime)
+            
             
         }
         

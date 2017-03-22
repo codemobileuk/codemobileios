@@ -50,8 +50,10 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.speakerNameLbl.text = firstName + " " + lastName
         // Thumbnail
         cell.thumbnailImageView.setRadius(radius: cell.thumbnailImageView.frame.size.height / 2)
-        let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-        cell.thumbnailImageView.kf.setImage(with: url)
+        if speaker.value(forKey: "photoURL") != nil {
+            let url = URL(string: speaker.value(forKey: "photoURL") as! String)
+            cell.thumbnailImageView.kf.setImage(with: url)
+        }
         // Session titles
         for session in sessions {
             // Find speakerId in speaker array and collect relevent information to match session
@@ -82,8 +84,11 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
             let firstName = speaker.value(forKey: "firstname") as! String
             let lastName = speaker.value(forKey: "surname") as! String
             vc.fullname = firstName + " " + lastName
-            let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-            vc.speakerImageURL = url
+            vc.title = firstName + " " + lastName
+            if speaker.value(forKey: "photoURL") != nil {
+                let url = URL(string: speaker.value(forKey: "photoURL") as! String)
+                vc.speakerImageURL = url
+            }
             vc.company = speaker.value(forKey: "organisation") as! String
             vc.profile = speaker.value(forKey: "profile") as! String
             vc.viewIsHidden = false
