@@ -36,7 +36,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewWillAppear(_ animated: Bool) {
         
-        setupAndRecieveCoreData()
+       
         scheduleTableView.reloadData()
         checkDateAndSetSegment()
         
@@ -44,11 +44,32 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         
+         setupAndRecieveCoreData()
         setupSplitView()
         setupSideMenu()
         setupUI()
         TagsStruct.date = "2017-04-18"
+        // Define identifier
+        _ = Notification.Name("NotificationIdentifier")
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification), name: NSNotification.Name(rawValue: "UpdateTags"), object: nil)
+
     }
+    
+    // MARK: - Notifications
+    func methodOfReceivedNotification(notification: NSNotification){
+        
+        switch(notification.name.rawValue){
+            
+        case "UpdateTags":
+         setupAndRecieveCoreData()
+         scheduleTableView.reloadData()
+         checkDateAndSetSegment()
+        default:
+           break
+        }
+    }
+
     
     // MARK: - TableView
     
@@ -209,29 +230,34 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     private func setupAndRecieveCoreData() {
         
-        speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-        sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
-        // TAGS
-        tags = coreData.recieveCoreData(entityNamed: Entities.TAGS)
-        scheduleSpinner.startAnimating()
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        if tags.isEmpty{
-            print("Tags core data is empty, storing tags data...")
-            api.storeTags(updateData: { () -> Void in
-                self.tags = self.coreData.recieveCoreData(entityNamed: Entities.TAGS)
+       
+        api.getLatestApiVersion {
+            
+             self.scheduleSpinner.startAnimating()
+            self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
+            self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+            // TAGS
+            self.tags = self.coreData.recieveCoreData(entityNamed: Entities.TAGS)
+           
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            if self.tags.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedId") as! Int != UserDefaults.standard.value(forKeyPath: "ModifiedTagsId") as! Int{
+                print("Tags core data is empty, storing tags data...")
+                self.api.storeTags(updateData: { () -> Void in
+                    self.tags = self.coreData.recieveCoreData(entityNamed: Entities.TAGS)
+                    self.scheduleSpinner.stopAnimating()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    self.sortOutSections()
+                    self.sortOutTags()
+                })
+            } else {
+                print("Tags core data is not empty")
                 self.scheduleSpinner.stopAnimating()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.sortOutSections()
                 self.sortOutTags()
-            })
-        } else {
-            print("Tags core data is not empty")
-            scheduleSpinner.stopAnimating()
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            sortOutSections()
-            sortOutTags()
-        }
+            }
         
+        }
     
     }
     

@@ -103,7 +103,8 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     case "Thursday 20th April" :  TagsStruct.date = "2017-04-20"
                     default : TagsStruct.date = "2017-04-18"
                     }
-                    self.revealViewController().frontViewController.loadView()
+                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UpdateTags"), object: nil)
+                    //self.revealViewController().frontViewController.loadView()
                     
                 }
             }
@@ -117,14 +118,16 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     filterItems.append(tableItem.tagId)
                     TagsStruct.tagsArray = filterItems
                     TagsStruct.userIsFiltering = true
-                    self.revealViewController().frontViewController.loadView()
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UpdateTags"), object: nil)
+                    //self.revealViewController().frontViewController.loadView()
                 }
                 else {
                     cell.accessoryType = .none
                     filterItems = filterItems.filter() {$0 != tableItem.tagId}
                     TagsStruct.tagsArray = filterItems
                     TagsStruct.userIsFiltering = true
-                    self.revealViewController().frontViewController.loadView()
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UpdateTags"), object: nil)
+                    //self.revealViewController().frontViewController.loadView()
                 }
             }
         }

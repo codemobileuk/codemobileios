@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BF1F21151E44A0B90072E991 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F21141E44A0B90072E991 /* DetailViewController.swift */; };
 		BF6269DE1E4888E500A67A84 /* NSDateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6269DD1E4888E500A67A84 /* NSDateExtensions.swift */; };
+		BFB1FAEC1E8A8495001D10C3 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB1FAEB1E8A8495001D10C3 /* Reachability.swift */; };
 		BFB706FF1E324DA800D3CDF2 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB706FE1E324DA700D3CDF2 /* HomeViewController.swift */; };
 		BFC694561E30B44D006C24C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC694551E30B44D006C24C5 /* AppDelegate.swift */; };
 		BFC6945B1E30B44D006C24C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFC694591E30B44D006C24C5 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 		833D53977BFEDD50DFC0CDC3 /* Pods-CodeMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CodeMobile.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CodeMobile/Pods-CodeMobile.debug.xcconfig"; sourceTree = "<group>"; };
 		BF1F21141E44A0B90072E991 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		BF6269DD1E4888E500A67A84 /* NSDateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtensions.swift; sourceTree = "<group>"; };
+		BFB1FAEB1E8A8495001D10C3 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		BFB706FE1E324DA700D3CDF2 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		BFC694521E30B44D006C24C5 /* CodeMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC694551E30B44D006C24C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -92,11 +94,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		BF6269DF1E4888E900A67A84 /* Extensions */ = {
+		BF2777A81E82BF1B0079008A /* Foundation Controls */ = {
 			isa = PBXGroup;
 			children = (
 				BF6269DD1E4888E500A67A84 /* NSDateExtensions.swift */,
-				BFDF9AD71E5DD86F003434E1 /* UIApplication.swift */,
+			);
+			name = "Foundation Controls";
+			sourceTree = "<group>";
+		};
+		BF6269DF1E4888E900A67A84 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BFCA1F7E1E41EC5C00BA42A2 /* UI Controls */,
+				BF2777A81E82BF1B0079008A /* Foundation Controls */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -127,7 +137,6 @@
 				BFC694721E30BF04006C24C5 /* View Controllers */,
 				BFC6946D1E30BE8A006C24C5 /* Api */,
 				BFC694731E30BF23006C24C5 /* Core Data */,
-				BFCA1F7E1E41EC5C00BA42A2 /* UI Controls */,
 				BF6269DF1E4888E900A67A84 /* Extensions */,
 				BFDCC7BA1E4DD26F004CD420 /* Constants */,
 				BFC6946A1E30B509006C24C5 /* Supporting FIles */,
@@ -150,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				BFC6946B1E30BCDC006C24C5 /* ApiHandler.swift */,
+				BFB1FAEB1E8A8495001D10C3 /* Reachability.swift */,
 			);
 			name = Api;
 			sourceTree = "<group>";
@@ -178,6 +188,7 @@
 			children = (
 				BFCA1F7C1E41EC5300BA42A2 /* ImageViewRadius.swift */,
 				BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */,
+				BFDF9AD71E5DD86F003434E1 /* UIApplication.swift */,
 			);
 			name = "UI Controls";
 			sourceTree = "<group>";
@@ -369,6 +380,7 @@
 				BFB706FF1E324DA800D3CDF2 /* HomeViewController.swift in Sources */,
 				BFDCC7BC1E4DD314004CD420 /* Commands.swift in Sources */,
 				BFDCC7C01E4DD37D004CD420 /* Entities.swift in Sources */,
+				BFB1FAEC1E8A8495001D10C3 /* Reachability.swift in Sources */,
 				BFDCC7BE1E4DD322004CD420 /* Colours.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationController = UINavigationBar.appearance()
         let tabController = UITabBar.appearance()
         
+               
         navigationController.isTranslucent = false
         navigationController.setBackgroundImage(UIImage(named: "NavigationBarBackground"), for: .default)
         navigationController.shadowImage = UIImage()
@@ -35,28 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.shared.statusBarView?.backgroundColor = Colours.codeMobileGrey
         
-        
-        if #available(iOS 10.0, *) {
-            let center = UNUserNotificationCenter.current()
-            let options: UNAuthorizationOptions = [.alert, .sound]
-            center.requestAuthorization(options: options) {
-                (granted, error) in
-                if !granted {
-                    print("Something went wrong")
-                }
-            }
-            
-            center.getNotificationSettings { (settings) in
-                if settings.authorizationStatus != .authorized {
-                    // Notifications not allowed
-                }
-            }
 
-        } else {
-            // Fallback on earlier versions
-        };
-        
-        
         return true
     }
 

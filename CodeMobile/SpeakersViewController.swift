@@ -12,7 +12,6 @@ import CoreData
 class SpeakersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate  {
     
     // MARK: - Properties
-    
     private let coreData = CoreDataHandler()
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []

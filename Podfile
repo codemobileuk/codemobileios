@@ -12,7 +12,7 @@ target 'CodeMobile' do
     pod 'SwiftyJSON'
     #Kingfisher for handling image requests
     pod 'Kingfisher'
-    #Pod for side menu
+    #SWRevealViewController for side menu
     pod 'SWRevealViewController'
 
 end

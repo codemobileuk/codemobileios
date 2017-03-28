@@ -13,7 +13,6 @@ import UserNotifications
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISplitViewControllerDelegate   {
     
     // MARK: - Properties
-    
     private let api = ApiHandler()
     private let coreData = CoreDataHandler()
     private var sessions: [NSManagedObject] = []
@@ -21,7 +20,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var currentlyOnSessions: [NSManagedObject] = []
     private var lastSelectedIndex = IndexPath()
     private var fromSchedule = Bool()
-    private var viewBugFixed = false // Collection views are clipped when rotating, and on second load view everything bugs out
+    private var viewBugFixed = false // BUG: - Collection views are clipped when rotating, and on second load view everything bugs out
     var isGrantedNotificationAccess:Bool = false
     
     @IBOutlet weak var currentlyOnCollectionView: UICollectionView!
@@ -31,7 +30,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var currentlyOnSpinner: UIActivityIndicatorView!
     
     // MARK: - View Controller Life Cycle
-    
     override func viewWillAppear(_ animated: Bool) {
         
         scheduleCollectionView.reloadData()
@@ -43,41 +41,44 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupSplitView()
     }
     
-    func notificationSquad() {
+    @available(iOS 10.0, *)
+    func notificationSquad(date: Date) {
     
-        // Notification
-        if self.isGrantedNotificationAccess{
-            if #available(iOS 10.0, *) {
-                // Set up content
-                let content = UNMutableNotificationContent()
-                content.title = "Notification Test"
-                content.subtitle = "From CodeMobile"
-                content.body = "Notification after 1 minute - Yay!!"
-                content.categoryIdentifier = "message"
-                
-                // Triggers
-                let trigger = UNTimeIntervalNotificationTrigger(
-                    timeInterval: 60.0,
-                    repeats: false)
-                
-                // Notification Request
-                
-                let request = UNNotificationRequest(
-                    identifier: "10.second.message",
-                    content: content,
-                    trigger: trigger
-                )
-                
-                // Adding notification
-                UNUserNotificationCenter.current().add(
-                    request, withCompletionHandler: nil)
-            } else {
-                // Fallback on earlier versions
-            }
-            
-            
-        }
+        let calendar = Calendar(identifier: .gregorian)
+        let components = calendar.dateComponents(in: .current, from: date)
+        let newComponents = DateComponents(calendar: calendar, timeZone: .current, year: components.year, month: components.month, day: components.day, hour: components.hour, minute: components.minute)
+        
+        print(newComponents.date)
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Meeting Reminder"
+        content.subtitle = "Meeting Reminder"
+        content.body = "Don't forget to bring coffee."
+        content.badge = 1
+        
+        let requestIdentifier = "demoNotification"
+        
+        var date = DateComponents()
+        date.hour = newComponents.hour
+        date.minute = newComponents.minute
+        date.day = newComponents.day
+        date.year = newComponents.year
+        date.month = newComponents.month
+        
+        date.hour = 15
+        date.minute = 40
+        date.day = 28
+        date.year = 2017
+        date.month = 3
+        
+        print(date)
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: requestIdentifier, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
 
+    
     }
     
     override func viewDidLoad() {
@@ -87,30 +88,16 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.tabBarController?.tabBar.isUserInteractionEnabled = false
         setupSplitView()
         //setupAndRecieveCoreData()
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: [.alert,.sound,.badge],
-                completionHandler: { (granted,error) in
-                    self.isGrantedNotificationAccess = granted
-                    self.notificationSquad()
-            }
-            )
-        } else {
-            // Fallback on earlier versions
-        }
-        
-        
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         
-        // Reload Data here
-        
         self.scheduleCollectionView.setNeedsDisplay()
         scheduleCollectionView.layoutIfNeeded()
-        
     }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
+        
         return .default
     }
     
@@ -145,13 +132,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
             scheduleSpinner.hidesWhenStopped = true
             currentlyOnSpinner.hidesWhenStopped = true
-            
-            
         }
     }
     
     // MARK: - CollectionView
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if collectionView == currentlyOnCollectionView {
@@ -197,9 +181,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
             return cell
             
-        } else {
+        } else { // Currently On Collection View
             
-            if currentlyOnSessions.count == 0 {
+            if currentlyOnSessions.count == 0 { // No sessions on
                 
                 let cell = currentlyOnCollectionView.dequeueReusableCell(withReuseIdentifier: "NoSession", for: indexPath) as! NoSessionCollectionCell
                 
@@ -214,7 +198,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 return cell
             }
                 
-            else if currentlyOnSessions.count == 1 {
+            else if currentlyOnSessions.count == 1 { // 1 session on
                 
                 let item = currentlyOnSessions[indexPath.row]
                 let cell = currentlyOnCollectionView.dequeueReusableCell(withReuseIdentifier: "SingleSession", for: indexPath) as! SingleSessionCollectionCell
@@ -235,7 +219,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 
                 return cell
                 
-            } else{ // Currently On Collection View
+            } else { // 2 sessions on
                 
                 let item = currentlyOnSessions[indexPath.row]
                 let cell = currentlyOnCollectionView.dequeueReusableCell(withReuseIdentifier: "DuelSessions", for: indexPath) as! DueliPhoneCollectionCell
@@ -295,13 +279,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.performSegue(withIdentifier: "showHomeDetail", sender: self)
                 })
             }
-            
         }
-        
     }
     
     // MARK: - Segue
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "showHomeDetail" {
@@ -338,46 +319,102 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             vc.viewIsHidden = false
             let startTime = Date().formatDate(dateToFormat: session.value(forKey: "sessionStartDateTime") as! String)
             vc.timeStarted = Date().wordedDate(Date: startTime)
-            
-            
         }
-        
     }
-    // MARK: - Core Data
     
+    // MARK: - Core Data
     private func setupAndRecieveCoreData() {
         
-        currentlyOnSessions.removeAll()
-        // SPEAKERS
-        // Recieve speaker data from core data
-        speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-        // Check if data contains data, if not retrieve data from the API then store the data into speaker array.
-        if speakers.isEmpty{
-            print("Speakers core data is empty, storing speakers data...")
-            api.storeSpeakers(updateData: { () -> Void in
-                // When data has been successfully stored
-                self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-                self.scheduleCollectionView.reloadData()
-                for (i,num) in self.speakers.enumerated().reversed() {
-                    if num.value(forKey: "firstname") as! String == "Break"{
-                        self.speakers.remove(at: i)
+        if Reachability.isConnectedToNetwork() {
+        
+            print("Connected")
+        } else {
+        
+            print("Not connected")
+        }
+        
+        api.getLatestApiVersion {
+            
+            self.scheduleSpinner.startAnimating()
+            self.currentlyOnSpinner.startAnimating()
+
+            self.currentlyOnSessions.removeAll()
+            // SPEAKERS
+            // Recieve speaker data from core data
+            self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
+            // Check if data contains data, if not retrieve data from the API then store the data into speaker array.
+            if self.speakers.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedId") as! Int != UserDefaults.standard.value(forKeyPath: "ModifiedSpeakersId") as! Int{
+                print("Speakers core data is empty, storing speakers data...")
+                self.api.storeSpeakers(updateData: { () -> Void in
+                    // When data has been successfully stored
+                    self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
+                    self.scheduleCollectionView.reloadData()
+                    for (i,num) in self.speakers.enumerated().reversed() {
+                        if num.value(forKey: "firstname") as! String == "Break"{
+                            self.speakers.remove(at: i)
+                        }
                     }
-                }
+                    
+                })
+            } else {print("Speakers core data is not empty")}
+            
+            // SESSIONS
+            self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            
+            if self.sessions.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedId") as! Int != UserDefaults.standard.value(forKeyPath: "ModifiedScheduleId") as! Int{
+                print("Schedule core data is empty, storing schedule data...")
+                self.api.storeSchedule(updateData: { () -> Void in
+                    self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+                    for (i,num) in self.sessions.enumerated().reversed() {
+                        // Remove past sessions
+                        let endTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionEndDateTime")! as! String)
+                        if endTime < Date() {
+                            self.sessions.remove(at: i)
+                        }// Remove breaks
+                        else if num.value(forKey: "SessionTitle") as! String == "Break"{
+                            self.sessions.remove(at: i)
+                        }else{
+                            let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
+                            
+                            if Date().isBetweeen(date: startTime, andDate: endTime) {
+                                //Session is on
+                                self.currentlyOnSessions.append(num)
+                                print("\(num.value(forKey: "SessionTitle")) is on!")
+                                self.sessions.remove(at: i)
+                                
+                            } else {
+                                if #available(iOS 10.0, *) {
+                                    UNUserNotificationCenter.current().requestAuthorization(
+                                        options: [.alert,.sound,.badge],
+                                        completionHandler: { (granted,error) in
+                                            self.isGrantedNotificationAccess = granted
+                                            let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
+                                            self.notificationSquad(date: startTime)
+                                    }
+                                    )
+                                } else {
+                                    // Fallback on earlier versions
+                                }
+
+
+                            }
+                            
+                        }
+                        
+                        
+                    }
+                    self.scheduleCollectionView.reloadData()
+                    self.currentlyOnCollectionView.reloadData()
+                    self.scheduleSpinner.stopAnimating()
+                    self.currentlyOnSpinner.stopAnimating()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    self.tabBarController?.tabBar.isUserInteractionEnabled = true
+                    
+                })
+            } else {
+                print("Schedule core data is not empty")
                 
-            })
-        } else {print("Speakers core data is not empty")}
-        // Repeat for other tables
-        
-        // SESSIONS
-        sessions = coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
-        scheduleSpinner.startAnimating()
-        currentlyOnSpinner.startAnimating()
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
-        if sessions.isEmpty{
-            print("Schedule core data is empty, storing schedule data...")
-            api.storeSchedule(updateData: { () -> Void in
-                self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
                 for (i,num) in self.sessions.enumerated().reversed() {
                     // Remove past sessions
                     let endTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionEndDateTime")! as! String)
@@ -386,7 +423,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     }// Remove breaks
                     else if num.value(forKey: "SessionTitle") as! String == "Break"{
                         self.sessions.remove(at: i)
-                    }else{
+                    } else{
                         let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
                         
                         if Date().isBetweeen(date: startTime, andDate: endTime) {
@@ -396,89 +433,25 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                             self.sessions.remove(at: i)
                             
                         } else {
-                            // Notification
-                            if self.isGrantedNotificationAccess{
-                                if #available(iOS 10.0, *) {
-                                    // Set up content
-                                    let content = UNMutableNotificationContent()
-                                    content.title = "10 Second Notification Demo"
-                                    content.subtitle = "From MakeAppPie.com"
-                                    content.body = "Notification after 10 seconds - Your pizza is Ready!!"
-                                    content.categoryIdentifier = "message"
-                                    
-                                    // Triggers
-                                    let trigger = UNTimeIntervalNotificationTrigger(
-                                        timeInterval: 10.0,
-                                        repeats: false)
-                                    
-                                    // Notification Request
-                                    
-                                    let request = UNNotificationRequest(
-                                        identifier: "10.second.message",
-                                        content: content,
-                                        trigger: trigger
-                                    )
-                                    
-                                    // Adding notification
-                                    UNUserNotificationCenter.current().add(
-                                        request, withCompletionHandler: nil)
-                                } else {
-                                    // Fallback on earlier versions
-                                }
-                               
-
-                            }
+                            //Session is off
                         }
                         
                     }
                     
                     
                 }
-                self.scheduleCollectionView.reloadData()
-                self.currentlyOnCollectionView.reloadData()
                 self.scheduleSpinner.stopAnimating()
                 self.currentlyOnSpinner.stopAnimating()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.tabBarController?.tabBar.isUserInteractionEnabled = true
-                
-            })
-        } else {
-            print("Schedule core data is not empty")
-            
-            for (i,num) in self.sessions.enumerated().reversed() {
-                // Remove past sessions
-                let endTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionEndDateTime")! as! String)
-                if endTime < Date() {
-                    self.sessions.remove(at: i)
-                }// Remove breaks
-                else if num.value(forKey: "SessionTitle") as! String == "Break"{
-                    self.sessions.remove(at: i)
-                } else{
-                    let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
-                    
-                    if Date().isBetweeen(date: startTime, andDate: endTime) {
-                        //Session is on
-                        self.currentlyOnSessions.append(num)
-                        print("\(num.value(forKey: "SessionTitle")) is on!")
-                        self.sessions.remove(at: i)
-                        
-                    } else {
-                        //Session is off
-                    }
-                    
-                }
-                
-                
             }
-            self.scheduleSpinner.stopAnimating()
-            self.currentlyOnSpinner.stopAnimating()
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            self.tabBarController?.tabBar.isUserInteractionEnabled = true
+            
+            self.scheduleCollectionView.reloadData()
+            self.currentlyOnCollectionView.reloadData()
         }
     }
     
     // MARK: - SplitView
-    
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         
         return true
@@ -491,29 +464,25 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     // MARK: - IBActions
-    
     @IBAction func viewWebsite(_ sender: Any) {
         
         self.performSegue(withIdentifier: "showWebsite", sender: self)
     }
+    
     @IBAction func viewSchedule(_ sender: Any) {
         
         tabBarController?.selectedIndex = 1
     }
     
     // MARK: - UI
-    
     private func setupUI() {
         
         scheduleSpinner.hidesWhenStopped = true
         currentlyOnSpinner.hidesWhenStopped = true
     }
-
-    
 }
 
 // MARK: - Schedule CollectionViewCell Controller
-
 class SessionCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var speakerImageView: UIImageView!
@@ -521,8 +490,8 @@ class SessionCollectionCell: UICollectionViewCell {
     @IBOutlet weak var speakerNameLbl: UILabel!
     @IBOutlet weak var sessionTitleLbl: UILabel!
 }
-// MARK: - Tweet CollectionViewCell Controller
 
+// MARK: - Tweet CollectionViewCell Controller
 class TweetCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var tweetTextView: UITextView!
@@ -530,14 +499,12 @@ class TweetCollectionCell: UICollectionViewCell {
 }
 
 // MARK: - Duel iPhone CollectionViewCell Controller
-
 class DueliPhoneCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var speakerNameLbl: UILabel!
     @IBOutlet weak var sessionTitleLbl: UILabel!
     @IBOutlet weak var speakerImageView: UIImageView!
     @IBOutlet weak var liveInWhichBuildingLbl: UILabel!
-    
 }
 
 class SingleSessionCollectionCell: UICollectionViewCell {
@@ -551,7 +518,6 @@ class SingleSessionCollectionCell: UICollectionViewCell {
 }
 
 class NoSessionCollectionCell: UICollectionViewCell {
-    
     
 }
 

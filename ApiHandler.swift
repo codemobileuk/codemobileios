@@ -37,8 +37,17 @@ class ApiHandler {
                 }
                 
                 do {
+                    
+                    let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Schedule")
+                    let request = NSBatchDeleteRequest(fetchRequest: fetch)
+                    try managedContext.execute(request)
+                    
                     print("Saved schedule data!")
+                    let currentModifiedId = UserDefaults.standard.value(forKeyPath: "ModifiedId")
+                    UserDefaults.standard.set(currentModifiedId, forKey: "ModifiedScheduleId")
+                    print("The schedule version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedScheduleId")!)")
                     try managedContext.save()
+                    
                     updateData()
                 } catch let error as NSError {
                     print("Failed: Could not save. \(error), \(error.userInfo)")
@@ -72,8 +81,17 @@ class ApiHandler {
                 }
                 
                 do {
+                    
+                    let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Speaker")
+                    let request = NSBatchDeleteRequest(fetchRequest: fetch)
+                    try managedContext.execute(request)
+
+                    
                     try managedContext.save()
                     print("Saved speakers data!")
+                    let currentModifiedId = UserDefaults.standard.value(forKeyPath: "ModifiedId")
+                    UserDefaults.standard.set(currentModifiedId, forKey: "ModifiedSpeakersId")
+                    print("The speakers version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedSpeakersId")!)")
                     updateData()
                 } catch let error as NSError {
                     print("Failed: Could not save. \(error), \(error.userInfo)")
@@ -90,6 +108,7 @@ class ApiHandler {
         Alamofire.request(Commands.API_URL + Commands.LOCATIONS).responseJSON { (responseData) -> Void in
             if((responseData.result.value) != nil) {
                 
+              
                 let swiftyJsonVar = JSON(responseData.result.value!)
                 let entity = NSEntityDescription.entity(forEntityName: "SessionLocation", in: managedContext)!
                 
@@ -105,8 +124,16 @@ class ApiHandler {
                 }
 
                 do {
+                    let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "SessionLocation")
+                    let request = NSBatchDeleteRequest(fetchRequest: fetch)
+                    try managedContext.execute(request)
+
+                    
                     try managedContext.save()
                     print("Saved location data!")
+                    let currentModifiedId = UserDefaults.standard.value(forKeyPath: "ModifiedId")
+                    UserDefaults.standard.set(currentModifiedId, forKey: "ModifiedLocationsId")
+                    print("The locations version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedLocationsId")!)")
                     updateData()
                 } catch let error as NSError {
                     print("Failed: Could not save. \(error), \(error.userInfo)")
@@ -136,14 +163,42 @@ class ApiHandler {
                 }
                 
                 do {
+                    
+                    let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Tags")
+                    let request = NSBatchDeleteRequest(fetchRequest: fetch)
+                    try managedContext.execute(request)
+
+                    
                     try managedContext.save()
                     print("Saved tags data!")
+                    let currentModifiedId = UserDefaults.standard.value(forKeyPath: "ModifiedId")
+                    UserDefaults.standard.set(currentModifiedId, forKey: "ModifiedTagsId")
+                    print("The tags version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedTagsId")!)")
                     updateData()
                 } catch let error as NSError {
                     print("Failed: Could not save. \(error), \(error.userInfo)")
                 }
             }
         }
+    }
+    
+    // MODIFIED
+    func getLatestApiVersion(updateData: @escaping () -> Void) {
+        
+        Alamofire.request(Commands.API_URL + Commands.MODIFIED).responseJSON { (responseData) -> Void in
+            if((responseData.result.value) != nil) {
+                let swiftyJsonVar = JSON(responseData.result.value!)
+         
+                if let modifiedId = swiftyJsonVar["ModifiedId"].int {
+                    UserDefaults.standard.set(modifiedId, forKey: "ModifiedId")
+                }
+                
+                print("The api version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedId")!)")
+                
+                updateData()
+            }
+        }
+        
     }
     
     private func getContext() -> NSManagedObjectContext {
