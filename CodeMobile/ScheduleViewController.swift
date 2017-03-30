@@ -14,7 +14,6 @@ import SWRevealViewController
 class ScheduleViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate {
     
     // MARK: - Properties
-    
     var userIsFiltering = false
     var filterItems = [Int]()
     private let api = ApiHandler()
@@ -33,13 +32,10 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var scheduleSpinner: UIActivityIndicatorView!
     
     // MARK: - View Controller Life Cycle
-    
     override func viewWillAppear(_ animated: Bool) {
         
-       
         scheduleTableView.reloadData()
         checkDateAndSetSegment()
-        
     }
     
     override func viewDidLoad() {
@@ -72,7 +68,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
 
     
     // MARK: - TableView
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         
         if sortedSections.isEmpty{ return 0 }
@@ -175,7 +170,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - Segue
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "showDetail" {
@@ -214,7 +208,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - SplitView
-    
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         
         return true
@@ -227,38 +220,32 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - Core Data
-    
     private func setupAndRecieveCoreData() {
+    
+        self.scheduleSpinner.startAnimating()
+        self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
+        self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+        // TAGS
+        self.tags = self.coreData.recieveCoreData(entityNamed: Entities.TAGS)
         
-       
-        api.getLatestApiVersion {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        if self.tags.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedId") as! Int != UserDefaults.standard.value(forKeyPath: "ModifiedTagsId") as! Int{
             
-             self.scheduleSpinner.startAnimating()
-            self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-            self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
-            // TAGS
-            self.tags = self.coreData.recieveCoreData(entityNamed: Entities.TAGS)
-           
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            if self.tags.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedId") as! Int != UserDefaults.standard.value(forKeyPath: "ModifiedTagsId") as! Int{
-                print("Tags core data is empty, storing tags data...")
-                self.api.storeTags(updateData: { () -> Void in
-                    self.tags = self.coreData.recieveCoreData(entityNamed: Entities.TAGS)
-                    self.scheduleSpinner.stopAnimating()
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                    self.sortOutSections()
-                    self.sortOutTags()
-                })
-            } else {
-                print("Tags core data is not empty")
+            if self.tags.isEmpty {print("Tags core data is empty, storing tags data...")} else {print("Tags core data is out of date, storing new tags data...")}
+            self.api.storeTags(updateData: { () -> Void in
+                self.tags = self.coreData.recieveCoreData(entityNamed: Entities.TAGS)
                 self.scheduleSpinner.stopAnimating()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.sortOutSections()
                 self.sortOutTags()
-            }
-        
+            })
+        } else {
+            print("Tags core data is not empty & is up to date")
+            self.scheduleSpinner.stopAnimating()
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            self.sortOutSections()
+            self.sortOutTags()
         }
-    
     }
     
     // Hellish function responsible for sorting out schedule data into seperate sections - Sorry that it is confusing, even to me...
@@ -398,7 +385,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - IBActions
-    
     @IBAction func filterSessions(_ sender: Any) {
         
         let vc = revealViewController().rearViewController as! FilterViewController
@@ -426,7 +412,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - UI
-    
     private func setupSideMenu() {
         
         openBtn.target = self.revealViewController()
@@ -454,7 +439,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
 }
 
 // MARK: - Session TableViewCell Controller
-
 class FullWidthCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var sessionTitleLbl: UILabel!
@@ -489,14 +473,12 @@ class FullWidthCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
 }
 
 // Mark: - Tag CollectionViewCell Controller
-
 class TagCollectionViewCell : UICollectionViewCell {
     
     @IBOutlet weak var tagLbl: UILabel!
 }
 
 // MARK: - Session Model
-
 struct TableItem {
     
     let title: String
@@ -511,7 +493,6 @@ struct TableItem {
 }
 
 // MARK: - Tags Model
-
 struct SessionTags {
     
     let title: String

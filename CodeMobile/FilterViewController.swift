@@ -12,7 +12,6 @@ import CoreData
 class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Properties
-    
     private let coreData = CoreDataHandler()
     private var filterItems = [Int]()
     private var lastChecked = UITableViewCell()
@@ -24,7 +23,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var filterTableView: UITableView!
     
     // MARK: - View Controller Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,7 +32,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     // MARK: - TableView
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         
         return 2
@@ -148,7 +145,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     // MARK: - Segue
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let nav = segue.destination as! UINavigationController
@@ -162,7 +158,6 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     // MARK: - Core Data
-    
     private func recieveCoreData() {
         
         tags = coreData.recieveCoreData(entityNamed: Entities.TAGS)
@@ -191,14 +186,12 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
 }
 
 // MARK: - Filter TableViewCell Controller
-
 class FilterCell : UITableViewCell {
     
     @IBOutlet weak var filterTitleLabel: UILabel!
 }
 
 // MARK: - Tag Data Model
-
 struct TagData {
     
     var tagId = Int()
@@ -206,7 +199,6 @@ struct TagData {
 }
 
 // MARK: - Filtering Model
-
 struct TagsStruct {
     
     static var userIsFiltering = false

@@ -11,7 +11,6 @@ import UIKit
 class DetailViewController: UIViewController, UISplitViewControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Properties
-    
     var fullname = ""
     var speakerImageURL: URL!
     var company = ""
@@ -36,7 +35,6 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     @IBOutlet weak var viewB: UIButton!
     
     // MARK: - View Controller Life Cycle
-    
     override func viewWillAppear(_ animated: Bool) {
         
         buttonSelectedColour()
@@ -52,7 +50,6 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     }
     
     // MARK: - Initialization
-    
     private func setupInitialData() {
         
         fullNameLbl.text = fullname
@@ -63,7 +60,6 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     
     
     // MARK: - TableView
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         
         return 1
@@ -101,7 +97,6 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     }
     
     // MARK: - IBActions
-    
     @IBAction func takeUserToTwitter(_ sender: Any) {
         
         print("Twitter button pressed")
@@ -129,7 +124,6 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     }
     
     // MARK: - UI
-    
     private func setupTableViewUI() {
         
         detailTableView.tableFooterView = UIView()

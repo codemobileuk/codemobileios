@@ -22,7 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationController = UINavigationBar.appearance()
         let tabController = UITabBar.appearance()
         
-               
         navigationController.isTranslucent = false
         navigationController.setBackgroundImage(UIImage(named: "NavigationBarBackground"), for: .default)
         navigationController.shadowImage = UIImage()
@@ -36,7 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.shared.statusBarView?.backgroundColor = Colours.codeMobileGrey
         
-
         return true
     }
 

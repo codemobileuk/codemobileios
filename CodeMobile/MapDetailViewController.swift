@@ -13,7 +13,6 @@ import CoreLocation
 class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
     
     // MARK: - Properties
-    
     var locationPoints = [CLLocationCoordinate2D]()
     var lat = 53.1938717
     var long = -2.8961019
@@ -27,7 +26,6 @@ class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var mapTypeSegment: UISegmentedControl!
     
     // MARK: - View Controller Life Cycle
-    
     override func viewDidLoad() {
         
         setupUI()
@@ -36,8 +34,7 @@ class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
         addAnnotations()
     }
     
-    // MARK: - MapKit
-    
+    // MARK: - Initialization
     private func setupInitialLocation() {
         
         let initialLocation = CLLocation(latitude: lat, longitude: long)
@@ -50,7 +47,7 @@ class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
         chesterMapView.setRegion(coordinateRegion, animated: true)
     }
     
-    func addAnnotations() {
+    private func addAnnotations() {
         
         var annotations = [MKPointAnnotation]()
         
@@ -79,8 +76,6 @@ class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
         chesterMapView.addAnnotations(annotations)
     }
     
-    // MARK: - CoreLocation
-    
     private func setupLocationManager() {
         
         self.locationManager.delegate = self
@@ -90,6 +85,7 @@ class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
         self.chesterMapView.showsUserLocation = true
     }
     
+    // MARK: - CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         let location = locations.last
@@ -100,7 +96,6 @@ class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     // MARK: - IBActions
-    
     @IBAction func changeMapType(_ sender: Any) {
         
         switch mapTypeSegment.selectedSegmentIndex{
@@ -111,11 +106,9 @@ class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     // MARK: - UI
-    
     private func setupUI() {
         
         mapTypeSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
         mapTypeSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
     }
-    
 }

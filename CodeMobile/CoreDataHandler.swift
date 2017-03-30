@@ -9,11 +9,12 @@
 import Foundation
 import CoreData
 import SwiftyJSON
-// TODO: Comment class
+
 class CoreDataHandler {
     
     private var sessions: [NSManagedObject] = []
     
+    // Recieve data from core data & store it into a array of NSManaged Object : Could be improved upon by using NSFetchedResultsViewController
     func recieveCoreData(entityNamed: String) -> [NSManagedObject]{
         
         sessions.removeAll()

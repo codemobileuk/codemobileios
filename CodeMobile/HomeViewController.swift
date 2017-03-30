@@ -21,6 +21,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var lastSelectedIndex = IndexPath()
     private var fromSchedule = Bool()
     private var viewBugFixed = false // BUG: - Collection views are clipped when rotating, and on second load view everything bugs out
+    private var hasInitiliallyLoaded = false
     var isGrantedNotificationAccess:Bool = false
     
     @IBOutlet weak var currentlyOnCollectionView: UICollectionView!
@@ -35,50 +36,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         scheduleCollectionView.reloadData()
         currentlyOnCollectionView.reloadData()
         setupUI()
-        // User cannot switch tabs until data has been retrieved
-        self.tabBarController?.tabBar.isUserInteractionEnabled = false
-        setupAndRecieveCoreData()
+        // Refresh to see if new session has started
+        
+        if hasInitiliallyLoaded == true {
+            self.tabBarController?.tabBar.isUserInteractionEnabled = false
+            setupAndRecieveCoreData()
+        }
         setupSplitView()
     }
     
-    @available(iOS 10.0, *)
-    func notificationSquad(date: Date) {
-    
-        let calendar = Calendar(identifier: .gregorian)
-        let components = calendar.dateComponents(in: .current, from: date)
-        let newComponents = DateComponents(calendar: calendar, timeZone: .current, year: components.year, month: components.month, day: components.day, hour: components.hour, minute: components.minute)
-        
-        print(newComponents.date)
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Meeting Reminder"
-        content.subtitle = "Meeting Reminder"
-        content.body = "Don't forget to bring coffee."
-        content.badge = 1
-        
-        let requestIdentifier = "demoNotification"
-        
-        var date = DateComponents()
-        date.hour = newComponents.hour
-        date.minute = newComponents.minute
-        date.day = newComponents.day
-        date.year = newComponents.year
-        date.month = newComponents.month
-        
-        date.hour = 15
-        date.minute = 40
-        date.day = 28
-        date.year = 2017
-        date.month = 3
-        
-        print(date)
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
-        
-        let request = UNNotificationRequest(identifier: requestIdentifier, content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request)
-
-    
+    override func viewDidAppear(_ animated: Bool) {
+        hasInitiliallyLoaded = true
     }
     
     override func viewDidLoad() {
@@ -87,7 +55,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         // User cannot switch tabs until data has been retrieved
         self.tabBarController?.tabBar.isUserInteractionEnabled = false
         setupSplitView()
-        //setupAndRecieveCoreData()
+        checkForUpdateAndThenSetupAndRecieveCoreData()
+        
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
@@ -323,98 +292,48 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     // MARK: - Core Data
-    private func setupAndRecieveCoreData() {
-        
-        if Reachability.isConnectedToNetwork() {
-        
-            print("Connected")
-        } else {
-        
-            print("Not connected")
-        }
+    private func checkForUpdateAndThenSetupAndRecieveCoreData() {
         
         api.getLatestApiVersion {
+            self.setupAndRecieveCoreData()
+        }
+        
+    }
+    
+    private func setupAndRecieveCoreData() {
+        
+        self.scheduleSpinner.startAnimating()
+        self.currentlyOnSpinner.startAnimating()
+        self.currentlyOnSessions.removeAll()
+        // SPEAKERS
+        // Recieve speaker data from core data
+        self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
+        // Check if data contains data, if not retrieve data from the API then store the data into speaker array.
+        if self.speakers.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedId") as! Int != UserDefaults.standard.value(forKeyPath: "ModifiedSpeakersId") as! Int{
             
-            self.scheduleSpinner.startAnimating()
-            self.currentlyOnSpinner.startAnimating()
-
-            self.currentlyOnSessions.removeAll()
-            // SPEAKERS
-            // Recieve speaker data from core data
-            self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-            // Check if data contains data, if not retrieve data from the API then store the data into speaker array.
-            if self.speakers.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedId") as! Int != UserDefaults.standard.value(forKeyPath: "ModifiedSpeakersId") as! Int{
-                print("Speakers core data is empty, storing speakers data...")
-                self.api.storeSpeakers(updateData: { () -> Void in
-                    // When data has been successfully stored
-                    self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
-                    self.scheduleCollectionView.reloadData()
-                    for (i,num) in self.speakers.enumerated().reversed() {
-                        if num.value(forKey: "firstname") as! String == "Break"{
-                            self.speakers.remove(at: i)
-                        }
+            if speakers.isEmpty {print("Speakers core data is empty, storing speakers data...")}else {print("Speakers core data is out of date, storing new speakers data...")}
+            self.api.storeSpeakers(updateData: { () -> Void in
+                // When data has been successfully stored
+                self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
+                self.scheduleCollectionView.reloadData()
+                for (i,num) in self.speakers.enumerated().reversed() {
+                    if num.value(forKey: "firstname") as! String == "Break"{
+                        self.speakers.remove(at: i)
                     }
-                    
-                })
-            } else {print("Speakers core data is not empty")}
-            
-            // SESSIONS
-            self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            
-            if self.sessions.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedId") as! Int != UserDefaults.standard.value(forKeyPath: "ModifiedScheduleId") as! Int{
-                print("Schedule core data is empty, storing schedule data...")
-                self.api.storeSchedule(updateData: { () -> Void in
-                    self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
-                    for (i,num) in self.sessions.enumerated().reversed() {
-                        // Remove past sessions
-                        let endTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionEndDateTime")! as! String)
-                        if endTime < Date() {
-                            self.sessions.remove(at: i)
-                        }// Remove breaks
-                        else if num.value(forKey: "SessionTitle") as! String == "Break"{
-                            self.sessions.remove(at: i)
-                        }else{
-                            let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
-                            
-                            if Date().isBetweeen(date: startTime, andDate: endTime) {
-                                //Session is on
-                                self.currentlyOnSessions.append(num)
-                                print("\(num.value(forKey: "SessionTitle")) is on!")
-                                self.sessions.remove(at: i)
-                                
-                            } else {
-                                if #available(iOS 10.0, *) {
-                                    UNUserNotificationCenter.current().requestAuthorization(
-                                        options: [.alert,.sound,.badge],
-                                        completionHandler: { (granted,error) in
-                                            self.isGrantedNotificationAccess = granted
-                                            let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
-                                            self.notificationSquad(date: startTime)
-                                    }
-                                    )
-                                } else {
-                                    // Fallback on earlier versions
-                                }
-
-
-                            }
-                            
-                        }
-                        
-                        
-                    }
-                    self.scheduleCollectionView.reloadData()
-                    self.currentlyOnCollectionView.reloadData()
-                    self.scheduleSpinner.stopAnimating()
-                    self.currentlyOnSpinner.stopAnimating()
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                    self.tabBarController?.tabBar.isUserInteractionEnabled = true
-                    
-                })
-            } else {
-                print("Schedule core data is not empty")
+                }
                 
+            })
+        } else {print("Speakers core data is not empty & is up to date")}
+        
+        // SESSIONS
+        self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
+        if self.sessions.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedId") as! Int != UserDefaults.standard.value(forKeyPath: "ModifiedScheduleId") as! Int{
+            
+            if self.sessions.isEmpty { print("Schedule core data is empty, storing schedule data...")} else {print("Schedule core data is out of date, storing new schedule data...") }
+            self.api.storeSchedule(updateData: { () -> Void in
+                self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
                 for (i,num) in self.sessions.enumerated().reversed() {
                     // Remove past sessions
                     let endTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionEndDateTime")! as! String)
@@ -423,32 +342,76 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     }// Remove breaks
                     else if num.value(forKey: "SessionTitle") as! String == "Break"{
                         self.sessions.remove(at: i)
-                    } else{
+                    }else{
                         let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
                         
                         if Date().isBetweeen(date: startTime, andDate: endTime) {
                             //Session is on
                             self.currentlyOnSessions.append(num)
-                            print("\(num.value(forKey: "SessionTitle")) is on!")
+                            print("\(String(describing: num.value(forKey: "SessionTitle"))) is on!")
                             self.sessions.remove(at: i)
                             
                         } else {
-                            //Session is off
+                            if #available(iOS 10.0, *) {
+                                UNUserNotificationCenter.current().requestAuthorization(
+                                    options: [.alert,.sound,.badge],
+                                    completionHandler: { (granted,error) in
+                                        self.isGrantedNotificationAccess = granted
+                                        let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
+                                        let sessionTitle = num.value(forKey: "SessionTitle") as! String
+                                        let buildingName = num.value(forKey: "sessionLocationName") as! String
+                                        self.notificationSquad(date: startTime, sessionTalk: sessionTitle, building: buildingName)
+                                }
+                                )
+                            } else {
+                                // Fallback on earlier versions
+                            }
                         }
-                        
                     }
-                    
-                    
                 }
+                self.scheduleCollectionView.reloadData()
+                self.currentlyOnCollectionView.reloadData()
                 self.scheduleSpinner.stopAnimating()
                 self.currentlyOnSpinner.stopAnimating()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.tabBarController?.tabBar.isUserInteractionEnabled = true
-            }
+            })
+        } else {
+            print("Schedule core data is not empty & is up to date")
             
-            self.scheduleCollectionView.reloadData()
-            self.currentlyOnCollectionView.reloadData()
+            for (i,num) in self.sessions.enumerated().reversed() {
+                // Remove past sessions
+                let endTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionEndDateTime")! as! String)
+                if endTime < Date() {
+                    self.sessions.remove(at: i)
+                }// Remove breaks
+                else if num.value(forKey: "SessionTitle") as! String == "Break"{
+                    self.sessions.remove(at: i)
+                } else{
+                    let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
+                    
+                    if Date().isBetweeen(date: startTime, andDate: endTime) {
+                        //Session is on
+                        self.currentlyOnSessions.append(num)
+                        print("\(String(describing: num.value(forKey: "SessionTitle"))) is on!")
+                        self.sessions.remove(at: i)
+                        
+                    } else {
+                        //Session is off
+                    }
+                    
+                }
+                
+                
+            }
+            self.scheduleSpinner.stopAnimating()
+            self.currentlyOnSpinner.stopAnimating()
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            self.tabBarController?.tabBar.isUserInteractionEnabled = true
         }
+        self.scheduleCollectionView.reloadData()
+        self.currentlyOnCollectionView.reloadData()
+        
     }
     
     // MARK: - SplitView
@@ -480,6 +443,46 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         scheduleSpinner.hidesWhenStopped = true
         currentlyOnSpinner.hidesWhenStopped = true
     }
+    
+    // MARK: - Notifications
+    @available(iOS 10.0, *)
+    func notificationSquad(date: Date, sessionTalk: String, building: String ) {
+        
+        let calendar = Calendar(identifier: .gregorian)
+        let components = calendar.dateComponents(in: .current, from: date)
+        let newComponents = DateComponents(calendar: calendar, timeZone: .current, year: components.year, month: components.month, day: components.day, hour: components.hour, minute: components.minute)
+        
+        let content = UNMutableNotificationContent()
+        content.title = sessionTalk
+        content.subtitle = "in \(building)"
+        content.body = "Starting soon!"
+        content.badge = 1
+        
+        let requestIdentifier = "demoNotification"
+        
+        var date = DateComponents()
+        date.hour = newComponents.hour
+        date.minute = newComponents.minute
+        date.day = newComponents.day
+        date.year = newComponents.year
+        date.month = newComponents.month
+        
+        //        date.hour = 15
+        //        date.minute = 40
+        //        date.day = 28
+        //        date.year = 2017
+        //        date.month = 3
+        // year: 2017 month: 3 day: 28 hour: 15 minute: 40 isLeapMonth: false
+        print("Notification set for date: \(date)")
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: requestIdentifier, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
+        
+        
+    }
+    
 }
 
 // MARK: - Schedule CollectionViewCell Controller

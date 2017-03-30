@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 import CoreData
-// TODO: Comment class
+
 class ApiHandler {
     
     // SESSIONS
@@ -37,15 +37,17 @@ class ApiHandler {
                 }
                 
                 do {
-                    
+                    // Delete any data schedule may have within, to avoid possible duplicated data
                     let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Schedule")
                     let request = NSBatchDeleteRequest(fetchRequest: fetch)
                     try managedContext.execute(request)
-                    
-                    print("Saved schedule data!")
+                    print("Deleted any current schedule data!")
+                    // Get current database version, so may check if it is out of date
                     let currentModifiedId = UserDefaults.standard.value(forKeyPath: "ModifiedId")
                     UserDefaults.standard.set(currentModifiedId, forKey: "ModifiedScheduleId")
                     print("The schedule version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedScheduleId")!)")
+                    // Save new data
+                    print("Saved schedule data!")
                     try managedContext.save()
                     
                     updateData()
@@ -69,6 +71,7 @@ class ApiHandler {
                 
                 for item in swiftyJsonVar {
                     
+                
                     let speaker = NSManagedObject(entity: entity, insertInto: managedContext)
                     speaker.setValue(item.1["SpeakerId"].int, forKeyPath: "speakerId")
                     speaker.setValue(item.1["Firstname"].string, forKeyPath: "firstname")
@@ -78,20 +81,23 @@ class ApiHandler {
                     speaker.setValue(item.1["Profile"].string, forKeyPath: "profile")
                     speaker.setValue(item.1["PhotoURL"].string, forKeyPath: "photoURL")
                     speaker.setValue(item.1["FullName"].string, forKeyPath: "fullName")
+                    
                 }
                 
                 do {
-                    
+                    // Delete any data speakers may have within, to avoid possible duplicated data
                     let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Speaker")
                     let request = NSBatchDeleteRequest(fetchRequest: fetch)
                     try managedContext.execute(request)
-
-                    
-                    try managedContext.save()
-                    print("Saved speakers data!")
+                    print("Deleted any current speakers data!")
+                    // Get current database version, so may check if it is out of date
                     let currentModifiedId = UserDefaults.standard.value(forKeyPath: "ModifiedId")
                     UserDefaults.standard.set(currentModifiedId, forKey: "ModifiedSpeakersId")
                     print("The speakers version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedSpeakersId")!)")
+                    // Save new data
+                    try managedContext.save()
+                    print("Saved speakers data!")
+                    
                     updateData()
                 } catch let error as NSError {
                     print("Failed: Could not save. \(error), \(error.userInfo)")
@@ -124,16 +130,19 @@ class ApiHandler {
                 }
 
                 do {
+                    // Delete any data locations may have within, to avoid possible duplicated data
                     let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "SessionLocation")
                     let request = NSBatchDeleteRequest(fetchRequest: fetch)
                     try managedContext.execute(request)
-
-                    
-                    try managedContext.save()
-                    print("Saved location data!")
+                    print("Deleted any current locations data!")
+                    // Get current database version, so may check if it is out of date
                     let currentModifiedId = UserDefaults.standard.value(forKeyPath: "ModifiedId")
                     UserDefaults.standard.set(currentModifiedId, forKey: "ModifiedLocationsId")
                     print("The locations version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedLocationsId")!)")
+                    // Save new data
+                    try managedContext.save()
+                    print("Saved location data!")
+                    
                     updateData()
                 } catch let error as NSError {
                     print("Failed: Could not save. \(error), \(error.userInfo)")
@@ -163,17 +172,19 @@ class ApiHandler {
                 }
                 
                 do {
-                    
+                     // Delete any data speakers may have within, to avoid possible duplicated data
                     let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Tags")
                     let request = NSBatchDeleteRequest(fetchRequest: fetch)
                     try managedContext.execute(request)
-
-                    
-                    try managedContext.save()
-                    print("Saved tags data!")
+                    print("Deleted any current tags data!")
+                    // Get current database version, so may check if it is out of date
                     let currentModifiedId = UserDefaults.standard.value(forKeyPath: "ModifiedId")
                     UserDefaults.standard.set(currentModifiedId, forKey: "ModifiedTagsId")
                     print("The tags version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedTagsId")!)")
+                    // Save new data
+                    try managedContext.save()
+                    print("Saved tags data!")
+                    
                     updateData()
                 } catch let error as NSError {
                     print("Failed: Could not save. \(error), \(error.userInfo)")
@@ -185,20 +196,27 @@ class ApiHandler {
     // MODIFIED
     func getLatestApiVersion(updateData: @escaping () -> Void) {
         
-        Alamofire.request(Commands.API_URL + Commands.MODIFIED).responseJSON { (responseData) -> Void in
-            if((responseData.result.value) != nil) {
-                let swiftyJsonVar = JSON(responseData.result.value!)
-         
-                if let modifiedId = swiftyJsonVar["ModifiedId"].int {
-                    UserDefaults.standard.set(modifiedId, forKey: "ModifiedId")
+        if Reachability.isConnectedToNetwork() {
+            // If internet access is avaliable, check latest database version
+            print("Connected")
+            Alamofire.request(Commands.API_URL + Commands.MODIFIED).responseJSON { (responseData) -> Void in
+                if((responseData.result.value) != nil) {
+                    let swiftyJsonVar = JSON(responseData.result.value!)
+                    
+                    if let modifiedId = swiftyJsonVar["ModifiedId"].int {
+                        UserDefaults.standard.set(modifiedId, forKey: "ModifiedId")
+                    }
+                    
+                    print("The api version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedId")!)")
+                    
+                    updateData()
                 }
-                
-                print("The api version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedId")!)")
-                
-                updateData()
             }
+        } else {
+            // If no internet access, will just load any current data of the app stored
+            print("Not connected")
+            updateData()
         }
-        
     }
     
     private func getContext() -> NSManagedObjectContext {

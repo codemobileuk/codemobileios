@@ -19,7 +19,6 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var speakersTableView: UITableView!
     
     // MARK: - View Controller Life Cycle
-    
     override func viewWillAppear(_ animated: Bool) {
         
         speakersTableView.reloadData()
@@ -33,7 +32,6 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - TableView
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return speakers.count
@@ -52,6 +50,9 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         if speaker.value(forKey: "photoURL") != nil {
             let url = URL(string: speaker.value(forKey: "photoURL") as! String)
             cell.thumbnailImageView.kf.setImage(with: url)
+        } else {
+            cell.thumbnailImageView.image = UIImage(named: "")
+        
         }
         // Session titles
         for session in sessions {
@@ -61,6 +62,9 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
                 cell.sessionTitlesLbl.text = session.value(forKey: "SessionTitle") as! String?
             }
         }
+        
+        cell.sessionTitlesLbl.text = speaker.value(forKey: "organisation") as? String
+        
         return cell
     }
     
@@ -70,7 +74,6 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - Segue
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "showSpeakerDetail" {
@@ -111,7 +114,6 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - SplitView
-    
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         
         return true
@@ -124,7 +126,6 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - Core Data
-    
     private func recieveCoreData() {
         
         speakers = coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
@@ -139,7 +140,6 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
 }
 
 // MARK: - Speaker TableViewCell Controller
-
 class SpeakerCell: UITableViewCell {
     
     @IBOutlet weak var thumbnailImageView: UIImageView!

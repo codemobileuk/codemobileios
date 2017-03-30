@@ -10,21 +10,22 @@ import UIKit
 
 class WebViewController: UIViewController, UIWebViewDelegate {
     
+    // MARK: - Properties
     @IBOutlet weak var codeMobileWebView: UIWebView!
     @IBOutlet weak var webSpinner: UIActivityIndicatorView!
     
-    
+    // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         codeMobileWebView.delegate = self
         let url = NSURL(string: Commands.WEBSITE_URL)
-        // Do any additional setup after loading the view.
-        let requestObj = NSURLRequest(url: url as! URL)
+        let requestObj = NSURLRequest(url: url! as URL)
         codeMobileWebView.loadRequest(requestObj as URLRequest)
-         webSpinner.startAnimating()
+        webSpinner.startAnimating()
     }
     
+    // MARK: - UIWebViewDelegate
     func webViewDidStartLoad(_ : UIWebView){
         webSpinner.startAnimating()
         webSpinner.isHidden = false
@@ -34,6 +35,4 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         webSpinner.stopAnimating()
         webSpinner.isHidden = true
     }
-    
-    
 }
