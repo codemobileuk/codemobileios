@@ -917,13 +917,13 @@
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="KQb-69-5Uj">
                                                                     <rect key="frame" x="2" y="101" width="161" height="63"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Session title " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="jVU-yL-XdI">
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Session title " textAlignment="natural" lineBreakMode="clip" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="jVU-yL-XdI">
                                                                             <rect key="frame" x="0.0" y="0.0" width="161" height="27"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Vxn-HG-NpB">
+                                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="9tA-gd-RxX">
                                                                             <rect key="frame" x="0.0" y="27" width="161" height="36"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Firstname surname" textAlignment="natural" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.25" translatesAutoresizingMaskIntoConstraints="NO" id="lAj-ey-BpD">
@@ -942,10 +942,10 @@
                                                                         </stackView>
                                                                     </subviews>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="bottom" secondItem="Vxn-HG-NpB" secondAttribute="bottom" id="2Bl-Zd-ujQ"/>
-                                                                        <constraint firstAttribute="trailing" secondItem="Vxn-HG-NpB" secondAttribute="trailing" id="BIg-iR-irc"/>
-                                                                        <constraint firstItem="Vxn-HG-NpB" firstAttribute="top" secondItem="jVU-yL-XdI" secondAttribute="bottom" id="X87-na-pca"/>
-                                                                        <constraint firstItem="Vxn-HG-NpB" firstAttribute="leading" secondItem="KQb-69-5Uj" secondAttribute="leading" id="fr2-fT-9qm"/>
+                                                                        <constraint firstAttribute="bottom" secondItem="9tA-gd-RxX" secondAttribute="bottom" id="0QB-Fe-M1y"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="9tA-gd-RxX" secondAttribute="trailing" id="OMX-K0-iPA"/>
+                                                                        <constraint firstItem="9tA-gd-RxX" firstAttribute="leading" secondItem="KQb-69-5Uj" secondAttribute="leading" id="i99-60-aJU"/>
+                                                                        <constraint firstItem="9tA-gd-RxX" firstAttribute="top" secondItem="jVU-yL-XdI" secondAttribute="bottom" id="qlT-id-ki9"/>
                                                                     </constraints>
                                                                 </stackView>
                                                             </subviews>
@@ -1152,13 +1152,13 @@
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="DdI-96-xE5">
                                                                     <rect key="frame" x="2" y="102" width="163" height="62"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Session title " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xvg-kD-KuD">
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Session title " textAlignment="natural" lineBreakMode="clip" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xvg-kD-KuD">
                                                                             <rect key="frame" x="0.0" y="0.0" width="163" height="27"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="C0k-ez-g6d">
+                                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Bef-37-yw4">
                                                                             <rect key="frame" x="0.0" y="27" width="163" height="35"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Firstname surname" textAlignment="natural" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.25" translatesAutoresizingMaskIntoConstraints="NO" id="ypW-Qe-RdJ">
@@ -1177,10 +1177,10 @@
                                                                         </stackView>
                                                                     </subviews>
                                                                     <constraints>
-                                                                        <constraint firstItem="C0k-ez-g6d" firstAttribute="leading" secondItem="DdI-96-xE5" secondAttribute="leading" id="3V8-Xu-11b"/>
-                                                                        <constraint firstAttribute="bottom" secondItem="C0k-ez-g6d" secondAttribute="bottom" id="aN0-jg-6lw"/>
-                                                                        <constraint firstItem="C0k-ez-g6d" firstAttribute="top" secondItem="xvg-kD-KuD" secondAttribute="bottom" id="tJG-R4-LGi"/>
-                                                                        <constraint firstAttribute="trailing" secondItem="C0k-ez-g6d" secondAttribute="trailing" id="yAV-er-nX2"/>
+                                                                        <constraint firstItem="Bef-37-yw4" firstAttribute="leading" secondItem="DdI-96-xE5" secondAttribute="leading" id="5xX-Nd-w56"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="Bef-37-yw4" secondAttribute="trailing" id="ZpB-gg-J1z"/>
+                                                                        <constraint firstAttribute="bottom" secondItem="Bef-37-yw4" secondAttribute="bottom" id="dOF-6m-ad1"/>
+                                                                        <constraint firstItem="Bef-37-yw4" firstAttribute="top" secondItem="xvg-kD-KuD" secondAttribute="bottom" id="uVL-FL-dXd"/>
                                                                     </constraints>
                                                                 </stackView>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zp6-cV-LRv">
@@ -1298,7 +1298,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yR6-QF-e7s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5373.6000000000004" y="1603.4482758620691"/>
+            <point key="canvasLocation" x="5346" y="1580"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="9gO-jR-LJI">

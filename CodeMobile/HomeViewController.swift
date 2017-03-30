@@ -348,7 +348,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         if Date().isBetweeen(date: startTime, andDate: endTime) {
                             //Session is on
                             self.currentlyOnSessions.append(num)
-                            print("\(String(describing: num.value(forKey: "SessionTitle"))) is on!")
+                            print("\(num.value(forKey: "SessionTitle")) is on!")
                             self.sessions.remove(at: i)
                             
                         } else {
@@ -393,7 +393,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     if Date().isBetweeen(date: startTime, andDate: endTime) {
                         //Session is on
                         self.currentlyOnSessions.append(num)
-                        print("\(String(describing: num.value(forKey: "SessionTitle"))) is on!")
+                        print("\(num.value(forKey: "SessionTitle")) is on!")
                         self.sessions.remove(at: i)
                         
                     } else {
