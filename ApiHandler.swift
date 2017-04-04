@@ -43,9 +43,9 @@ class ApiHandler {
                     try managedContext.execute(request)
                     print("Deleted any current schedule data!")
                     // Get current database version, so may check if it is out of date
-                    let currentModifiedId = UserDefaults.standard.value(forKeyPath: "ModifiedId")
-                    UserDefaults.standard.set(currentModifiedId, forKey: "ModifiedScheduleId")
-                    print("The schedule version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedScheduleId")!)")
+                    let currentModifiedDate = UserDefaults.standard.value(forKeyPath: "ModifiedDate")
+                    UserDefaults.standard.set(currentModifiedDate, forKey: "ModifiedScheduleDate")
+                    print("The schedule version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedScheduleDate")!)")
                     // Save new data
                     print("Saved schedule data!")
                     try managedContext.save()
@@ -91,9 +91,9 @@ class ApiHandler {
                     try managedContext.execute(request)
                     print("Deleted any current speakers data!")
                     // Get current database version, so may check if it is out of date
-                    let currentModifiedId = UserDefaults.standard.value(forKeyPath: "ModifiedId")
-                    UserDefaults.standard.set(currentModifiedId, forKey: "ModifiedSpeakersId")
-                    print("The speakers version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedSpeakersId")!)")
+                    let currentModifiedDate = UserDefaults.standard.value(forKeyPath: "ModifiedDate")
+                    UserDefaults.standard.set(currentModifiedDate, forKey: "ModifiedSpeakersDate")
+                    print("The speakers version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedSpeakersDate")!)")
                     // Save new data
                     try managedContext.save()
                     print("Saved speakers data!")
@@ -136,9 +136,9 @@ class ApiHandler {
                     try managedContext.execute(request)
                     print("Deleted any current locations data!")
                     // Get current database version, so may check if it is out of date
-                    let currentModifiedId = UserDefaults.standard.value(forKeyPath: "ModifiedId")
-                    UserDefaults.standard.set(currentModifiedId, forKey: "ModifiedLocationsId")
-                    print("The locations version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedLocationsId")!)")
+                    let currentModifiedDate = UserDefaults.standard.value(forKeyPath: "ModifiedDate")
+                    UserDefaults.standard.set(currentModifiedDate, forKey: "ModifiedLocationsDate")
+                    print("The locations version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedLocationsDate")!)")
                     // Save new data
                     try managedContext.save()
                     print("Saved location data!")
@@ -178,9 +178,9 @@ class ApiHandler {
                     try managedContext.execute(request)
                     print("Deleted any current tags data!")
                     // Get current database version, so may check if it is out of date
-                    let currentModifiedId = UserDefaults.standard.value(forKeyPath: "ModifiedId")
-                    UserDefaults.standard.set(currentModifiedId, forKey: "ModifiedTagsId")
-                    print("The tags version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedTagsId")!)")
+                    let currentModifiedDate = UserDefaults.standard.value(forKeyPath: "ModifiedDate")
+                    UserDefaults.standard.set(currentModifiedDate, forKey: "ModifiedTagsDate")
+                    print("The tags version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedTagsDate")!)")
                     // Save new data
                     try managedContext.save()
                     print("Saved tags data!")
@@ -203,11 +203,11 @@ class ApiHandler {
                 if((responseData.result.value) != nil) {
                     let swiftyJsonVar = JSON(responseData.result.value!)
                     
-                    if let modifiedId = swiftyJsonVar["ModifiedId"].int {
-                        UserDefaults.standard.set(modifiedId, forKey: "ModifiedId")
+                    if let modifiedDate = swiftyJsonVar["ModifiedDate"].string {
+                        UserDefaults.standard.set(modifiedDate, forKey: "ModifiedDate")
                     }
                     
-                    print("The api version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedId")!)")
+                    print("The api version is : \(UserDefaults.standard.value(forKeyPath: "ModifiedDate")!)")
                     
                     updateData()
                 }

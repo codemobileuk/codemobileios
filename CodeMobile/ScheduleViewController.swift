@@ -16,6 +16,8 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: - Properties
     var userIsFiltering = false
     var filterItems = [Int]()
+    
+    private var favouriteSessionIds = [Int]()
     private let api = ApiHandler()
     private let coreData = CoreDataHandler()
     private var sessions: [NSManagedObject] = []
@@ -36,11 +38,12 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         scheduleTableView.reloadData()
         checkDateAndSetSegment()
+        favouriteSessionIds = UserDefaults.standard.array(forKey: "Favourites")  as? [Int] ?? [Int]()
     }
     
     override func viewDidLoad() {
         
-         setupAndRecieveCoreData()
+        setupAndRecieveCoreData()
         setupSplitView()
         setupSideMenu()
         setupUI()
@@ -49,7 +52,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         _ = Notification.Name("NotificationIdentifier")
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification), name: NSNotification.Name(rawValue: "UpdateTags"), object: nil)
-
     }
     
     // MARK: - Notifications
@@ -87,7 +89,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let header = view as! UITableViewHeaderFooterView
         header.textLabel!.font = UIFont.boldSystemFont(ofSize: 16)
         // If item is break - No longer needed throughout app, as API has fixed this?
-        if tableItem.title == "Break" {
+        if tableItem.title == "Break" || tableItem.title == "Lunch" || tableItem.title == "Tea / Coffee / Registration" {
             title.textColor = UIColor.white
             header.textLabel!.textColor=title.textColor
             header.contentView.backgroundColor = Colours.codeMobileGrey
@@ -108,7 +110,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         // If item is break
         let tableSection = timeSections[sortedSections[section]]
         let tableItem = tableSection![0]
-        if tableItem.title == "Break" { return 0 }
+        if tableItem.title == "Break" || tableItem.title == "Lunch" || tableItem.title == "Tea / Coffee / Registration"{ return 0 }
         
         return timeSections[sortedSections[section]]!.count
     }
@@ -129,10 +131,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let tableItem = tableSection![0]
         let returnvalue2 = tableItem.endDate.components(separatedBy: "T").last
         
-        if tableItem.title == "Break" {
-            return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))! + "  Break"
+        if tableItem.title == "Break" || tableItem.title == "Lunch" || tableItem.title == "Tea / Coffee / Registration"{
+            return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))! + "  " + tableItem.title
         }
-
         
         return (returnvalue?.substring(to: endIndex!))! + " - " + (returnvalue2?.substring(to: endIndex!))!
     }
@@ -154,14 +155,46 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                 cell.sessionFullNameLbl.text = firstName + " " + lastName
                 var allTags = [String]()
                 let sessionId = sessionTags[tableItem.sessionId]
-                for tag in sessionId! {
-                    allTags.append(tag.title)
+                if sessionId != nil {
+                    for tag in sessionId! {
+                        allTags.append(tag.title)
+                    }
                 }
                 cell.tagsArray = allTags
                 cell.tagsCollectionView.reloadData()
+                
+                if favouriteSessionIds.contains(tableItem.sessionId){
+                    cell.favouriteButton.setImage(UIImage(named: "star (1)"), for: UIControlState.normal)
+                } else {
+                    cell.favouriteButton.setImage(UIImage(named: "star"), for: UIControlState.normal)
+                }
+                cell.favouriteButton.addTarget(self, action: #selector(ScheduleViewController.addFavourite(sender:)), for: UIControlEvents.touchUpInside)
+                cell.favouriteButton.tag = tableItem.sessionId
             }
         }
         return cell
+    }
+    
+    func addFavourite(sender:UIButton!) {
+    
+        print("Favourite button pressed, the session id is: \(sender.tag)")
+        let sessionId = sender.tag
+        print(favouriteSessionIds)
+        
+        if favouriteSessionIds.contains(sessionId){
+        
+            sender.setImage(UIImage(named: "star"), for: UIControlState.normal)
+            if let index = favouriteSessionIds.index(of: sessionId) {
+                favouriteSessionIds.remove(at: index)
+            }
+        } else {
+        
+            sender.setImage(UIImage(named: "star (1)"), for: UIControlState.normal)
+            favouriteSessionIds.append(sessionId)
+        }
+    
+        UserDefaults.standard.set(favouriteSessionIds, forKey: "Favourites")
+        print(UserDefaults.standard.value(forKey: "Favourites")!)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -192,29 +225,31 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                     vc.speakerImageURL = url
                     vc.company = speaker.value(forKey: "organisation") as! String
                     vc.profile = speaker.value(forKey: "profile") as! String
+                    vc.twitterURL = speaker.value(forKey: "twitter") as! String
                 }
             }
-            var descArray = [String]()
-            descArray.append(tableItem.description)
-            vc.buildingName = tableItem.locationName
-            vc.talkName = tableItem.title
-            vc.talks = descArray
+            var talkArray = [sessionDetail]()
+            let talkDesc = tableItem.description
+            let buildingName = tableItem.locationName
+            let sesTitle = tableItem.title
             vc.profileViewSelected = false
+            let startTime =  Date().formatDate(dateToFormat: tableItem.untouchedDate)
+            let timeStart = Date().wordedDate(Date: startTime)
+            talkArray.append(sessionDetail(title: sesTitle, timeStarted: timeStart, buildingName: buildingName, talkDescription: talkDesc))
+
+            
+            vc.talks = talkArray
             vc.viewIsHidden = false
-            let startTime = Date().formatDate(dateToFormat: tableItem.untouchedDate)
-            vc.timeStarted = Date().wordedDate(Date: startTime)
             self.scheduleTableView.deselectRow(at: index as IndexPath, animated: true)
         }
     }
     
     // MARK: - SplitView
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
-        
         return true
     }
     
     private func setupSplitView(){
-        
         self.splitViewController?.delegate = self
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
     }
@@ -229,7 +264,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         self.tags = self.coreData.recieveCoreData(entityNamed: Entities.TAGS)
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        if self.tags.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedId") as! Int != UserDefaults.standard.value(forKeyPath: "ModifiedTagsId") as! Int{
+        if self.tags.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedDate") as! String != UserDefaults.standard.value(forKeyPath: "ModifiedTagsDate") as! String{
             
             if self.tags.isEmpty {print("Tags core data is empty, storing tags data...")} else {print("Tags core data is out of date, storing new tags data...")}
             self.api.storeTags(updateData: { () -> Void in
@@ -445,6 +480,7 @@ class FullWidthCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
     @IBOutlet weak var sessionFullNameLbl: UILabel!
     @IBOutlet weak var buildingIconImgView: UIImageView!
     @IBOutlet weak var tagsCollectionView: UICollectionView!
+    @IBOutlet weak var favouriteButton: UIButton!
     
     var tagsArray = [String]()
     

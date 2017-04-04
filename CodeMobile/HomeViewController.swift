@@ -22,7 +22,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var fromSchedule = Bool()
     private var viewBugFixed = false // BUG: - Collection views are clipped when rotating, and on second load view everything bugs out
     private var hasInitiliallyLoaded = false
-    var isGrantedNotificationAccess:Bool = false
+    private var isGrantedNotificationAccess:Bool = false
+    private var isEventOver = false
+    private var noSessionsOn = false
     
     @IBOutlet weak var currentlyOnCollectionView: UICollectionView!
     @IBOutlet weak var scheduleCollectionView: UICollectionView!
@@ -108,51 +110,88 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if collectionView == currentlyOnCollectionView {
-            if currentlyOnSessions.isEmpty {
+            if noSessionsOn == true {
                 return 1
             }else{
                 return currentlyOnSessions.count
             }
+        } else {
+        
+            if isEventOver == true{
+            
+                return 1
+            }
+            else {
+                return sessions.count
+            }
         }
-        return sessions.count
+    }
+    
+    func lines(yourLabel: UILabel) -> Int{
+        var lineCount = 0;
+        let textSize = CGSize(width: yourLabel.frame.size.width, height: CGFloat(Float.infinity));
+        let rHeight = lroundf(Float(yourLabel.sizeThatFits(textSize).height))
+        let charSize = lroundf(Float(yourLabel.font.lineHeight));
+        lineCount = rHeight/charSize
+        print("No of lines \(lineCount)")
+        return lineCount
+        
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if collectionView == scheduleCollectionView { // Schedule Collection View
             
-            let item = sessions[indexPath.row]
-            let cell = scheduleCollectionView.dequeueReusableCell(withReuseIdentifier: "CurrentlyOn", for: indexPath) as! SessionCollectionCell
-            cell.sessionTitleLbl.text = item.value(forKey: "SessionTitle") as! String?
-            cell.speakerImageView.setRadius(radius: 20.0)
-            let startTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionStartDateTime")! as! String)
-            let endTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionEndDateTime")! as! String)
-            
-            if Date().isBetweeen(date: startTime, andDate: endTime) {
-                //Session is on
-                cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
-                cell.liveInWhichBuildingLbl.textColor = UIColor.red
-            } else {
-                //Session is off
-                cell.liveInWhichBuildingLbl.textColor = UIColor.blue
-                cell.liveInWhichBuildingLbl.text = Date().wordedDate(Date: startTime)
-            }
-            
-            for speaker in speakers {
+            if isEventOver == true{
                 
-                if speaker.value(forKey: "speakerId") as! Int == item.value(forKey: "speakerId") as! Int{
-                    let firstName = speaker.value(forKey: "firstname") as! String
-                    let lastName = speaker.value(forKey: "surname") as! String
-                    cell.speakerNameLbl.text = firstName + " " + lastName
-                    let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-                    cell.speakerImageView.kf.setImage(with: url)
+                print("CodeMobile has finished!")
+                let cell = scheduleCollectionView.dequeueReusableCell(withReuseIdentifier: "Finished", for: indexPath) as UICollectionViewCell
+                return cell
+                
+            } else
+            {
+                
+                let item = sessions[indexPath.row]
+                let cell = scheduleCollectionView.dequeueReusableCell(withReuseIdentifier: "CurrentlyOn", for: indexPath) as! SessionCollectionCell
+                cell.sessionTitleLbl.text = (item.value(forKey: "SessionTitle") as! String?)! + "\n"
+               
+//                if lines(yourLabel: cell.sessionTitleLbl) == 1 {
+//                
+//                     cell.sessionTitleLbl.text = cell.sessionTitleLbl.text! + "\n"
+//                
+//                }
+                cell.speakerImageView.setRadius(radius: 20.0)
+                let startTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionStartDateTime")! as! String)
+                let endTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionEndDateTime")! as! String)
+                
+                if Date().isBetweeen(date: startTime, andDate: endTime) {
+                    //Session is on
+                    cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
+                    cell.liveInWhichBuildingLbl.textColor = UIColor.red
+                } else {
+                    //Session is off
+                    cell.liveInWhichBuildingLbl.textColor = UIColor.blue
+                    cell.liveInWhichBuildingLbl.text = Date().wordedDate(Date: startTime)
                 }
+                
+                for speaker in speakers {
+                    
+                    if speaker.value(forKey: "speakerId") as! Int == item.value(forKey: "speakerId") as! Int{
+                        let firstName = speaker.value(forKey: "firstname") as! String
+                        let lastName = speaker.value(forKey: "surname") as! String
+                        cell.speakerNameLbl.text = firstName + " " + lastName
+                        let url = URL(string: speaker.value(forKey: "photoURL") as! String)
+                        cell.speakerImageView.kf.setImage(with: url)
+                        cell.speakerImageView.contentMode = .scaleAspectFill
+                    }
+                }
+                return cell
             }
-            return cell
             
         } else { // Currently On Collection View
             
-            if currentlyOnSessions.count == 0 { // No sessions on
+            if noSessionsOn == true { // No sessions on
                 
                 let cell = currentlyOnCollectionView.dequeueReusableCell(withReuseIdentifier: "NoSession", for: indexPath) as! NoSessionCollectionCell
                 
@@ -182,6 +221,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         cell.speakerNameLbl.text = firstName + " " + lastName
                         let url = URL(string: speaker.value(forKey: "photoURL") as! String)
                         cell.speakerImageView.kf.setImage(with: url)
+                        cell.speakerImageView.contentMode = .scaleAspectFill
                     }
                 }
                 cell.sessionInfoLbl.text = item.value(forKey: "sessionDescription") as! String?
@@ -203,6 +243,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         cell.speakerNameLbl.text = firstName + " " + lastName
                         let url = URL(string: speaker.value(forKey: "photoURL") as! String)
                         cell.speakerImageView.kf.setImage(with: url)
+                        cell.speakerImageView.contentMode = .scaleAspectFill
                         
                     }
                 }
@@ -219,6 +260,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         if collectionView == currentlyOnCollectionView {
             return CGSize(width: currentlyOnCollectionView.frame.size.width / 2 - 10, height: currentlyOnCollectionView.frame.size.height)
+        }
+        if collectionView == scheduleCollectionView && sessions.isEmpty {
+            return CGSize(width: scheduleCollectionView.frame.size.width - 10, height: scheduleCollectionView.frame.size.height)
         }
         return CGSize(width: scheduleCollectionView.frame.size.width / 2.25 , height: scheduleCollectionView.frame.size.height)
     }
@@ -277,24 +321,34 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     vc.speakerImageURL = url
                     vc.company = speaker.value(forKey: "organisation") as! String
                     vc.profile = speaker.value(forKey: "profile") as! String
+                    if speaker.value(forKey: "twitter") as! String != nil {
+                        vc.twitterURL = speaker.value(forKey: "twitter") as! String
+                    }
                 }
             }
-            var descArray = [String]()
-            descArray.append(session.value(forKey: "sessionDescription") as! String)
-            vc.buildingName = session.value(forKey: "sessionLocationName") as! String
-            vc.talkName = session.value(forKey: "sessionTitle") as! String
-            vc.talks = descArray
+            
+            var talkArray = [sessionDetail]()
+            let talkDesc = session.value(forKey: "sessionDescription") as! String
+            let buildingName = session.value(forKey: "sessionLocationName") as! String!
+            let sesTitle = session.value(forKey: "sessionTitle") as! String!
             vc.profileViewSelected = false
             vc.viewIsHidden = false
-            let startTime = Date().formatDate(dateToFormat: session.value(forKey: "sessionStartDateTime") as! String)
-            vc.timeStarted = Date().wordedDate(Date: startTime)
+            let startTime = Date().formatDate(dateToFormat: session.value(forKey: "sessionStartDateTime") as! String!)
+            let timeStart = Date().wordedDate(Date: startTime)
+            talkArray.append(sessionDetail(title: sesTitle!, timeStarted: timeStart, buildingName: buildingName!, talkDescription: talkDesc))
+            
+            vc.talks = talkArray
         }
     }
     
     // MARK: - Core Data
     private func checkForUpdateAndThenSetupAndRecieveCoreData() {
         
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        self.scheduleSpinner.startAnimating()
+        self.currentlyOnSpinner.startAnimating()
         api.getLatestApiVersion {
+            
             self.setupAndRecieveCoreData()
         }
         
@@ -309,7 +363,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         // Recieve speaker data from core data
         self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
         // Check if data contains data, if not retrieve data from the API then store the data into speaker array.
-        if self.speakers.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedId") as! Int != UserDefaults.standard.value(forKeyPath: "ModifiedSpeakersId") as! Int{
+        if self.speakers.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedDate") as! String != UserDefaults.standard.value(forKeyPath: "ModifiedSpeakersDate") as! String{
             
             if speakers.isEmpty {print("Speakers core data is empty, storing speakers data...")}else {print("Speakers core data is out of date, storing new speakers data...")}
             self.api.storeSpeakers(updateData: { () -> Void in
@@ -329,7 +383,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        if self.sessions.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedId") as! Int != UserDefaults.standard.value(forKeyPath: "ModifiedScheduleId") as! Int{
+        if self.sessions.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedDate") as! String != UserDefaults.standard.value(forKeyPath: "ModifiedScheduleDate") as! String{
             
             if self.sessions.isEmpty { print("Schedule core data is empty, storing schedule data...")} else {print("Schedule core data is out of date, storing new schedule data...") }
             self.api.storeSchedule(updateData: { () -> Void in
@@ -340,7 +394,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     if endTime < Date() {
                         self.sessions.remove(at: i)
                     }// Remove breaks
-                    else if num.value(forKey: "SessionTitle") as! String == "Break"{
+                    else if num.value(forKey: "SessionTitle") as! String == "Break" || num.value(forKey: "SessionTitle") as! String == "Lunch" || num.value(forKey: "SessionTitle") as! String == "Tea / Coffee / Registration"{
                         self.sessions.remove(at: i)
                     }else{
                         let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
@@ -348,7 +402,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         if Date().isBetweeen(date: startTime, andDate: endTime) {
                             //Session is on
                             self.currentlyOnSessions.append(num)
-                            print("\(num.value(forKey: "SessionTitle")) is on!")
+                            print("\(String(describing: num.value(forKey: "SessionTitle"))) is on!")
                             self.sessions.remove(at: i)
                             
                         } else {
@@ -369,6 +423,17 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         }
                     }
                 }
+                if self.sessions.isEmpty {
+                    self.isEventOver = true
+                } else {
+                    self.isEventOver = false
+                }
+                if self.currentlyOnSessions.isEmpty {
+                    self.noSessionsOn = true
+                } else {
+                    self.noSessionsOn = false
+                }
+
                 self.scheduleCollectionView.reloadData()
                 self.currentlyOnCollectionView.reloadData()
                 self.scheduleSpinner.stopAnimating()
@@ -385,7 +450,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 if endTime < Date() {
                     self.sessions.remove(at: i)
                 }// Remove breaks
-                else if num.value(forKey: "SessionTitle") as! String == "Break"{
+                else if num.value(forKey: "SessionTitle") as! String == "Break" || num.value(forKey: "SessionTitle") as! String == "Lunch" || num.value(forKey: "SessionTitle") as! String == "Tea / Coffee / Registration"{
                     self.sessions.remove(at: i)
                 } else{
                     let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
@@ -393,7 +458,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     if Date().isBetweeen(date: startTime, andDate: endTime) {
                         //Session is on
                         self.currentlyOnSessions.append(num)
-                        print("\(num.value(forKey: "SessionTitle")) is on!")
+                        print("\(String(describing: num.value(forKey: "SessionTitle"))) is on!")
                         self.sessions.remove(at: i)
                         
                     } else {
@@ -403,6 +468,16 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 }
                 
                 
+            }
+            if self.sessions.isEmpty {
+                self.isEventOver = true
+            } else {
+                 self.isEventOver = false
+            }
+            if self.currentlyOnSessions.isEmpty {
+                self.noSessionsOn = true
+            } else {
+                self.noSessionsOn = false
             }
             self.scheduleSpinner.stopAnimating()
             self.currentlyOnSpinner.stopAnimating()
@@ -455,17 +530,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let content = UNMutableNotificationContent()
         content.title = sessionTalk
         content.subtitle = "in \(building)"
-        content.body = "Starting soon!"
+        content.body = "Starting in 5 minutes!"
         content.badge = 1
         
         let requestIdentifier = "demoNotification"
         
         var date = DateComponents()
-        date.hour = newComponents.hour
-        date.minute = newComponents.minute
+        if newComponents.minute == 0 {
+            date.hour = newComponents.hour! - 1
+             date.minute = newComponents.minute! + 55
+        } else {
+            date.minute = newComponents.minute! - 5
+            date.hour = newComponents.hour
+        }
         date.day = newComponents.day
         date.year = newComponents.year
         date.month = newComponents.month
+        
+        
         
         //        date.hour = 15
         //        date.minute = 40

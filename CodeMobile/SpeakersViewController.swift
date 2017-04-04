@@ -87,6 +87,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
             let lastName = speaker.value(forKey: "surname") as! String
             vc.fullname = firstName + " " + lastName
             vc.title = firstName + " " + lastName
+            vc.twitterURL = speaker.value(forKey: "twitter") as? String ?? ""
             if speaker.value(forKey: "photoURL") != nil {
                 let url = URL(string: speaker.value(forKey: "photoURL") as! String)
                 vc.speakerImageURL = url
@@ -94,21 +95,30 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
             vc.company = speaker.value(forKey: "organisation") as! String
             vc.profile = speaker.value(forKey: "profile") as! String
             vc.viewIsHidden = false
+            var talkArray = [sessionDetail]()
             
             for item in sessions{
                 
                 if item.value(forKey: "speakerId") as! Int == speaker.value(forKey: "speakerId") as! Int {
                     
-                    var descArray = [String]()
-                    descArray.append(item.value(forKey: "sessionDescription") as! String)
-                    vc.buildingName = item.value(forKey: "sessionLocationName") as! String!
-                    vc.talkName = item.value(forKey: "sessionTitle") as! String!
-                    vc.talks = descArray
+                
+                    let talkDesc = item.value(forKey: "sessionDescription") as! String
+                    let buildingName = item.value(forKey: "sessionLocationName") as! String!
+                    let sesTitle = item.value(forKey: "sessionTitle") as! String!
                     vc.profileViewSelected = true
+                    
                     let startTime = Date().formatDate(dateToFormat: item.value(forKey: "sessionStartDateTime") as! String!)
-                    vc.timeStarted = Date().wordedDate(Date: startTime)
+                    let timeStart = Date().wordedDate(Date: startTime)
+                    talkArray.append(sessionDetail(title: sesTitle!, timeStarted: timeStart, buildingName: buildingName!, talkDescription: talkDesc))
+                    
+                    
+                
                 }
             }
+            
+            vc.talks = talkArray
+            
+            
             self.speakersTableView.deselectRow(at: index as IndexPath, animated: true)
         }
     }

@@ -19,6 +19,7 @@
 		BFC6946C1E30BCDC006C24C5 /* ApiHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6946B1E30BCDC006C24C5 /* ApiHandler.swift */; };
 		BFC694711E30BEFF006C24C5 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */; };
 		BFC6949C1E30EFE1006C24C5 /* CoreDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6949B1E30EFE1006C24C5 /* CoreDataHandler.swift */; };
+		BFC785031E9388A200E9CEBF /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC785021E9388A200E9CEBF /* UILabel.swift */; };
 		BFCA1F7D1E41EC5300BA42A2 /* ImageViewRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCA1F7C1E41EC5300BA42A2 /* ImageViewRadius.swift */; };
 		BFCA1F851E41F57200BA42A2 /* CollectionViewCellRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */; };
 		BFD989BE1E4DF8EF00F2DF67 /* MapDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD989BD1E4DF8EF00F2DF67 /* MapDetailViewController.swift */; };
@@ -51,6 +52,7 @@
 		BFC6946B1E30BCDC006C24C5 /* ApiHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApiHandler.swift; path = ../ApiHandler.swift; sourceTree = "<group>"; };
 		BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		BFC6949B1E30EFE1006C24C5 /* CoreDataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHandler.swift; sourceTree = "<group>"; };
+		BFC785021E9388A200E9CEBF /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		BFCA1F7C1E41EC5300BA42A2 /* ImageViewRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewRadius.swift; sourceTree = "<group>"; };
 		BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCellRadius.swift; sourceTree = "<group>"; };
 		BFD989BD1E4DF8EF00F2DF67 /* MapDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapDetailViewController.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				BFCA1F7C1E41EC5300BA42A2 /* ImageViewRadius.swift */,
 				BFCA1F841E41F57200BA42A2 /* CollectionViewCellRadius.swift */,
 				BFDF9AD71E5DD86F003434E1 /* UIApplication.swift */,
+				BFC785021E9388A200E9CEBF /* UILabel.swift */,
 			);
 			name = "UI Controls";
 			sourceTree = "<group>";
@@ -378,6 +381,7 @@
 				BF6269DE1E4888E500A67A84 /* NSDateExtensions.swift in Sources */,
 				BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */,
 				BFB706FF1E324DA800D3CDF2 /* HomeViewController.swift in Sources */,
+				BFC785031E9388A200E9CEBF /* UILabel.swift in Sources */,
 				BFDCC7BC1E4DD314004CD420 /* Commands.swift in Sources */,
 				BFDCC7C01E4DD37D004CD420 /* Entities.swift in Sources */,
 				BFB1FAEC1E8A8495001D10C3 /* Reachability.swift in Sources */,

@@ -110,13 +110,16 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if indexPath.section == 1 {
             if let cell = filterTableView.cellForRow(at: indexPath) {
                 
-                if cell.accessoryType == .none {
+               if cell.accessoryType == .none {
                     cell.accessoryType = .checkmark
                     filterItems.append(tableItem.tagId)
                     TagsStruct.tagsArray = filterItems
                     TagsStruct.userIsFiltering = true
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UpdateTags"), object: nil)
                     //self.revealViewController().frontViewController.loadView()
+                    if tableItem.tagTitle == "Favourites" {
+                        TagsStruct.userIsFilteringByFavourites = true
+                    }
                 }
                 else {
                     cell.accessoryType = .none
@@ -125,6 +128,9 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     TagsStruct.userIsFiltering = true
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UpdateTags"), object: nil)
                     //self.revealViewController().frontViewController.loadView()
+                    if tableItem.tagTitle == "Favourites" {
+                        TagsStruct.userIsFilteringByFavourites = false
+                    }
                 }
             }
         }
@@ -181,9 +187,16 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             }
         }
+        
+        //sortedTags["Tags"]?.append(TagData(tagId: 100, tagTitle:"Favourites"))
         filterTableView.reloadData()
+        completedTags = completedTags.sorted {$0 < $1}
+       
+   
     }
-}
+    
+   }
+
 
 // MARK: - Filter TableViewCell Controller
 class FilterCell : UITableViewCell {
@@ -202,6 +215,7 @@ struct TagData {
 struct TagsStruct {
     
     static var userIsFiltering = false
+    static var userIsFilteringByFavourites = false
     static var tagsArray = [Int]()
     static var date = "2017-04-18"
 }

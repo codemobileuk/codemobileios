@@ -15,18 +15,20 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     var speakerImageURL: URL!
     var company = ""
     var profile : String!
-    var talks : [String]! = []
+    //var talks : [String]! = []
     var viewIsHidden = true
     var profileViewSelected = true
     var buildingName : String!
     var timeStarted : String!
     var talkName : String!
+    var twitterURL : String!
+    var talks = [sessionDetail]()
+    
     
     @IBOutlet weak var speakerImageView: UIImageView!
     @IBOutlet weak var fullNameLbl: UILabel!
     @IBOutlet weak var companyLbl: UILabel!
     @IBOutlet weak var twitterBtn: UIButton!
-    @IBOutlet weak var linkedBtn: UIButton!
     @IBOutlet weak var detailTableView: UITableView!
     @IBOutlet weak var profileBtn: UIButton!
     @IBOutlet weak var talksBtn: UIButton!
@@ -47,6 +49,11 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         setupInitialData()
         setupTableViewUI()
         setupUI()
+        print(twitterURL)
+        if talks.count == 1 {
+        
+             talksBtn.setTitle("Talk", for: .normal)
+        }
     }
     
     // MARK: - Initialization
@@ -80,11 +87,12 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         if profileViewSelected == false {
             
             let cell = self.detailTableView.dequeueReusableCell(withIdentifier: "TalkCell", for: indexPath) as! TalkCell
-            cell.talkDesc.text = talks[indexPath.row]
-            cell.buildingLbl.text = buildingName
-            cell.talkNameLbl.text = talkName
-            cell.timeOnLbl.text = timeStarted
-            cell.buildingImageView.image = UIImage(named: buildingName)
+            var item = talks[indexPath.row]
+            cell.talkDesc.text = item.talkDescription
+            cell.buildingLbl.text = item.buildingName
+            cell.talkNameLbl.text = item.title
+            cell.timeOnLbl.text = item.timeStarted
+            cell.buildingImageView.image = UIImage(named: item.buildingName)
             
             return cell
         } else {
@@ -99,13 +107,24 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     // MARK: - IBActions
     @IBAction func takeUserToTwitter(_ sender: Any) {
         
-        print("Twitter button pressed")
+        print("www.twitter.com/\(twitterURL!)")
+        let newurl = twitterURL.replacingOccurrences(of: "@", with: "", options: .literal, range: nil)
+       // UIApplication.shared.openURL((NSURL(string: "twitter:///user?screen_name=\(newurl)") as URL?)!)
+        
+        let screenName =  newurl
+        let appURL = NSURL(string: "twitter://user?screen_name=\(screenName)")!
+        let webURL = NSURL(string: "https://twitter.com/\(screenName)")!
+        
+        let application = UIApplication.shared
+        
+        if application.canOpenURL(appURL as URL) {
+            application.openURL(appURL as URL)
+        } else {
+            application.openURL(webURL as URL)
+        }
     }
     
-    @IBAction func takeUserToLinkedIn(_ sender: Any) {
-        
-        print("Linked in button pressed")
-    }
+   
     
     @IBAction func viewProfile(_ sender: Any) {
         
@@ -156,7 +175,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         viewB.isHidden = viewIsHidden
         detailTableView.isHidden = viewIsHidden
         twitterBtn.isHidden = viewIsHidden
-        linkedBtn.isHidden = viewIsHidden
+        
     }
 }
 
@@ -173,4 +192,13 @@ class TalkCell: UITableViewCell {
     @IBOutlet weak var buildingLbl: UILabel!
     @IBOutlet weak var talkDesc: UILabel!
 }
+
+struct sessionDetail {
+    
+    let title: String
+    let timeStarted : String
+    let buildingName : String
+    let talkDescription : String
+}
+
 
