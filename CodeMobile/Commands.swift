@@ -17,4 +17,5 @@ class Commands{
     static let MODIFIED = "/Modified"
     static let API_URL : String = "http://api.app.codemobile.co.uk/api"
     static let WEBSITE_URL : String = "http://codemobile.co.uk"
+    static let FORM_URL : String = "https://docs.google.com/forms/d/e/1FAIpQLSfWruGR12AtCEMVJo_RHzqwyIiaYw9KMvOrK36_DlAD2xUlQw/viewform?usp=sf_link"
 }

@@ -35,6 +35,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     // MARK: - View Controller Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         
+        if UserDefaults.standard.value(forKey: "Feedbackform") == nil {
+        
+            UserDefaults.standard.set(false, forKey: "Feedbackform")
+        }
         scheduleCollectionView.reloadData()
         currentlyOnCollectionView.reloadData()
         setupUI()
@@ -43,6 +47,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         if hasInitiliallyLoaded == true {
             self.tabBarController?.tabBar.isUserInteractionEnabled = false
             setupAndRecieveCoreData()
+        } else {
+            self.launchReviewFormAlert()
         }
         setupSplitView()
     }
@@ -58,7 +64,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.tabBarController?.tabBar.isUserInteractionEnabled = false
         setupSplitView()
         checkForUpdateAndThenSetupAndRecieveCoreData()
-        
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
@@ -127,18 +132,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    func lines(yourLabel: UILabel) -> Int{
-        var lineCount = 0;
-        let textSize = CGSize(width: yourLabel.frame.size.width, height: CGFloat(Float.infinity));
-        let rHeight = lroundf(Float(yourLabel.sizeThatFits(textSize).height))
-        let charSize = lroundf(Float(yourLabel.font.lineHeight));
-        lineCount = rHeight/charSize
-        print("No of lines \(lineCount)")
-        return lineCount
-        
-        
-    }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if collectionView == scheduleCollectionView { // Schedule Collection View
@@ -155,12 +148,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 let item = sessions[indexPath.row]
                 let cell = scheduleCollectionView.dequeueReusableCell(withReuseIdentifier: "CurrentlyOn", for: indexPath) as! SessionCollectionCell
                 cell.sessionTitleLbl.text = (item.value(forKey: "SessionTitle") as! String?)! + "\n"
-               
-//                if lines(yourLabel: cell.sessionTitleLbl) == 1 {
-//                
-//                     cell.sessionTitleLbl.text = cell.sessionTitleLbl.text! + "\n"
-//                
-//                }
                 cell.speakerImageView.setRadius(radius: 20.0)
                 let startTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionStartDateTime")! as! String)
                 let endTime = Date().formatDate(dateToFormat: item.value(forKey: "SessionEndDateTime")! as! String)
@@ -351,7 +338,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             
             self.setupAndRecieveCoreData()
         }
-        
     }
     
     private func setupAndRecieveCoreData() {
@@ -483,10 +469,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             self.currentlyOnSpinner.stopAnimating()
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             self.tabBarController?.tabBar.isUserInteractionEnabled = true
+           
         }
         self.scheduleCollectionView.reloadData()
         self.currentlyOnCollectionView.reloadData()
-        
+       
     }
     
     // MARK: - SplitView
@@ -547,14 +534,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         date.year = newComponents.year
         date.month = newComponents.month
         
-        
-        
-        //        date.hour = 15
-        //        date.minute = 40
-        //        date.day = 28
-        //        date.year = 2017
-        //        date.month = 3
-        // year: 2017 month: 3 day: 28 hour: 15 minute: 40 isLeapMonth: false
         print("Notification set for date: \(date)")
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
@@ -565,6 +544,54 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
     }
     
+    // MARK: - AlertView
+    func launchReviewFormAlert() {
+    
+        if Date() >= Date().formatDate(dateToFormat:"2017-04-20T11:58:48") {
+            
+            if UserDefaults.standard.value(forKey: "Feedbackform") as! Bool == false{
+                // create the alert
+                let alert = UIAlertController(title: "Feedback form", message: "Would you like to fill out a short form and give us your thoughts on CodeMobile 2016?", preferredStyle: UIAlertControllerStyle.alert)
+                
+                // add the actions (buttons)
+                alert.addAction(UIAlertAction(title: "No Thanks", style: UIAlertActionStyle.cancel, handler: { action in
+                    
+                    UserDefaults.standard.set(true, forKey: "Feedbackform")
+                }))
+
+                alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: { action in
+                    
+                    UserDefaults.standard.set(true, forKey: "Feedbackform")
+                    let url = URL(string: Commands.FORM_URL)
+                    if UIApplication.shared.canOpenURL(url!) {
+                        if #available(iOS 10.0, *) {
+                            UserDefaults.standard.set(true, forKey: "Feedbackform")
+                            UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+                            UIApplication.shared.open(url!, options: [:], completionHandler: { (success) in
+                                print("Open url : \(success)")
+                            })
+
+                        } else {
+                            // Fallback on earlier versions
+                        }
+                        //If you want handle the completion block than
+                    }
+                    
+                    
+                }))
+                alert.addAction(UIAlertAction(title: "Remind Me later", style: UIAlertActionStyle.default, handler: { action in
+                    
+                    // do something like...
+                    UserDefaults.standard.set(false, forKey: "Feedbackform")
+                  
+                    
+                }))
+                
+                // show the alert
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
 }
 
 // MARK: - Schedule CollectionViewCell Controller
