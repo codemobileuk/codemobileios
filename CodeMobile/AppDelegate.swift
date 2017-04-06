@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabController.shadowImage = UIImage()
         
         UIApplication.shared.statusBarView?.backgroundColor = Colours.codeMobileGrey
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
         return true
     }

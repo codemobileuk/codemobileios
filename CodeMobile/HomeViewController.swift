@@ -220,7 +220,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 let item = currentlyOnSessions[indexPath.row]
                 let cell = currentlyOnCollectionView.dequeueReusableCell(withReuseIdentifier: "DuelSessions", for: indexPath) as! DueliPhoneCollectionCell
                 cell.sessionTitleLbl.text = item.value(forKey: "SessionTitle") as! String?
-                cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"
+                cell.liveInWhichBuildingLbl.text = "On Now - \(item.value(forKey: "sessionLocationName")! as! String)"// + "\n"
                 cell.speakerImageView.setRadius(radius: 20.0)
                 for speaker in speakers {
                     
