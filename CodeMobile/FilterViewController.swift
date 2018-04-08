@@ -56,15 +56,15 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.selectionStyle = .none
         cell.backgroundColor = Colours.codeMobileGrey
         
-        if TagsStruct.date == "2017-04-18" && cell.filterTitleLabel.text == "Tuesday 18th April"{
+        if TagsStruct.date == "2018-04-03" && cell.filterTitleLabel.text == "Tuesday 3rd April"{
             lastChecked.accessoryType = .none
             cell.accessoryType = .checkmark
             lastChecked = cell
-        } else if TagsStruct.date == "2017-04-19" && cell.filterTitleLabel.text == "Wednesday 19th April"{
+        } else if TagsStruct.date == "2018-04-04" && cell.filterTitleLabel.text == "Wednesday 4th April"{
             lastChecked.accessoryType = .none
             cell.accessoryType = .checkmark
             lastChecked = cell
-        } else if TagsStruct.date == "2017-04-20" && cell.filterTitleLabel.text == "Thursday 20th April"{
+        } else if TagsStruct.date == "2018-04-05" && cell.filterTitleLabel.text == "Thursday 5th April"{
             lastChecked.accessoryType = .none
             cell.accessoryType = .checkmark
             lastChecked = cell
@@ -95,10 +95,10 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     lastChecked = cell
                     
                     switch (tableItem.tagTitle){
-                    case "Tuesday 18th April" :  TagsStruct.date = "2017-04-18"
-                    case "Wednesday 19th April" :  TagsStruct.date = "2017-04-19"
-                    case "Thursday 20th April" :  TagsStruct.date = "2017-04-20"
-                    default : TagsStruct.date = "2017-04-18"
+                    case "Tuesday 3rd April" :  TagsStruct.date = "2018-04-03"
+                    case "Wednesday 4th April" :  TagsStruct.date = "2018-04-04"
+                    case "Thursday 5th April" :  TagsStruct.date = "2018-04-05"
+                    default : TagsStruct.date = "2018-04-03"
                     }
                      NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UpdateTags"), object: nil)
                     //self.revealViewController().frontViewController.loadView()
@@ -172,9 +172,9 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     private func sortTags() {
         
-        sortedTags["Days"] = [TagData(tagId: 0, tagTitle: "Tuesday 18th April")]
-        sortedTags["Days"]?.append(TagData(tagId: 0, tagTitle: "Wednesday 19th April"))
-        sortedTags["Days"]?.append(TagData(tagId: 0, tagTitle: "Thursday 20th April"))
+        sortedTags["Days"] = [TagData(tagId: 0, tagTitle: "Tuesday 3rd April")]
+        sortedTags["Days"]?.append(TagData(tagId: 0, tagTitle: "Wednesday 4th April"))
+        sortedTags["Days"]?.append(TagData(tagId: 0, tagTitle: "Thursday 5th April"))
         for item in tags {
             
             if self.sortedTags.index(forKey:"Tags") == nil {
@@ -217,5 +217,5 @@ struct TagsStruct {
     static var userIsFiltering = false
     static var userIsFilteringByFavourites = false
     static var tagsArray = [Int]()
-    static var date = "2017-04-18"
+    static var date = "2018-04-03"
 }

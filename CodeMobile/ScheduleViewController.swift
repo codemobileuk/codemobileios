@@ -23,7 +23,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
     private var tags: [NSManagedObject] = []
-    private var chosenDate = "2017-04-18"
+    private var chosenDate = "2018-04-03"
     private var timeSections = [String: [TableItem]]()
     private var sortedSections = [String]()
     private var sessionTags = [Int: [SessionTags]]()
@@ -35,7 +35,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // MARK: - View Controller Life Cycle
     override func viewWillAppear(_ animated: Bool) {
-        
+         setupAndRecieveCoreData()
         scheduleTableView.reloadData()
         checkDateAndSetSegment()
         favouriteSessionIds = UserDefaults.standard.array(forKey: "Favourites")  as? [Int] ?? [Int]()
@@ -43,11 +43,11 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         
-        setupAndRecieveCoreData()
+       
         setupSplitView()
         setupSideMenu()
         setupUI()
-        TagsStruct.date = "2017-04-18"
+        TagsStruct.date = "2018-04-03"
         // Define identifier
         _ = Notification.Name("NotificationIdentifier")
         // Register to receive notification
@@ -55,7 +55,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     // MARK: - Notifications
-    func methodOfReceivedNotification(notification: NSNotification){
+    @objc func methodOfReceivedNotification(notification: NSNotification){
         
         switch(notification.name.rawValue){
             
@@ -175,7 +175,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         return cell
     }
     
-    func addFavourite(sender:UIButton!) {
+    @objc func addFavourite(sender:UIButton!) {
     
         print("Favourite button pressed, the session id is: \(sender.tag)")
         let sessionId = sender.tag
@@ -426,19 +426,19 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         
         switch sessionSegment.selectedSegmentIndex{
         case 0 :
-            TagsStruct.date = "2017-04-18"
+            TagsStruct.date = "2018-04-03"
             scheduleTableView.reloadData()
             if vc.isViewLoaded == true {
                 vc.filterTableView.reloadData()
             }
         case 1 :
-            TagsStruct.date = "2017-04-19"
+            TagsStruct.date = "2018-04-04"
             scheduleTableView.reloadData()
             if vc.isViewLoaded == true {
               vc.filterTableView.reloadData()
             }
         default :
-            TagsStruct.date = "2017-04-20"
+            TagsStruct.date = "2018-04-05"
             scheduleTableView.reloadData()
             if vc.isViewLoaded == true {
                 vc.filterTableView.reloadData()
@@ -450,14 +450,14 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     private func setupSideMenu() {
         
         openBtn.target = self.revealViewController()
-        openBtn.action = #selector((SWRevealViewController.revealToggle) as (SWRevealViewController) -> (Void) -> Void)
+        openBtn.action = #selector(SWRevealViewController.revealToggle(_:) as (SWRevealViewController) -> (Any!) -> Void) as Selector
         self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
     }
     
     private func setupUI() {
         
-        sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
-        sessionSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
+        sessionSegment.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: UIControlState.selected)
+        sessionSegment.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: UIControlState.normal)
         scheduleSpinner.hidesWhenStopped = true
         scheduleTableView.tableFooterView = UIView()
     }
@@ -465,9 +465,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     private func checkDateAndSetSegment() {
         
         switch (TagsStruct.date){
-        case "2017-04-18" :  sessionSegment.selectedSegmentIndex = 0
-        case "2017-04-19" :  sessionSegment.selectedSegmentIndex = 1
-        case "2017-04-20" :  sessionSegment.selectedSegmentIndex = 2
+        case "2018-04-03" :  sessionSegment.selectedSegmentIndex = 0
+        case "2018-04-04" :  sessionSegment.selectedSegmentIndex = 1
+        case "2018-04-05" :  sessionSegment.selectedSegmentIndex = 2
         default: sessionSegment.selectedSegmentIndex = 0
         }
     }

@@ -39,8 +39,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
             UserDefaults.standard.set(false, forKey: "Feedbackform")
         }
-        scheduleCollectionView.reloadData()
-        currentlyOnCollectionView.reloadData()
+        //scheduleCollectionView.reloadData()
+        //currentlyOnCollectionView.reloadData()
         setupUI()
         // Refresh to see if new session has started
         
@@ -55,6 +55,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidAppear(_ animated: Bool) {
         hasInitiliallyLoaded = true
+         checkForUpdateAndThenSetupAndRecieveCoreData()
     }
     
     override func viewDidLoad() {
@@ -63,8 +64,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         // User cannot switch tabs until data has been retrieved
         self.tabBarController?.tabBar.isUserInteractionEnabled = false
         setupSplitView()
-        checkForUpdateAndThenSetupAndRecieveCoreData()
+        
     }
+    
+    
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         
@@ -185,7 +188,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 UIView.animate(withDuration: 0, animations: {
                     cell.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
                 }) { (finished) in
-                    UIView.animate(withDuration: 0.2, animations: {
+                    UIView.animate(withDuration: 0, animations: {
                         cell.transform = CGAffineTransform.identity
                     })
                 }
@@ -308,7 +311,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     vc.speakerImageURL = url
                     vc.company = speaker.value(forKey: "organisation") as! String
                     vc.profile = speaker.value(forKey: "profile") as! String
-                    if speaker.value(forKey: "twitter") as! String != nil {
+                    if speaker.value(forKey: "twitter") as? String != nil {
                         vc.twitterURL = speaker.value(forKey: "twitter") as! String
                     }
                 }
@@ -547,11 +550,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     // MARK: - AlertView
     func launchReviewFormAlert() {
     
-        if Date() >= Date().formatDate(dateToFormat:"2017-04-20T11:58:48") {
+        if Date() >= Date().formatDate(dateToFormat:"2018-04-05T11:58:48") {
             
             if UserDefaults.standard.value(forKey: "Feedbackform") as! Bool == false{
                 // create the alert
-                let alert = UIAlertController(title: "Feedback form", message: "Would you like to fill out a short form and give us your thoughts on CodeMobile 2016?", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Feedback form", message: "Would you like to fill out a short form and give us your thoughts on CodeMobile 2018?", preferredStyle: UIAlertControllerStyle.alert)
                 
                 // add the actions (buttons)
                 alert.addAction(UIAlertAction(title: "No Thanks", style: UIAlertActionStyle.cancel, handler: { action in

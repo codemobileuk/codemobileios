@@ -90,7 +90,7 @@ class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
         
         let location = locations.last
         let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        _ = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         //self.chesterMapView.setRegion(region, animated: true)
         self.locationManager.stopUpdatingLocation()
     }
@@ -108,7 +108,7 @@ class MapDetailViewController: UIViewController, CLLocationManagerDelegate {
     // MARK: - UI
     private func setupUI() {
         
-        mapTypeSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
-        mapTypeSegment.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
+        mapTypeSegment.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: UIControlState.selected)
+        mapTypeSegment.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.white], for: UIControlState.normal)
     }
 }

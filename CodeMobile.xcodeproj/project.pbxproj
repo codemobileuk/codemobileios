@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7375BB652067D22D00B82536 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7375BB642067D22D00B82536 /* MapViewController.swift */; };
+		7375BB672067DD2000B82536 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7375BB662067DD2000B82536 /* Assets.xcassets */; };
 		BF1F21151E44A0B90072E991 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F21141E44A0B90072E991 /* DetailViewController.swift */; };
 		BF6269DE1E4888E500A67A84 /* NSDateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6269DD1E4888E500A67A84 /* NSDateExtensions.swift */; };
 		BFB1FAEC1E8A8495001D10C3 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB1FAEB1E8A8495001D10C3 /* Reachability.swift */; };
@@ -14,7 +16,6 @@
 		BFC694561E30B44D006C24C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC694551E30B44D006C24C5 /* AppDelegate.swift */; };
 		BFC6945B1E30B44D006C24C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFC694591E30B44D006C24C5 /* Main.storyboard */; };
 		BFC6945E1E30B44D006C24C5 /* CodeMobile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BFC6945C1E30B44D006C24C5 /* CodeMobile.xcdatamodeld */; };
-		BFC694601E30B44D006C24C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFC6945F1E30B44D006C24C5 /* Assets.xcassets */; };
 		BFC694631E30B44D006C24C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFC694611E30B44D006C24C5 /* LaunchScreen.storyboard */; };
 		BFC6946C1E30BCDC006C24C5 /* ApiHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6946B1E30BCDC006C24C5 /* ApiHandler.swift */; };
 		BFC694711E30BEFF006C24C5 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */; };
@@ -28,7 +29,6 @@
 		BFDCC7C01E4DD37D004CD420 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDCC7BF1E4DD37D004CD420 /* Entities.swift */; };
 		BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */; };
 		BFDF9AD81E5DD86F003434E1 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDF9AD71E5DD86F003434E1 /* UIApplication.swift */; };
-		BFE706241E605EF700750DBF /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE706231E605EF700750DBF /* MapViewController.swift */; };
 		BFE706261E605F5700750DBF /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE706251E605F5700750DBF /* WebViewController.swift */; };
 		BFEA19DA1E4B700300869259 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA19D91E4B700300869259 /* FilterViewController.swift */; };
 		E6533D55B76E37ADCB29FAEE /* Pods_CodeMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39586D35D8A21E61594C59BE /* Pods_CodeMobile.framework */; };
@@ -37,6 +37,8 @@
 /* Begin PBXFileReference section */
 		1C1DB9F7928E11419EBB426D /* Pods-CodeMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CodeMobile.release.xcconfig"; path = "Pods/Target Support Files/Pods-CodeMobile/Pods-CodeMobile.release.xcconfig"; sourceTree = "<group>"; };
 		39586D35D8A21E61594C59BE /* Pods_CodeMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CodeMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7375BB642067D22D00B82536 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		7375BB662067DD2000B82536 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		833D53977BFEDD50DFC0CDC3 /* Pods-CodeMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CodeMobile.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CodeMobile/Pods-CodeMobile.debug.xcconfig"; sourceTree = "<group>"; };
 		BF1F21141E44A0B90072E991 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		BF6269DD1E4888E500A67A84 /* NSDateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtensions.swift; sourceTree = "<group>"; };
@@ -46,7 +48,6 @@
 		BFC694551E30B44D006C24C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BFC6945A1E30B44D006C24C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BFC6945D1E30B44D006C24C5 /* CodeMobile.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CodeMobile.xcdatamodel; sourceTree = "<group>"; };
-		BFC6945F1E30B44D006C24C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BFC694621E30B44D006C24C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BFC694641E30B44D006C24C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFC6946B1E30BCDC006C24C5 /* ApiHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApiHandler.swift; path = ../ApiHandler.swift; sourceTree = "<group>"; };
@@ -61,7 +62,6 @@
 		BFDCC7BF1E4DD37D004CD420 /* Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeakersViewController.swift; sourceTree = "<group>"; };
 		BFDF9AD71E5DD86F003434E1 /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
-		BFE706231E605EF700750DBF /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = ../../../../../.Trash/MapViewController.swift; sourceTree = "<group>"; };
 		BFE706251E605F5700750DBF /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		BFEA19D91E4B700300869259 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		BFF2C8561E5C5CB800905043 /* CodeMobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeMobile.entitlements; sourceTree = "<group>"; };
@@ -149,8 +149,8 @@
 		BFC6946A1E30B509006C24C5 /* Supporting FIles */ = {
 			isa = PBXGroup;
 			children = (
+				7375BB662067DD2000B82536 /* Assets.xcassets */,
 				BFC694551E30B44D006C24C5 /* AppDelegate.swift */,
-				BFC6945F1E30B44D006C24C5 /* Assets.xcassets */,
 				BFC694611E30B44D006C24C5 /* LaunchScreen.storyboard */,
 				BFC694641E30B44D006C24C5 /* Info.plist */,
 			);
@@ -212,7 +212,7 @@
 				BFB706FE1E324DA700D3CDF2 /* HomeViewController.swift */,
 				BFDEFBD81E3B7DB5008C99BA /* SpeakersViewController.swift */,
 				BFC694701E30BEFF006C24C5 /* ScheduleViewController.swift */,
-				BFE706231E605EF700750DBF /* MapViewController.swift */,
+				7375BB642067D22D00B82536 /* MapViewController.swift */,
 			);
 			name = "Tab Root Controllers";
 			sourceTree = "<group>";
@@ -265,13 +265,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = Footsqueek;
 				TargetAttributes = {
 					BFC694511E30B44D006C24C5 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 558X48344N;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -305,7 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFC694631E30B44D006C24C5 /* LaunchScreen.storyboard in Resources */,
-				BFC694601E30B44D006C24C5 /* Assets.xcassets in Resources */,
+				7375BB672067DD2000B82536 /* Assets.xcassets in Resources */,
 				BFC6945B1E30B44D006C24C5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -319,13 +319,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CodeMobile-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D5E325EFCE69CC1A5041DA1D /* [CP] Copy Pods Resources */ = {
@@ -349,9 +352,18 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-CodeMobile/Pods-CodeMobile-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -372,13 +384,13 @@
 				BFC6945E1E30B44D006C24C5 /* CodeMobile.xcdatamodeld in Sources */,
 				BFC6949C1E30EFE1006C24C5 /* CoreDataHandler.swift in Sources */,
 				BFD989BE1E4DF8EF00F2DF67 /* MapDetailViewController.swift in Sources */,
-				BFE706241E605EF700750DBF /* MapViewController.swift in Sources */,
 				BFCA1F7D1E41EC5300BA42A2 /* ImageViewRadius.swift in Sources */,
 				BFC694561E30B44D006C24C5 /* AppDelegate.swift in Sources */,
 				BFC6946C1E30BCDC006C24C5 /* ApiHandler.swift in Sources */,
 				BFEA19DA1E4B700300869259 /* FilterViewController.swift in Sources */,
 				BFC694711E30BEFF006C24C5 /* ScheduleViewController.swift in Sources */,
 				BF6269DE1E4888E500A67A84 /* NSDateExtensions.swift in Sources */,
+				7375BB652067D22D00B82536 /* MapViewController.swift in Sources */,
 				BFDEFBD91E3B7DB5008C99BA /* SpeakersViewController.swift in Sources */,
 				BFB706FF1E324DA800D3CDF2 /* HomeViewController.swift in Sources */,
 				BFC785031E9388A200E9CEBF /* UILabel.swift in Sources */,
@@ -420,7 +432,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -428,7 +442,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -470,7 +488,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -478,7 +498,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -519,7 +543,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Footsqueek.CodeMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -537,7 +562,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Footsqueek.CodeMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

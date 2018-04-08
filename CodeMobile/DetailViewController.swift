@@ -87,7 +87,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         if profileViewSelected == false {
             
             let cell = self.detailTableView.dequeueReusableCell(withIdentifier: "TalkCell", for: indexPath) as! TalkCell
-            var item = talks[indexPath.row]
+            let item = talks[indexPath.row]
             cell.talkDesc.text = item.talkDescription
             cell.buildingLbl.text = item.buildingName
             cell.talkNameLbl.text = item.title

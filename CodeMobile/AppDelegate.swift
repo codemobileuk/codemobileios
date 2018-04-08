@@ -23,9 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabController = UITabBar.appearance()
         
         navigationController.isTranslucent = false
-        navigationController.setBackgroundImage(UIImage(named: "NavigationBarBackground"), for: .default)
+        navigationController.setBackgroundImage(UIImage(named: "navigationBarBackground"), for: .default)
         navigationController.shadowImage = UIImage()
-        navigationController.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        navigationController.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         navigationController.tintColor = UIColor.white
         
         tabController.isTranslucent = false
