@@ -87,7 +87,7 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
             let lastName = speaker.value(forKey: "surname") as! String
             vc.fullname = firstName + " " + lastName
             vc.title = firstName + " " + lastName
-            vc.twitterURL = speaker.value(forKey: "twitter") as? String ?? ""
+            vc.twitterURL = speaker.value(forKey: "twitter") as? String
             if speaker.value(forKey: "photoURL") != nil {
                 let url = URL(string: speaker.value(forKey: "photoURL") as! String)
                 vc.speakerImageURL = url

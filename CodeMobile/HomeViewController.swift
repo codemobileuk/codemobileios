@@ -311,9 +311,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     vc.speakerImageURL = url
                     vc.company = speaker.value(forKey: "organisation") as! String
                     vc.profile = speaker.value(forKey: "profile") as! String
-                    if speaker.value(forKey: "twitter") as? String != nil {
-                        vc.twitterURL = speaker.value(forKey: "twitter") as! String
-                    }
+                    vc.twitterURL = speaker.value(forKey: "twitter") as? String
                 }
             }
             

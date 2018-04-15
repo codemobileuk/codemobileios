@@ -225,7 +225,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                     vc.speakerImageURL = url
                     vc.company = speaker.value(forKey: "organisation") as! String
                     vc.profile = speaker.value(forKey: "profile") as! String
-                    vc.twitterURL = speaker.value(forKey: "twitter") as! String
+                    vc.twitterURL = speaker.value(forKey: "twitter") as? String
                 }
             }
             var talkArray = [sessionDetail]()
