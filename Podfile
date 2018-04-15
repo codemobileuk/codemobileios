@@ -7,12 +7,12 @@ target 'CodeMobile' do
 
   # Pods for CodeMobile
     #Alamofire for URL requests
-    pod 'Alamofire'
+    pod 'Alamofire', '= 4.7.0'
     #SwiftyJSON for JSON converting
-    pod 'SwiftyJSON'
+    pod 'SwiftyJSON', '= 4.0.0'
     #Kingfisher for handling image requests
-    pod 'Kingfisher'
+    pod 'Kingfisher', '= 4.6.4'
     #SWRevealViewController for side menu
-    pod 'SWRevealViewController'
+    pod 'SWRevealViewController', '= 2.3.0'
 
 end
