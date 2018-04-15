@@ -1,21 +1,21 @@
 PODS:
-  - Alamofire (4.3.0)
-  - Kingfisher (3.2.4)
-  - SwiftyJSON (3.1.4)
+  - Alamofire (4.7.0)
+  - Kingfisher (4.6.4)
+  - SwiftyJSON (4.0.0)
   - SWRevealViewController (2.3.0)
 
 DEPENDENCIES:
-  - Alamofire
-  - Kingfisher
-  - SwiftyJSON
-  - SWRevealViewController
+  - Alamofire (= 4.7.0)
+  - Kingfisher (= 4.6.4)
+  - SwiftyJSON (= 4.0.0)
+  - SWRevealViewController (= 2.3.0)
 
 SPEC CHECKSUMS:
-  Alamofire: 856a113053a7bc9cbe5d6367a555d773fc5cfef7
-  Kingfisher: 8d80f39da403cd9c9ee11984e1655f4d6a566cdb
-  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
+  Kingfisher: 68498a706e46c2a050b0c9572f100e5db407f6e0
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
 
-PODFILE CHECKSUM: 87dea7fd398c5f1f0adeaf80c55f3a3e90ad292a
+PODFILE CHECKSUM: f6667dfaf08c4905fc61cf90772c6eb812140cab
 
 COCOAPODS: 1.1.1
