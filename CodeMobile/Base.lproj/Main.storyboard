@@ -349,7 +349,9 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="25" id="nOf-e5-Maw"/>
                                                                 </constraints>
-                                                                <state key="normal" backgroundImage="Twitter"/>
+                                                                <state key="normal">
+                                                                    <color key="titleColor" red="0.11372549019607843" green="0.63137254901960782" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                </state>
                                                                 <connections>
                                                                     <action selector="takeUserToTwitter:" destination="JCb-qD-aN9" eventType="touchUpInside" id="Rud-bh-RPi"/>
                                                                 </connections>
@@ -1550,7 +1552,6 @@
         <image name="Molloy" width="29" height="29"/>
         <image name="Redspeaker" width="23" height="23"/>
         <image name="Schedule" width="22" height="23"/>
-        <image name="Twitter" width="23" height="23"/>
         <image name="home-white.png" width="29" height="29"/>
         <image name="home.png" width="29" height="29"/>
         <image name="logo" width="323" height="105"/>
@@ -1564,6 +1565,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="FRj-4u-ObJ"/>
-        <segue reference="yHb-2R-uou"/>
+        <segue reference="HxD-cZ-gC3"/>
     </inferredMetricsTieBreakers>
 </document>

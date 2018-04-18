@@ -21,7 +21,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     var buildingName : String!
     var timeStarted : String!
     var talkName : String!
-    var twitterURL : String!
+    var twitterURL: String?
     var talks = [sessionDetail]()
     
     
@@ -38,6 +38,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     
     // MARK: - View Controller Life Cycle
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         buttonSelectedColour()
         viewVisibility()
@@ -49,7 +50,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         setupInitialData()
         setupTableViewUI()
         setupUI()
-        print(twitterURL)
+        print(twitterURL ?? "No twitter URL")
         if talks.count == 1 {
         
              talksBtn.setTitle("Talk", for: .normal)
@@ -62,6 +63,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         fullNameLbl.text = fullname
         speakerImageView.kf.setImage(with: speakerImageURL)
         companyLbl.text = company
+        twitterBtn.setTitle(twitterURL, for: .normal)
         self.title = fullname
     }
     
@@ -106,24 +108,22 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
     
     // MARK: - IBActions
     @IBAction func takeUserToTwitter(_ sender: Any) {
+        guard let twitterURL = twitterURL else { return }
         
-        print("www.twitter.com/\(twitterURL!)")
-        let newurl = twitterURL.replacingOccurrences(of: "@", with: "", options: .literal, range: nil)
-       // UIApplication.shared.openURL((NSURL(string: "twitter:///user?screen_name=\(newurl)") as URL?)!)
+        print("www.twitter.com/\(twitterURL)")
         
-        let screenName =  newurl
-        let appURL = NSURL(string: "twitter://user?screen_name=\(screenName)")!
-        let webURL = NSURL(string: "https://twitter.com/\(screenName)")!
+        let screenName = twitterURL.replacingOccurrences(of: "@", with: "", options: .literal, range: nil)
+        let appURL = URL(string: "twitter://user?screen_name=\(screenName)")!
+        let webURL = URL(string: "https://twitter.com/\(screenName)")!
         
         let application = UIApplication.shared
         
-        if application.canOpenURL(appURL as URL) {
-            application.openURL(appURL as URL)
+        if application.canOpenURL(appURL) {
+            application.openURL(appURL)
         } else {
-            application.openURL(webURL as URL)
+            application.openURL(webURL)
         }
     }
-    
    
     
     @IBAction func viewProfile(_ sender: Any) {
