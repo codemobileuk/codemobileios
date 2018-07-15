@@ -112,7 +112,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIT
         
         print("www.twitter.com/\(twitterURL)")
         
-        let screenName = twitterURL.replacingOccurrences(of: "@", with: "", options: .literal, range: nil)
+        let screenName = twitterURL.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "@", with: "", options: .literal, range: nil)
         let appURL = URL(string: "twitter://user?screen_name=\(screenName)")!
         let webURL = URL(string: "https://twitter.com/\(screenName)")!
         
