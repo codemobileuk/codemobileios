@@ -16,27 +16,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         UIApplication.shared.statusBarStyle = .lightContent
+        UIApplication.shared.statusBarView?.backgroundColor = Colours.codeMobileGrey
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
+        styleNavigationBar()
+        styleTabBar()
+        
+        return true
+    }
+    
+    private func styleNavigationBar() {
         let navigationController = UINavigationBar.appearance()
-        let tabController = UITabBar.appearance()
-        
         navigationController.isTranslucent = false
         navigationController.setBackgroundImage(UIImage(named: "navigationBarBackground"), for: .default)
         navigationController.shadowImage = UIImage()
         navigationController.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         navigationController.tintColor = UIColor.white
+    }
+    
+    private func styleTabBar() {
+        let tabBar = UITabBar.appearance()
+        tabBar.isTranslucent = false
+        tabBar.barTintColor = Colours.codeMobileGrey
+        tabBar.tintColor = Colours.primary
+        tabBar.shadowImage = UIImage()
         
-        tabController.isTranslucent = false
-        tabController.barTintColor = Colours.codeMobileGrey
-        tabController.tintColor = UIColor.red
-        tabController.shadowImage = UIImage()
-        
-        UIApplication.shared.statusBarView?.backgroundColor = Colours.codeMobileGrey
-        UIApplication.shared.applicationIconBadgeNumber = 0
-        
-        return true
+        let tabBarItem = UITabBarItem.appearance()
+        tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: Colours.secondary], for: .normal)
+        tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: Colours.primary], for: .selected)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
