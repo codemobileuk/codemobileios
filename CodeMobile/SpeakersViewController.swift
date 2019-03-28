@@ -47,11 +47,12 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.speakerNameLbl.text = firstName + " " + lastName
         // Thumbnail
         cell.thumbnailImageView.setRadius(radius: cell.thumbnailImageView.frame.size.height / 2)
-        if speaker.value(forKey: "photoURL") != nil {
-            let url = URL(string: speaker.value(forKey: "photoURL") as! String)
+        
+        if let photoURL = speaker.value(forKey: "photoURL") as? String {
+            let url = URL(string: "\(Commands.SITE_URL)\(photoURL)")
             cell.thumbnailImageView.kf.setImage(with: url)
         } else {
-            cell.thumbnailImageView.image = UIImage(named: "")
+            cell.thumbnailImageView.image = nil
         
         }
         // Session titles
@@ -77,7 +78,6 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "showSpeakerDetail" {
-            
             let index = self.speakersTableView.indexPathForSelectedRow! as NSIndexPath
             let nav = segue.destination as! UINavigationController
             let vc = nav.viewControllers[0] as! DetailViewController
@@ -88,8 +88,9 @@ class SpeakersViewController: UIViewController, UITableViewDataSource, UITableVi
             vc.fullname = firstName + " " + lastName
             vc.title = firstName + " " + lastName
             vc.twitterURL = speaker.value(forKey: "twitter") as? String
-            if speaker.value(forKey: "photoURL") != nil {
-                let url = URL(string: speaker.value(forKey: "photoURL") as! String)
+            
+            if let photoURL = speaker.value(forKey: "photoURL") as? String {
+                let url = URL(string: "\(Commands.SITE_URL)\(photoURL)")
                 vc.speakerImageURL = url
             }
             vc.company = speaker.value(forKey: "organisation") as! String

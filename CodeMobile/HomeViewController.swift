@@ -158,9 +158,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         let firstName = speaker.value(forKey: "firstname") as! String
                         let lastName = speaker.value(forKey: "surname") as! String
                         cell.speakerNameLbl.text = firstName + " " + lastName
-                        let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-                        cell.speakerImageView.kf.setImage(with: url)
-                        cell.speakerImageView.contentMode = .scaleAspectFill
+                        
+                        if let photoURL = speaker.value(forKey: "photoURL") as? String {
+                            let url = URL(string: "\(Commands.SITE_URL)\(photoURL)")
+                            cell.speakerImageView.kf.setImage(with: url)
+                            cell.speakerImageView.contentMode = .scaleAspectFill
+                        }
                     }
                 }
                 
@@ -191,9 +194,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         let firstName = speaker.value(forKey: "firstname") as! String
                         let lastName = speaker.value(forKey: "surname") as! String
                         cell.speakerNameLbl.text = firstName + " " + lastName
-                        let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-                        cell.speakerImageView.kf.setImage(with: url)
-                        cell.speakerImageView.contentMode = .scaleAspectFill
+                        
+                        if let photoURL = speaker.value(forKey: "photoURL") as? String {
+                            let url = URL(string: "\(Commands.SITE_URL)\(photoURL)")
+                            cell.speakerImageView.kf.setImage(with: url)
+                            cell.speakerImageView.contentMode = .scaleAspectFill
+                        }
                     }
                 }
                 
@@ -211,9 +217,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         let firstName = speaker.value(forKey: "firstname") as! String
                         let lastName = speaker.value(forKey: "surname") as! String
                         cell.speakerNameLbl.text = firstName + " " + lastName
-                        let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-                        cell.speakerImageView.kf.setImage(with: url)
-                        cell.speakerImageView.contentMode = .scaleAspectFill
+                        
+                        if let photoURL = speaker.value(forKey: "photoURL") as? String {
+                            let url = URL(string: "\(Commands.SITE_URL)\(photoURL)")
+                            cell.speakerImageView.kf.setImage(with: url)
+                            cell.speakerImageView.contentMode = .scaleAspectFill
+                        }
                     }
                 }
                 
@@ -289,23 +298,27 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     let lastName = speaker.value(forKey: "surname") as! String
                     vc.fullname = firstName + " " + lastName
                     vc.title = firstName + " " + lastName
-                    let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-                    vc.speakerImageURL = url
+                    
+                    if let photoURL = speaker.value(forKey: "photoURL") as? String {
+                        let url = URL(string: "\(Commands.SITE_URL)\(photoURL)")
+                        vc.speakerImageURL = url
+                    }
+                    
                     vc.company = speaker.value(forKey: "organisation") as! String
-                    vc.profile = speaker.value(forKey: "profile") as! String
+                    vc.profile = speaker.value(forKey: "profile") as? String
                     vc.twitterURL = speaker.value(forKey: "twitter") as? String
                 }
             }
             
             var talkArray = [sessionDetail]()
             let talkDesc = session.value(forKey: "sessionDescription") as! String
-            let buildingName = session.value(forKey: "sessionLocationName") as! String!
-            let sesTitle = session.value(forKey: "sessionTitle") as! String!
+            let buildingName = session.value(forKey: "sessionLocationName") as! String
+            let sesTitle = session.value(forKey: "sessionTitle") as! String
             vc.profileViewSelected = false
             vc.viewIsHidden = false
-            let startTime = Date().formatDate(dateToFormat: session.value(forKey: "sessionStartDateTime") as! String!)
+            let startTime = Date().formatDate(dateToFormat: session.value(forKey: "sessionStartDateTime") as! String)
             let timeStart = Date().wordedDate(Date: startTime)
-            talkArray.append(sessionDetail(title: sesTitle!, timeStarted: timeStart, buildingName: buildingName!, talkDescription: talkDesc))
+            talkArray.append(sessionDetail(title: sesTitle, timeStarted: timeStart, buildingName: buildingName, talkDescription: talkDesc))
             
             vc.talks = talkArray
         }
@@ -334,7 +347,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         // Check if data contains data, if not retrieve data from the API then store the data into speaker array.
         if self.speakers.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedDate") as! String != UserDefaults.standard.value(forKeyPath: "ModifiedSpeakersDate") as! String{
             
-            if speakers.isEmpty {print("Speakers core data is empty, storing speakers data...")}else {print("Speakers core data is out of date, storing new speakers data...")}
+            if speakers.isEmpty {
+                print("Speakers core data is empty, storing speakers data...")
+            } else {
+                print("Speakers core data is out of date, storing new speakers data...")
+            }
+            
             self.api.storeSpeakers(updateData: { () -> Void in
                 // When data has been successfully stored
                 self.speakers = self.coreData.recieveCoreData(entityNamed: Entities.SPEAKERS)
@@ -355,16 +373,22 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         if self.sessions.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedDate") as! String != UserDefaults.standard.value(forKeyPath: "ModifiedScheduleDate") as! String{
             
-            if self.sessions.isEmpty { print("Schedule core data is empty, storing schedule data...")} else {print("Schedule core data is out of date, storing new schedule data...") }
+            if self.sessions.isEmpty {
+                print("Schedule core data is empty, storing schedule data...")
+            } else {
+                print("Schedule core data is out of date, storing new schedule data...")
+            }
+            
             self.api.storeSchedule(updateData: { () -> Void in
                 self.sessions = self.coreData.recieveCoreData(entityNamed: Entities.SCHEDULE)
+                
                 for (i,num) in self.sessions.enumerated().reversed() {
                     // Remove past sessions
                     let endTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionEndDateTime")! as! String)
                     if endTime < Date() {
                         self.sessions.remove(at: i)
                     // Remove breaks
-                    } else if num.value(forKey: "SessionTitle") as! String == "Break" || num.value(forKey: "SessionTitle") as! String == "Lunch" || num.value(forKey: "SessionTitle") as! String == "Tea / Coffee / Registration"{
+                    } else if num.value(forKey: "SessionTitle") as! String == "Break" || num.value(forKey: "SessionTitle") as! String == "Lunch" || num.value(forKey: "SessionTitle") as! String == "Tea / Coffee / Registration" {
                         self.sessions.remove(at: i)
                     } else {
                         let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
@@ -377,15 +401,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         } else {
                             if #available(iOS 10.0, *) {
                                 UNUserNotificationCenter.current().requestAuthorization(
-                                    options: [.alert,.sound,.badge],
-                                    completionHandler: { (granted,error) in
+                                    options: [.alert, .sound, .badge],
+                                    completionHandler: { (granted, error) in
                                         self.isGrantedNotificationAccess = granted
                                         let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
                                         let sessionTitle = num.value(forKey: "SessionTitle") as! String
                                         let buildingName = num.value(forKey: "sessionLocationName") as! String
                                         self.notificationSquad(date: startTime, sessionTalk: sessionTitle, building: buildingName)
-                                }
-                                )
+                                })
                             } else {
                                 // Fallback on earlier versions
                             }
@@ -393,17 +416,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     }
                 }
                 
-                if self.sessions.isEmpty {
-                    self.isEventOver = true
-                } else {
-                    self.isEventOver = false
-                }
-                
-                if self.currentlyOnSessions.isEmpty {
-                    self.noSessionsOn = true
-                } else {
-                    self.noSessionsOn = false
-                }
+                self.isEventOver = self.sessions.isEmpty
+                self.noSessionsOn = self.currentlyOnSessions.isEmpty
 
                 self.scheduleCollectionView.reloadData()
                 self.currentlyOnCollectionView.reloadData()
@@ -420,8 +434,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 let endTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionEndDateTime")! as! String)
                 if endTime < Date() {
                     self.sessions.remove(at: i)
-                }// Remove breaks
-                else if num.value(forKey: "SessionTitle") as! String == "Break" || num.value(forKey: "SessionTitle") as! String == "Lunch" || num.value(forKey: "SessionTitle") as! String == "Tea / Coffee / Registration"{
+                }
+                // Remove breaks
+                else if num.value(forKey: "SessionTitle") as! String == "Break" || num.value(forKey: "SessionTitle") as! String == "Lunch" || num.value(forKey: "SessionTitle") as! String == "Tea / Coffee / Registration" {
                     self.sessions.remove(at: i)
                 } else{
                     let startTime = Date().formatDate(dateToFormat: num.value(forKey: "SessionStartDateTime")! as! String)
@@ -431,11 +446,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         self.currentlyOnSessions.append(num)
                         print("\(String(describing: num.value(forKey: "SessionTitle"))) is on!")
                         self.sessions.remove(at: i)
-                        
                     } else {
                         //Session is off
                     }
-                    
                 }
             }
             
@@ -524,10 +537,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     // MARK: - AlertView
     func launchReviewFormAlert() {
-        if Date() >= Date().formatDate(dateToFormat:"2018-04-05T11:58:48") {
+        if Date() >= Date().formatDate(dateToFormat:"2019-04-04T11:58:48Z") {
             if UserDefaults.standard.value(forKey: "Feedbackform") as! Bool == false {
                 // create the alert
-                let alert = UIAlertController(title: "Feedback form", message: "Would you like to fill out a short form and give us your thoughts on CodeMobile 2018?", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Feedback form", message: "Would you like to fill out a short form and give us your thoughts on CodeMobile 2019?", preferredStyle: UIAlertControllerStyle.alert)
                 
                 // add the actions (buttons)
                 alert.addAction(UIAlertAction(title: "No Thanks", style: UIAlertActionStyle.cancel, handler: { action in

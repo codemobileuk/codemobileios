@@ -23,7 +23,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     private var sessions: [NSManagedObject] = []
     private var speakers: [NSManagedObject] = []
     private var tags: [NSManagedObject] = []
-    private var chosenDate = "2018-04-03"
     private var timeSections = [String: [TableItem]]()
     private var sortedSections = [String]()
     private var sessionTags = [Int: [SessionTags]]()
@@ -47,7 +46,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         setupSplitView()
         setupSideMenu()
         setupUI()
-        TagsStruct.date = "2018-04-03"
+        TagsStruct.date = "2019-04-02"
         // Define identifier
         _ = Notification.Name("NotificationIdentifier")
         // Register to receive notification
@@ -124,7 +123,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         if day != TagsStruct.date { return nil }
         // Seperate only the time from the day/time string & remove the seconds from the time
         let returnvalue = sortedSections[section].components(separatedBy: "T").last
-        let endIndex = returnvalue?.index((returnvalue?.endIndex)!, offsetBy:  -3)
+        let endIndex = returnvalue?.index((returnvalue?.endIndex)!, offsetBy:  -4)
        
         // If item is break
         let tableSection = timeSections[sortedSections[section]]
@@ -221,10 +220,14 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
                     let lastName = speaker.value(forKey: "surname") as! String
                     vc.fullname = firstName + " " + lastName
                     vc.title = firstName + " " + lastName
-                    let url = URL(string: speaker.value(forKey: "photoURL") as! String)
-                    vc.speakerImageURL = url
+                    
+                    if let photoURL = speaker.value(forKey: "photoURL") as? String {
+                        let url = URL(string: "\(Commands.SITE_URL)\(photoURL)")
+                        vc.speakerImageURL = url
+                    }
+                    
                     vc.company = speaker.value(forKey: "organisation") as! String
-                    vc.profile = speaker.value(forKey: "profile") as! String
+                    vc.profile = speaker.value(forKey: "profile") as? String
                     vc.twitterURL = speaker.value(forKey: "twitter") as? String
                 }
             }
@@ -421,24 +424,23 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     
     // MARK: - IBActions
     @IBAction func filterSessions(_ sender: Any) {
-        
         let vc = revealViewController().rearViewController as! FilterViewController
         
         switch sessionSegment.selectedSegmentIndex{
-        case 0 :
-            TagsStruct.date = "2018-04-03"
+        case 0:
+            TagsStruct.date = "2019-04-02"
             scheduleTableView.reloadData()
             if vc.isViewLoaded == true {
                 vc.filterTableView.reloadData()
             }
-        case 1 :
-            TagsStruct.date = "2018-04-04"
+        case 1:
+            TagsStruct.date = "2019-04-03"
             scheduleTableView.reloadData()
             if vc.isViewLoaded == true {
               vc.filterTableView.reloadData()
             }
-        default :
-            TagsStruct.date = "2018-04-05"
+        default:
+            TagsStruct.date = "2019-04-04"
             scheduleTableView.reloadData()
             if vc.isViewLoaded == true {
                 vc.filterTableView.reloadData()
@@ -465,9 +467,9 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     private func checkDateAndSetSegment() {
         
         switch (TagsStruct.date){
-        case "2018-04-03" :  sessionSegment.selectedSegmentIndex = 0
-        case "2018-04-04" :  sessionSegment.selectedSegmentIndex = 1
-        case "2018-04-05" :  sessionSegment.selectedSegmentIndex = 2
+        case "2019-04-02" :  sessionSegment.selectedSegmentIndex = 0
+        case "2019-04-03" :  sessionSegment.selectedSegmentIndex = 1
+        case "2019-04-04" :  sessionSegment.selectedSegmentIndex = 2
         default: sessionSegment.selectedSegmentIndex = 0
         }
     }

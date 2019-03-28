@@ -18,12 +18,11 @@ extension Date {
     func formatDate(dateToFormat: String) -> Date {
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         let formattedDate = dateFormatter.date(from: dateToFormat )
         
         if formattedDate == nil {
-            
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             dateFormatter.locale = NSLocale(localeIdentifier:"en_US_POSIX") as Locale! // This fixes bug when using 12 hr clock
             let formattedDate = dateFormatter.date(from: dateToFormat )
             

@@ -116,28 +116,26 @@ class MapViewController: UIViewController, UISplitViewControllerDelegate, UITabl
     // MARK: - Core Data
     
     private func setupAndRecieveCoreData() {
-        
         // LOCATIONS
         locations = coreData.recieveCoreData(entityNamed: Entities.LOCATIONS)
         locationSpinner.startAnimating()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        if locations.isEmpty{
-            print("Locations core data is empty, storing locations data...")
-            api.storeLocations(updateData: { () -> Void in
-                self.locations = self.coreData.recieveCoreData(entityNamed: Entities.LOCATIONS)
-                self.locationSpinner.stopAnimating()
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                self.sortOutSections()
-            })
-        } else {
-            print("Schedule core data is not empty")
-            locationSpinner.stopAnimating()
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            sortOutSections()
+        if self.locations.isEmpty || UserDefaults.standard.value(forKeyPath: "ModifiedDate") as! String != UserDefaults.standard.value(forKeyPath: "ModifiedLocationsDate") as! String {
         }
         
+        if locations.isEmpty {
+            print("Locations core data is empty, storing locations data...")
+        } else {
+            print("Locations core data is out of date, storing new locations data...")
+        }
         
+        api.storeLocations(updateData: { () -> Void in
+            self.locations = self.coreData.recieveCoreData(entityNamed: Entities.LOCATIONS)
+            self.locationSpinner.stopAnimating()
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            self.sortOutSections()
+        })
     }
     
     private func sortOutSections() {
