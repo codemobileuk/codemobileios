@@ -117,7 +117,7 @@ class ApiHandler {
                     location.setValue(item.1["Type"].string, forKeyPath: "type")
                     
                     if let image = item.1["Image"].string {
-                        location.setValue("\(Commands.SITE_URL)\(image)", forKeyPath: "imageURL")
+                        location.setValue("\(Commands.SITE_URL)/\(image)", forKeyPath: "imageURL")
                     }
                 }
 

@@ -15,19 +15,19 @@ extension Date {
     
     func formatDate(dateToFormat: String) -> Date {
         let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_GB")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        let formattedDate = dateFormatter.date(from: dateToFormat)
         
-        if formattedDate != nil { return formattedDate! }
-        
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        dateFormatter.locale = NSLocale(localeIdentifier:"en_US_POSIX") as Locale // This fixes bug when using 12 hr clock
+        if dateToFormat.suffix(1) == "Z" {
+            return dateFormatter.date(from: String(dateToFormat.dropLast())) ?? Date()
+        }
         
         return dateFormatter.date(from: dateToFormat) ?? Date()
     }
     
     func wordedDate(Date: Date) -> String{
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_GB")
         formatter.dateFormat = "h:mm a 'on' MMMM dd"
         formatter.amSymbol = "AM"
         formatter.pmSymbol = "PM"
